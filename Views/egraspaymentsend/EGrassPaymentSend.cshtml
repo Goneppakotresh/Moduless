@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EGrassPaymentSend</h2>
+
+<form name="form" action="http://164.100.153.105/Egras105/samplemerchantprelogin2.aspx" method="post" id="myForm_L1" enctype="multipart/form-data">
+
+
+    <input id="hf_Encdata" type="hidden" name="Encdata" />
+    <input id="hf_Merchant_code" type="hidden" name="Merchant_code" />
+    <input id="hf_AUIN" type="hidden" name="AUIN" />
+    <input id="hf_url" type="hidden" name="url" value="http://164.100.153.105/Egras105/samplemerchantprelogin2.aspx" />
+    <input type="submit" class="btn btn-success " value="Search" id="SUB_FORM1" style="display:none;" name="Type">
+
+</form>
+
+<script>
+  $(document).ready(function () {
+
+
+
+      var Encdata = "@ViewBag.Encdata";
+      var Merchant_code = @ViewBag.Merchant_code;
+      var AUIN=@ViewBag.AUIN;
+      SendToEgrass(Encdata, Merchant_code, AUIN);
+
+
+
+
+  });
+    function SendToEgrass(Encdata, Merchant_code, AUIN) {
+
+        $("#hf_Encdata").val(Encdata);
+        $("#hf_Merchant_code").val(Merchant_code);
+        $("#hf_AUIN").val(AUIN);
+        $("#myForm_L1").submit();
+
+    }
+</script>

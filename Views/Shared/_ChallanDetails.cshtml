@@ -1,0 +1,49 @@
+﻿<style>
+    .container {
+        width: 100%;
+    }
+
+    .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+        float: left;
+        padding: 0.0em 0em;
+        text-decoration: none;
+    }
+
+    #myTab li {
+        /* margin-right: 15px; */
+        padding: 10px;
+    }
+</style>
+<div id="tabs" class="container-fluid">
+    <ul id="myTab">
+        <li class="ui-tabs-tab ui-corner-top ui-state-default ui-tab Tab1" id="MstChallan" >
+            <a data-toggle="tab" href="#Tab1" data-target="draft">
+                @Html.ActionLink("MST Challan", "MstChallan", "MstChallan", new { MasterModule = "", area = "FeeStructure" })
+
+            </a>
+        </li> 
+        <li class="ui-tabs-tab ui-corner-top ui-state-default ui-tab Tab2" id="ChallanDetails">
+            <a data-toggle="tab" href="#Tab2" data-target="draft">
+                @Html.ActionLink("Challan Detail", "ChallanDetail", "MstChallan", new { MasterModule = "", area = "FeeStructure" })
+            </a>
+        </li>
+    </ul>
+</div>
+<script>
+    $(function () {
+        $("#tabs").tabs();
+        //Change Tabs
+    });
+    $(document).ready(function () {
+        debugger;
+        $(".ui-tabs-tab").removeClass("active");
+        $(".Tab1").addClass("active");
+       // $(".Tab1 a").trigger("click");
+       // $(".Tab1 a").click();
+    
+
+    });
+    $(document).ready(function () {
+        $('a[href="#Tab1"]').click();
+    });
+</script>

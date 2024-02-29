@@ -1,0 +1,257 @@
+﻿@model IEMS_WEB.Models.OTP
+
+@* <link href="~/assets/css/Responsive/_ValidateOTP.css" rel="stylesheet" />
+ *@
+<div class="card-body">
+    @Html.HiddenFor(m => m.MobileNumber, new { @id = "hdnMobileNo" })
+    <input style="display:none" id="hdnVerifiedShow" />
+    <input style="display:none" id="hdnVerifiedKey" />
+    <input style="display:none" id="hdnDisableIds" />
+
+    <p>
+        <center>Please enter the One-Time Password To verify your Mobile Number</center>
+    </p>
+    <p>
+        <center>A One-Time Password has been Sent to @Model.MobileNumber.Substring(0, 3)**@Model.MobileNumber.Substring(5, 1)***@Model.MobileNumber.Substring(9, 1)</center>
+    </p>
+    <div class="form-group row">
+        <div class="col-md-3"></div>
+        <div class="col-md-1 otpbtn">
+            @Html.TextBoxFor(m => m.OTPVal, new { @minlength = "1", @maxlength = "1", @class = "form-control number", autocomplete = "off", @value = "", id = "txtfOTP", @type = "password", @placeholder = "",  @oncopy = "return false", onkeyup = "movetoNext(this, 'txtsOTP' , '')" })
+        </div>
+        <div class="col-md-1 otpbtn">
+            @Html.TextBoxFor(m => m.OTPVal, new { @minlength = "1", @maxlength = "1", @class = "form-control number", autocomplete = "off", @value = "", id = "txtsOTP", @type = "password", @placeholder = "",  @oncopy = "return false" , onkeyup = "movetoNext(this, 'txttOTP' , '')" })
+        </div>
+        <div class="col-md-1 otpbtn">
+            @Html.TextBoxFor(m => m.OTPVal, new { @minlength = "1", @maxlength = "1", @class = "form-control number", autocomplete = "off", @value = "", id = "txttOTP", @type = "password", @placeholder = "",  @oncopy = "return false", onkeyup = "movetoNext(this, 'txtfoOTP' , '')"  })
+        </div>
+        <div class="col-md-1 otpbtn">
+            @Html.TextBoxFor(m => m.OTPVal, new { @minlength = "1", @maxlength = "1", @class = "form-control number", autocomplete = "off", @value = "", id = "txtfoOTP", @type = "password", @placeholder = "",  @oncopy = "return false" , onkeyup = "movetoNext(this, 'txtfiOTP' , '')" })
+        </div>
+        <div class="col-md-1 otpbtn">
+            @Html.TextBoxFor(m => m.OTPVal, new { @minlength = "1", @maxlength = "1", @class = "form-control number", autocomplete = "off", @value = "", id = "txtfiOTP", @type = "password", @placeholder = "",  @oncopy = "return false" , onkeyup = "movetoNext(this, 'txtsiOTP' , '')" })
+        </div>
+        <div class="col-md-1 otpbtn">
+            @Html.TextBoxFor(m => m.OTPVal, new { @minlength = "1", @maxlength = "1", @class = "form-control number", autocomplete = "off", @value = "", id = "txtsiOTP", @type = "password", @placeholder = "", @oncopy = "return false" })
+            <span style="color:blue;display:block!important;" id="time"></span>
+            <a id="ResendOTP" style="color:blue;display:none;white-space:nowrap;cursor:pointer">Resend OTP</a>
+        </div>
+    </div>
+</div>
+<div class="text-center">
+    <input class="btn btn-success mr-1" id="btnValidate" type="button" name="Validate" value="Validate" />
+    <button type="button" id="btnCloseOTPValidate" class="btn btn-danger">Close</button>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#txtfOTP").val('');
+        $("#txtsOTP").val('')
+        $("#txttOTP").val('')
+        $("#txtfoOTP").val('');
+        $("#txtfiOTP").val('');
+        $("#txtsiOTP").val('');
+
+
+        var OTPTime =90;
+        timer(OTPTime);
+
+        $("#WrongNumber").click(function () {
+            timerOn = false;
+            if ($("#hdnFormCode").val() == "PAT") {
+                $('#txtPatientMobileNo').val('');
+                $('#txtPatientMobileNo').prop('readonly', false);
+                $('#txtPatientRelationMobileNo').val('');
+                $('#txtPatientRelationMobileNo').prop('readonly', true);
+            }
+            $(this).closest('.ui-dialog-content').dialog('close')
+        });
+
+        $("#btnCloseOTPValidate").click(function () {
+            timerOn = false;
+            $(this).closest('.ui-dialog-content').dialog('close');
+            $("#txtfOTP").val('');
+            $("#txtsOTP").val('')
+            $("#txttOTP").val('')
+            $("#txtfoOTP").val('');
+            $("#txtfiOTP").val('');
+            $("#txtsiOTP").val('');
+        });
+
+
+        var isButtonDisabled = false;
+
+        $("#ResendOTP").click(function () {
+            debugger;
+            if (isButtonDisabled) {
+                return;
+            }
+
+            $(this).prop("disabled", true);
+
+            setTimeout(function () {
+                $("#ResendOTP").prop("disabled", false);
+                isButtonDisabled = false;
+            }, 2000);
+
+            isButtonDisabled = true;
+            var MobileNumber = $("#hdnMobileNo").val();
+
+
+            $.ajax({
+                type: "POST",
+                url: "../CreateUser/GenerateOtp",
+                dataType: "json",
+                data: { "MobileNo": $("#hdnMobileNo").val() },
+                success: function (response) {
+                    $("#txtfOTP").val('');
+                    $("#txtsOTP").val('')
+                    $("#txttOTP").val('')
+                    $("#txtfoOTP").val('');
+                    $("#txtfiOTP").val('');
+                    $("#txtsiOTP").val('');
+                    swal({
+                        title: "OTP Resent Successfully",
+                        type: "success",
+                        showConfirmButton: true
+                    });
+
+                    $("#time").css("display", "block");
+                    $("#ResendOTP").hide();
+                    timer(OTPTime);
+                }
+            });
+        });
+        $("#btnValidate").click(function (e) {
+            var MobileNo = $("#hdnMobileNo").val();
+            var OTP = $("#txtfOTP").val() + $("#txtsOTP").val() + $("#txttOTP").val() + $("#txtfoOTP").val() + $("#txtfiOTP").val() + $("#txtsiOTP").val();
+            var zeros = /^0+$/;
+            if (OTP == "") {
+                swal({
+                    title: "Please Enter OTP",
+                    type: "warning",
+                    showConfirmButton: true
+                });
+                return false;
+            }
+            else if (OTP.length!=6)
+            {
+                swal({
+                    title: "Please Enter Valid OTP",
+                    type: "warning",
+                    showConfirmButton: true
+                });
+                return false;
+
+            }
+            else {
+                $.ajax({
+                    url: "../OTP/ValidateOTP",
+                    data: { OTPVal: OTP, MobileNumber: MobileNo },
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.StatusId == 1) {
+
+                            $("#" + $("#hdnVerifiedShow").val()).hide();
+                            $("#" + $("#hdnVerifiedKey").val()).show();
+                            $("#" + $("#hdnVerifiedKey").val()).val('1');
+                            $("#" + $("#hdnDisableIds").val()).attr("disabled", true);
+
+                            $("#btnCloseOTPValidate").click();
+                            $("#time").show();
+                            $("#time").css("display", "block");
+                            $("#ResendOTP").hide();
+                            $("#txtfOTP").val('');
+                            $("#txtsOTP").val('');
+                            $("#txttOTP").val('');
+                            $("#txtfoOTP").val('');
+                            $("#txtfiOTP").val('');
+                            $("#txtsiOTP").val('');
+                            $('#otp *').prop('disabled', true);
+                            swal({
+                                title: "OTP Validated Successfully",
+                                type: "success",
+                                showConfirmButton: true
+                            });
+                            timerOn = false;
+                            swal.close();
+                        }
+                        else if (data.StatusId == -1) {
+                            swal({
+                                title: data.Statusmessage,
+                                type: "success",
+                                showConfirmButton: true
+                            });
+                        }
+                        else {
+                            swal({
+                                title: "OTP Doen",
+                                type: "warning",
+                                showConfirmButton: true
+                            });
+                            $("#txtfOTP").val('');
+                            $("#txtsOTP").val('');
+                            $("#txttOTP").val('');
+                            $("#txtfoOTP").val('');
+                            $("#txtfiOTP").val('');
+                            $("#txtsiOTP").val('');
+                        }
+                    },
+                    complete: function () {
+                        $("#loader").hide();
+                    }
+                });
+            }
+        });
+
+    });
+
+
+    function movetoNext(current, nextFieldID, previousFeildID) {
+        debugger;
+        if (current.value.length >= current.maxLength) {
+            if (nextFieldID != "") {
+                document.getElementById(nextFieldID).focus();
+            }
+        }
+        if (current.value.length < current.maxLength) {
+            if (previousFeildID != "") {
+                document.getElementById(previousFeildID).focus();
+            }
+        }
+    }
+
+    var timerOn = true;
+    function timer(remaining) {
+        var m = Math.floor(remaining / 60);
+        var s = remaining % 60;
+        s = s < 10 ? '0' + s : s;
+        document.getElementById('time').innerHTML = m + ':' + s;
+        remaining -= 1;
+        if (remaining >= 0 && timerOn) {
+            setTimeout(function () {
+                timer(remaining);
+            }, 1000);
+            return;
+        }
+        else {
+            $('#otp *').prop('disabled', true);
+            $("#txtfOTP").val('');
+            $("#txtsOTP").val('')
+            $("#txttOTP").val('')
+            $("#txtfoOTP").val('');
+            $("#txtfiOTP").val('');
+            $("#txtsiOTP").val('');
+
+        }
+        if (!timerOn) {
+            return;
+        }
+        $("#time").css("display", "none");
+        $("#ResendOTP").show();
+        $("#btnValidate").prop("disabled", false);
+    }
+
+</script>

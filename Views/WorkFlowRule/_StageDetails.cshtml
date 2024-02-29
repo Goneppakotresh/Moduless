@@ -1,0 +1,902 @@
+﻿@model IEMS_WEB.Models.WorkFlow.Stage
+
+@Html.HiddenFor(m => m.StageId, new { @id = "StageId" })
+@Html.HiddenFor(m => m.StageKey, new { @id = "stageKey" })
+@Html.HiddenFor(m => m.ApprovalStatus, new { @id = "hdnStatus" })
+<script src="~/assets/js/translator/stagedetails.js"></script>
+<style>
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        float: left;
+        min-width: 160px;
+        padding: 5px 0;
+        margin: 2px 0 0;
+        font-size: 14px;
+        text-align: left;
+        list-style: none;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0, 0, 0, .15);
+        border-radius: 4px;
+        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, .175)
+    }
+
+    .dropdown-toggle::after{
+        display:none!important
+    }
+
+    .dropdown-menu > li > a {
+        display: block;
+        padding: 3px 20px;
+        clear: both;
+        font-weight: 400;
+        line-height: 1.42857143;
+        color: #333;
+        white-space: nowrap
+    }
+
+
+
+    .open > .dropdown-menu {
+        display: block
+    }
+
+    input.form-control{
+        height:40px!important
+    }
+    .ui-dialog-titlebar.ui-widget-header.ui-corner-all.ui-helper-clearfix {
+        background-image: url(/Images/Header.png);
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-color: #e3a591 !important;
+        color: #fff !important;
+        background-image: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0.2) 3%, rgba(0,0,0,0.15) 97%, rgba(0,0,0,0.05)) !important;
+    }
+    .dropdown-header {
+        display: block;
+        padding: 3px 20px;
+        font-size: 12px;
+        line-height: 1.42857143;
+        color: #777;
+        white-space: nowrap
+    }
+
+    .dropdown-backdrop {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 990
+    }
+    .checkbox input[type=checkbox] {
+        opacity: 1!important;
+    }
+    textarea{
+        height:60px!important
+    }
+    .ui-dialog .ui-dialog-content {
+        position: relative;
+        border: 0;
+        padding: .5em 1em;
+        background: none;
+        overflow: hidden;
+        zoom: 1;
+        height: auto !important;
+    }
+    .ui-dialog .ui-dialog-title{
+        width:97%!important
+    }
+    span.input-group-btn {
+        display: none;
+    }
+    .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control, .btn-group {
+        font-weight: 500 !important
+    }
+    span.multiselect-selected-text {
+        font-weight: 500!important;
+    }
+
+    input[type=checkbox], input[type=radio] {
+        margin: 4px 0px 0!important;
+        margin-top: 1px\9;
+        line-height: normal;
+    }
+</style>
+
+
+
+@*<a href="javascript:CloseStageDetailsPopup()" title='close'><i class='fa fa-close pull-right' id="iClose"></i></a>*@
+<div class="container">
+    @*style="margin-top: 29px!important;"*@
+    @*<ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home"><i style="width: 100%;" class="orange ace-icon fa fa-users-cog bigger-130"><span class="bigger-110"> Stage Setting</span></i></a></li>
+        @*<li><a data-toggle="tab" href="#menu1"><i style="width: 100%;" class="green ace-icon fa fa-check-square-o bigger-130">  <span class="bigger-110">Advance Setting</span></i></a></li>*@
+    @* <li><a data-toggle="tab" href="#menu2"><i style="width: 100%;" class="blue ace-icon fa fa-inbox bigger-130">  <span class="bigger-110">Role Mapping</span></i></a></li>*@
+
+    @* </ul>*@
+   
+                <div class="row">
+                    <div class="col-md-3">
+            <label data-translate="Type" class="control-label mandatory">Type</label>
+                        @Html.TextBoxFor(m => m.StageType, new { @maxlength = "20", @Type = "text", @class = "form-control", autocomplete = "off", id = "txtStageType", @readonly = "readonly" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3">
+            <label data-translate="Name" class="control-label mandatory">
+                            Name
+                        </label>
+                        @Html.TextBoxFor(m => m.StageName, new { @maxlength = "50", @Type = "text", @class = "form-control", autocomplete = "off", id = "txtStageName", required = "required", title = "" })
+                        <span class="error-message text-danger" id="errorStageName"></span>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div style="width: 26%!important;" class="col-md-3">
+            <label data-translate="Description" class="control-label mandatory">
+                            Description
+                        </label>
+                        @Html.TextAreaFor(m => m.StageDesc, new { @maxlength = "200", @Type = "text", @class = "form-control", autocomplete = "off", id = "txtStageDesc", required = "required", @style = "resize:none" })
+                        <span class="error-message text-danger" id="errorStageDesc"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+            <label data-translate="Action" class="control-label mandatory">
+                            Action
+                        </label>
+                        @Html.ListBoxFor(m => m.Action, Model.lstActionDet, new { @class = "form-control", id = "ddlAction", @multiple = "multiple" })
+                        <span class="error-message text-danger" id="errorAction"></span>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3" id="dvLocation">
+
+            <label data-translate="Location Type" class="control-label mandatory">
+                            Location Type
+                        </label>
+                        @Html.DropDownListFor(m => m.LocationType, (List<SelectListItem>)ViewBag.lstLocationType, new { @class = "form-control chosen", id = "ddlLocationType" })
+                        <span class="error-message text-danger" id="errorLocationType"></span>
+                    </div>
+                    <div class="col-md-1" id="dvLocation1"></div>
+                    <div class="col-md-3">
+            <label data-translate="Role" class="control-label mandatory">
+                            Role
+                        </label>
+                        @Html.ListBoxFor(m => m.RoleId, Model.lstRole, new { @class = "form-control chosen", id = "ddlRole", @multiple = "multiple" })
+                        <span class="error-message text-danger" id="errorRole"></span>
+                    </div>
+
+
+                </div>
+                <br />
+                <div class="row">
+
+                    <div class="col-md-3">
+            <label data-translate="Location" >
+                            Location
+                        </label>
+                        @Html.DropDownListFor(m => m.LocationPkId, Model.lstLocationNames, new { @class = "form-control chosen", id = "ddlLocation" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3">
+            <label data-translate="Deadline Type">
+                            Deadline Type
+                        </label>
+                        @Html.DropDownListFor(m => m.DeadlineType, Model.lstDeadline, new { @class = "form-control chosen", id = "ddlDeadline", @onchange = "EnableDisableDeadLineValue();" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    @*style="margin-top:7px!important;"*@
+                    <div class="col-md-3">
+                        @*style="visibility:hidden!important"*@
+            <label data-translate="Deadline">
+                            Deadline
+                        </label>
+                        @Html.TextBoxFor(m => m.DeadlineValue, new { @class = "form-control", id = "txtDeadLine", autocomplete = "off", @maxlength = 5 })
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-3">
+                        @Html.CheckBoxFor(m => m.EnableEmail, new { id = "chkEMail" })
+            <label data-translate="Email">Email</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.CheckBoxFor(m => m.EnableLog, new { id = "chklog" })
+            <label data-translate="Log">Log</label>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.CheckBoxFor(m => m.EnableSMS, new { id = "chkSMS" })
+            <label data-translate="SMS">
+                            SMS
+                        </label>
+                    </div>
+                </div>
+
+
+    <p style="color: red;font-weight:bold;" data-translate="NOTE: Intimation to Next/Previous Stage.">NOTE: Intimation to Next/Previous Stage.</p>
+            </div>
+        
+       
+<br />
+<div class="text-center">
+    <button id="btnProceed" type="button" class="btn btn-success" name="btnProceed" data-translate="Proceed & Close">Proceed & Close</button>
+</div>
+
+<script src="~/dist/js/multiselect.js"></script>
+<style>
+    /*input#btnProceed{
+            pointer-events:none!important;
+        }*/
+    button.multiselect.dropdown-toggle.btn.btn-default {
+        width: 257px !important;
+    }
+    /*select#ddlRole {
+        display: none;
+    }*/
+    .multiselect-container > li.multiselect-group label {
+        margin: 0;
+        margin-left: 76px !important;
+        height: 100%;
+        font-weight: 700;
+    }
+
+    input.form-control.multiselect-search {
+        z-index: 99999 !important;
+        width: 87% !important;
+    }
+
+
+    input[type=checkbox], input[type=radio] {
+        margin: 4px 5px 0;
+        margin-top: 1px\9;
+        line-height: normal;
+    }
+
+    ul.multiselect-container.dropdown-menu {
+        max-height: 196px;
+        overflow: auto;
+        /*margin-left: -89px;*/
+    }
+</style>
+@*<script src="~/dist/js/refrer.js"></script>*@
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        //$("#ddlLocation").chosen({ allow_single_deselect: true });
+        $('#ddlAction').multiselect({
+            includeSelectAllOption: true,
+        });
+        $('#ddlRole').multiselect({
+            includeSelectAllOption: true,
+            enableClickableOptGroups: true,
+            enableFiltering: true,
+            filterBehavior: 'text',
+            templates: {
+                filterClearBtn: '<span class="input-group-btn"><span class="btn btn-default multiselect-clear-filter" type=""><i class="fa fa-times-circle-o" aria-hidden="true"></i></button></span>'
+            }
+        });
+        //    $("#ddlAction").change(function () {
+        //    debugger;
+        //    var Action = $.map($("#ddlAction"), function (el, i) { return $(el).val(); })
+        //   var Action = $("#ddlAction option:selected").length;
+        //for (var i = Action.Count - 1; i >= 0 ; i--) {
+        // do with listBox1.Items[i]
+        //    alert(Action.Items[i]);
+        //    Action.Items.RemoveAt(i);
+        //}
+        //  if (Action.selectedIndex == true) {
+        //      alert(Action[i]);
+        //  }
+        //   });
+        //$('#ddlRole').multiselect({
+        //    enableClickableOptGroups: true,
+        //    enableFiltering: true,
+        //    filterBehavior: 'text',
+        //    includeSelectAllOption: true,
+        //    enableCaseInsensitiveFiltering: true,
+        //    templates: {
+        //        filterClearBtn: '<span class="input-group-btn"><span class="btn btn-default multiselect-clear-filter" type=""><i class="fa fa-times-circle-o" aria-hidden="true"></i></button></span>'
+        //    }
+        //});
+        $("#txtDeadLine").prop("disabled", true);
+        $('#dialog').dialog({ closeOnEscape: false });
+        //$('#ddlAction').chosen();
+        //$('#ddlRole').chosen();
+
+        //$('#btnProceed').click(function () {
+        //    $('#dialog').dialog('close');
+        //    return false;
+        //});
+
+        //validation msg
+        $("#txtStageName").tooltip({
+            title: "Please Provide Stage Name",
+            trigger: "manual"
+        });
+        $("#txtStageName").change(function (e) {
+            $("#txtStageName").tooltip("hide");
+        });
+        $("#txtStageDesc").tooltip({
+            title: "Please Provide Stage Description",
+            trigger: "manual"
+        });
+        $("#txtStageDesc").change(function (e) {
+            $("#txtStageDesc").tooltip("hide");
+        });
+        $("#ddlAction").change(function (e) {
+            $("#ddlAction").tooltip("destroy");
+        });
+        $("#ddlLocationType").change(function (e) {
+            $("#ddlLocationType").tooltip("hide");
+        });
+        $("#ddlRole").change(function (e) {
+            $("#ddlRole").tooltip("hide");
+        });
+        $("#ddlRole").tooltip({
+            title: "Please Select the Role",
+            trigger: "manual"
+        });
+        debugger;
+        if ($("#txtStageType").val().toUpperCase() == "START") {
+            $("#dvLocation").hide();
+            $("#dvLocation1").hide();
+
+            $(".multiselect").prop("disabled", false);
+        }
+        else if (($("#txtStageType").val().toUpperCase() != "START") && ($("#ddlRole").val() != null || $("#ddlRole").val() != undefined || $("#ddlRole").val() != "")) {
+            $(".multiselect").prop("disabled", false);
+            $("#dvLocationDD").hide();
+
+        }
+        else {
+            $(".multiselect").prop("disabled", true);
+            $("#dvLocationDD").hide();
+
+        }
+        $("#btnProceed").click(function (e) {
+            debugger;
+            $('#dialog').dialog("open");
+            var stagename = $("#txtStageName").val();
+            var RoleId = $("#ddlRole").val();
+            var StageDesc = $("#txtStageDesc").val();
+            if (stagename == "" || stagename == undefined || stagename == null) {
+                stagename = "";
+            }
+            if (stagename.trim() == "") {
+                $("#errorStageName").html('Please enter Stage Name');
+                //$("#txtStageName").tooltip("show");
+                //event.preventDefault();
+                $("#txtStageName").focus();
+                return false;
+            } else {
+                $("#errorStageName").html('');
+            }
+            if (StageDesc == "" || StageDesc == undefined || StageDesc == null) {
+                StageDesc = "";
+            }
+            if (StageDesc.trim() == "") {
+                $("#errorStageDesc").html('Please Enter Stage Description');
+                //$("#txtStageDesc").tooltip("show");
+                //event.preventDefault();
+                $("#txtStageDesc").focus();
+                return false;
+            } else {
+                $("#errorStageDesc").html('');
+            }
+            var ActionId = $("#ddlAction").val();
+            if (ActionId == "" || ActionId == "" || ActionId == undefined) {
+                ActionId = 0;
+            }
+            if (ActionId == 0) {
+                $("#errorAction").html('Please Select Action');
+                //$('#ddlAction_chosen').attr('title', 'Please Select Action').tooltip('show');
+                //event.preventDefault();
+                $("#ddlAction").focus();
+                return false;
+            } else {
+                $("#errorAction").html('');
+            }
+            //var location = $("#ddlLocationType option:selected").val();
+            //if (location == 0) {
+            //    $('#ddlLocationType').attr('title', 'Please Select Location').tooltip('show');
+            //    event.preventDefault();
+            //    return false;
+            //}
+            if (RoleId == "" || RoleId == null || RoleId == undefined) {
+                RoleId = 0;
+            }
+            if (RoleId == 0) {
+                $("#errorRole").html('Please Select Role');
+                //$("#ddlRole").tooltip("show");
+                $("#ddlRole").focus();
+                return false;
+            } else {
+                $("#errorRole").html('');
+            }
+            var DeadlineType = $("#ddlDeadline").val();
+            var chkSMS = $("#chkSMS").is(':checked');
+            var chklog = $("#chklog").is(':checked');
+            var chkEMail = $("#chkEMail").is(':checked');
+            var DeadLine = $("#txtDeadLine").val();
+            // var Sequence = $("#txtStageSequence").val();
+            if (DeadlineType == "" || DeadlineType == null || DeadlineType == undefined) {
+                DeadlineType = "0";
+            }
+            if (DeadLine == "" || DeadLine == null || DeadLine == undefined) {
+                DeadLine = 0;
+            }
+            //if (Sequence == "" || Sequence == null || Sequence == undefined) {
+            //    Sequence = 0;
+            //}
+            if (DeadlineType != "0") {
+                if (parseInt(DeadLine) <= 0) {
+                    $('#txtDeadLine').attr('title', 'Please provide a Deadline for the Stage').tooltip('show');
+                    event.preventDefault();
+                    $("#txtDeadLine").focus();
+                    return false;
+                }
+            }
+            //if (parseInt(Sequence) <= 0) {
+            //    alert("Please provide a Sequence No");
+            //    $("#txtStageSequence").focus();
+            //    return false;
+            //}
+
+            //var table = $('#GrdRole').DataTable();
+            //if (!table.data().count()) {
+            //    alert("No Roles are added to Stage");
+            //    return false;
+            //}
+
+            /// var Stagelist = "";
+            //$('#GrdRole tbody tr').each(function () {
+            //    debugger;
+            //    var StageData = {};
+            //    StageData.StageId = $("#StageId").val();
+            //    StageData.StageName = $("#txtStageName").val();
+            //    StageData.StageType = $("#txtStageType").val();
+            //    StageData.StageDesc = $("#txtStageDesc").val();
+            //    StageData.RoleId = $(this).closest('tr').find('.RoleId').val();
+            //    StageData.RoleName = $(this).closest('tr').find('.RoleName').val();
+            //    StageData.LocationType = $(this).closest('tr').find('.LocationType').val();
+            //    StageData.Action = $("#ddlAction").val();
+            //    Stagelist = Stagelist + JSON.stringify(StageData) + ",";
+            //});
+
+            $.ajax({
+                type: "POST",
+                url: "/WorkFlowRule/AddStageDetails",
+                dataType: "json",
+                data: { "StageName": $("#txtStageName").val(), "stageKey": $("#stageKey").val(), "StageType": $("#txtStageType").val(), "LocationType": $("#ddlLocationType").val(), "ActionId": $("#ddlAction").val(), "RoleId": $("#ddlRole").val(), "StageDesc": $("#txtStageDesc").val(), "DeadlineType": DeadlineType, "chkSMS": chkSMS, "chklog": chklog, "chkEMail": chkEMail, "DeadLine": DeadLine, "StageId": $("#StageId").val(), "LocationPkId": 1 },  //, "Sequence": $("#txtStageSequence").val()
+
+                success: function (data) {
+                    if (data.statusId == -1) {
+                        swal({ title: '', text: "Something Went Wrong,Please try again later", type: 'warning', showConfirmButton: true });
+                        return false;
+                    }
+                    if (data.statusId == 0) {
+                        swal({ title: '', text: data.message, type: 'warning', showConfirmButton: true });
+                        return false;
+                    }
+                    else {
+                        setStageText($("#txtStageName").val(), $("#stageKey").val());
+                        $('#dialog').dialog('close');
+
+                    }
+                }
+            });
+        });
+
+        //$("#btnAdd").click(function (e) {
+        //    debugger;
+        //    var RoleId = $("#ddlRole").val();
+        //    var RoleName = $("#ddlRole option:selected").text();
+        //    var LocationType = $("#ddlLocationType option:selected").text();
+
+        //    if (RoleId == "" || RoleId == null || RoleId == undefined) {
+        //        RoleId = 0;
+        //    }
+        //    if (LocationType == "0" || LocationType == null || LocationType == undefined) {
+        //        LocationType = "";
+        //    }
+        //    if (LocationType.trim() == "") {
+        //        alert("Please Select the Location");
+        //        LocationType.focus();
+        //        return false;
+        //    }
+        //    if (RoleId == 0) {
+        //        alert("Please Select the Role");
+        //        RoleId.focus();
+        //        return false;
+        //    }
+        //   // alert(RoleId);
+        //    //var blAlreadyExist = false;
+        //    //$('#GrdRole tbody tr').each(function () {
+        //    //    var Role = $(this).closest('tr').find('.RoleId').val();
+        //    //    if (Role == RoleId) {
+        //    //        blAlreadyExist = true;
+        //    //        alert("Selected RoleId Already exists in the Stage");
+        //    //        return false;
+        //    //    }
+        //    //});
+        //    //if (blAlreadyExist == true) {
+        //    //    $("#ddlRole").val(0);
+        //    //    $("#ddlLocationType").val(0);
+        //    //    return false;
+        //    //}
+
+        //    $('#GrdRole').DataTable().row.add({
+        //        "LocationType": LocationType,
+        //        "RoleName": RoleName,
+        //        "RoleId": RoleId
+        //    }).draw();
+        //    $("#ddlRole").val(0);
+        //    $("#ddlLocationType").val(0);
+        //});
+
+        $('#GrdRole').DataTable({
+            "ajax": {
+                "url": "/WorkFlowRule/GetStageRoleDetails",
+                "type": "POST",
+                "datatype": "json",
+                data: function (d) {
+                    d.StageKey = $("#stageKey").val();
+                }
+            },
+            "columns": [
+                {
+                    "data": "RoleId", "autoWidth": true,
+                    "render": function (data, type, row) {
+                        return '<input type="text" value="' + data + '" class="RoleId hidden" name="RoleId"  id="RoleId' + row.RoleId + '" />' + data;
+                    }
+                },
+                {
+                    "data": "LocationType", "autoWidth": true, "sortable": true,
+                    "render": function (data, type, row) {
+                        return '<input type="text" value="' + data + '" class="LocationType hidden" name="LocationType"  id="LocationType' + row.RoleId + '" />' + data;
+                    }
+                },
+                {
+                    "data": "RoleName", "autoWidth": true, "sortable": true,
+                    "render": function (data, type, row) {
+                        return '<input type="text" value="' + data + '" class="RoleName hidden" name="RoleName"  id="RoleName' + row.RoleId + '" />' + data;
+                    }
+                },
+                {
+                    "data": "RoleId", "autoWidth": true, "sortable": true,
+                    "class": "RemoveFromRoleAdded", "bVisible": true,
+                    "render": function (data) {
+                        return "<a style='color:red;'title='Clike here to Delete' class='ace-icon fa fa-trash bigger-130 green'></a>";
+                    }
+                }
+            ]
+        });
+
+        $(document).on('click', '.RemoveFromRoleAdded', function () {
+            debugger;
+            var table = $('#GrdRole').DataTable();
+            var data = table.row(this).data();
+            //$('#grdEstimationItemsAdded').DataTable().row.add(data).draw();
+            var row = table.row($(this).parents('tr'));
+            row.remove().draw();
+        });
+
+        //$("#ddlLocationType").change(function () {
+        //    alert($("#ddlLocationType").val());
+        //    if ($("#ddlLocationType").val() == "0") {
+        //        $('#ddlLocationType').attr('title', 'Please Select Location Type').tooltip('show');
+        //        event.preventDefault();
+        //        $("#ddlRole").html("");
+        //        return false;
+        //    }
+        //    else {
+        //        $("#ddlRole").prop("disabled", false);
+        //        $.ajax({
+        //            type: "POST",
+        //            url: "/WorkFlowRule/GetRoleDetails",
+        //            dataType: "json",
+        //            data: { "LocationType": $("#ddlLocationType").val() },
+        //            success: function (data) {
+        //                debugger;
+        //                if (data.statusId == "1") {
+        //                    if (data.lstRole.length > 0) {
+        //                        debugger;
+        //                        $("#ddlRole").val('');
+        //                        $("#ddlRole").html("");
+        //                        //$('#ddlRole').multiselect('rebuild');
+
+        //                        //$("#ddlRole").append(toAppend);
+        //                        /// $("#ddlRole").remove(toRemove);
+
+        //                        $("#ddlRole").multiselect('destroy');
+
+        //                        // clear before appending new list
+        //                        var s = '';
+        //                        var len = data.lstRole.length;
+        //                        s = "<optgroup label=\"" + $("#ddlLocationType option:selected").text() + "\">";
+        //                        for (var i = 0; i < len ; i++) {
+        //                            s += "<option value='" + data.lstRole[i]["Value"] + "'>" + data.lstRole[i]["Text"] + "</option>";
+        //                        }
+        //                        s += "<\optgroup>"
+        //                        $("#ddlRole").html(s);
+        //                        $("#ddlRole").multiselect();
+
+        //                        //$('#ddlRole').multiselect({
+        //                        // enableClickableOptGroups: true,
+        //                        // enableFiltering: true,
+        //                        // filterBehavior: 'text',
+        //                        // includeSelectAllOption: true,
+        //                        // enableCaseInsensitiveFiltering: true,
+        //                        // templates: {
+        //                        // filterClearBtn: '<span class="input-group-btn"><span class="btn btn-default multiselect-clear-filter" type=""><i class="fa fa-times-circle-o" aria-hidden="true"></i></button></span>'
+        //                        // }
+        //                        //});
+        //                        //.trigger("chosen:updated");
+        //                    }
+        //                    else {
+        //                        // $("#ddlRole").val('');
+        //                        $("#ddlRole").html("");
+        //                        $("#ddlRole").prop("disabled", true);
+        //                        $("#ddlRole").multiselect('destroy');
+
+        //                    }
+        //                }
+        //            }
+        //        });
+        //    }
+        //});
+
+        //if (document.getElementById("ddlLocationType").style.visibility != "hidden" || document.getElementById("ddlLocationType").style.display == 'none') {
+        //      // element is visible
+        //}
+        //else{
+        //    $(".multiselect").prop("disabled", true);
+        //}
+        $("#ddlLocationType").change(function () {
+            debugger;
+            if ($("#ddlLocationType").val() == "0") {
+                $("#ddlLocationType_chosen").tooltip("show");
+                event.preventDefault();
+                $("#ddlRole").html("");
+                $(".multiselect").prop("disabled", true);
+                return false;
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: "/WorkFlowRule/GetRoleDetails",
+                    dataType: "json",
+                    data: { "LocationType": $("#ddlLocationType").val() },
+                    success: function (data) {
+                        debugger;
+                        if (data.StatusId == "1") {
+                            if (data.lstRole.length > 0) {
+                                debugger;
+                                $("#ddlRole").val('');
+                                $("#ddlRole").html("");
+                                //$('#ddlRole').multiselect('rebuild');
+                                //$("#ddlRole").append(toAppend);
+                                //  $("#ddlRole").remove(toRemove);
+
+                                $("#ddlRole").multiselect('destroy');
+
+                                // clear before appending new list
+                                var s = '';
+                                var len = data.lstRole.length;
+                                s = "<optgroup label=\"" + $("#ddlLocationType option:selected").text() + "\">";
+                                for (var i = 0; i < len; i++) {
+                                    s += "<option value='" + data.lstRole[i]["Value"] + "'>" + data.lstRole[i]["Text"] + "</option>";
+                                }
+                                s += "<\optgroup>"
+                                $("#ddlRole").html(s);
+                                $('#ddlRole').multiselect({
+                                    includeSelectAllOption: true,
+                                    enableClickableOptGroups: true,
+                                    enableFiltering: true,
+                                    filterBehavior: 'text',
+                                    templates: {
+                                        filterClearBtn: '<span class="input-group-btn"><span class="btn btn-default multiselect-clear-filter" type=""><i class="fa fa-times-circle-o" aria-hidden="true"></i></button></span>'
+                                    }
+                                });
+                                $(".multiselect-container > li:last-child> a").hide();
+
+                                //   $("#ddlRole").multiselect();
+                                //$('#ddlRole').multiselect({
+                                //    enableClickableOptGroups: true,
+                                //    enableFiltering: true,
+                                //    filterBehavior: 'text',
+                                //    includeSelectAllOption: true,
+                                //    enableCaseInsensitiveFiltering: true,
+                                //});
+                                //.trigger("chosen:updated");
+                                if (data.lstLocationNames.length > 0) {
+                                    $('#ddlLocation').html("");
+                                    var s = '';
+                                    var locationlstlength = data.lstLocationNames.length;
+                                    for (var i = 0; i < locationlstlength; i++)//fore multiple dropdowns
+                                    {
+                                        s += "<option value='" + data.lstLocationNames[i]["Value"] + "'>" + data.lstLocationNames[i]["Text"] + "</option>";
+                                    }
+                                    $('#ddlLocation').html(s).trigger("chosen:updated");;
+                                }
+
+                            }
+                            else {
+                                $("#ddlRole").html("");
+                                // $("#ddlRole").css("display", "none");
+                                //  $("#ddlRole").prop("disabled", true);
+                                //  $("#ddlRole").multiselect('rebuild');
+                                $(".multiselect").prop("disabled", true);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
+    function EnableDisableDeadLineValue() {
+        var Deadline = $("#ddlDeadline option:selected").val();
+        if (Deadline == 0) {
+            $("#txtDeadLine").prop("disabled", true);
+        }
+        else {
+            $("#txtDeadLine").prop("disabled", false);
+        }
+    }
+    function CloseStageDetailsPopup() {
+        $('#dialog').dialog("close");
+    }
+    function TabPaneChange(_Type) {
+
+    }
+</script>
+
+<style type="text/css">
+    /*td.clsTrack {
+            background: url('/Images/details_open.png') no-repeat center;
+            cursor: pointer;
+        }
+        tr.details td.clsTrack {
+            background: url('/Images/details_close.png') no-repeat center;
+        }*/
+
+    .tabs-left > .nav-tabs > li > a, .tabs-left > .nav-tabs > li > a:focus, .tabs-left > .nav-tabs > li > a:hover {
+        border-color: #C5D0DC;
+        margin: 0 -1px 0 0px;
+    }
+
+
+    .tabs-left > .nav-tabs > li > a {
+        min-width: 150px;
+    }
+
+    .tab-content {
+        border: 1px solid #C5D0DC;
+        padding: 6px 4px;
+        position: relative;
+    }
+
+    tr:hover.clsWFLinks {
+        background: #cee0f7 !important;
+    }
+
+    .tabs-left > .nav-tabs > li.active > a, .tabs-left > .nav-tabs > li.active > a:focus, .tabs-left > .nav-tabs > li.active > a:hover {
+        border-color: #C5D0DC transparent #C5D0DC #C5D0DC;
+        /*border-top-width: 1px;*/
+        border-left: 8px solid #4C8FBD;
+        margin: 0px -1px;
+        -webkit-box-shadow: -2px 0 3px 0 rgba(0,0,0,.15) !important;
+        box-shadow: -2px 0 3px 0 rgba(0,0,0,.15) !important;
+        background-color: blue !important;
+    }
+</style>
+
+@if (Model.ApprovalStatus == 1)
+{
+    <script type="text/javascript">
+        $("#btnProceed").hide();
+        $("#txtStageName").prop("readonly", true);
+        $("#txtStageDesc").prop("readonly", true);
+        $("#ddlAction").prop("disabled", true).trigger("chosen:updated");;
+        //$("#ddlAction").trigger("choosen", "update");
+        $("#ddlLocationType").prop("disabled", true);
+        $("#ddlRole").prop("disabled", true);
+        $("#ddlDeadline").prop("disabled", true);
+        $("#txtDeadLine").prop("readonly", true);
+        $("#chkEMail").prop("disabled", true);
+        $("#chklog").prop("disabled", true);
+        $("#chkSMS").prop("disabled", true);
+    </script>
+
+}
+
+<style>
+    select#ddlAction {
+        display: none !important;
+    }
+    button.multiselect.dropdown-toggle.btn.btn-default{
+        border:1px solid #d4d4d4!important;
+        border-radius:0px!important
+    }
+    select#ddlRole {
+        display: none !important;
+    }
+
+    .page-header {
+        margin: 0px 0 20px !important;
+    }
+
+    .page-wrapper.compact-wrapper .page-header {
+        margin-left: 258px !important
+    }
+
+    .logo-wrapper {
+        padding: 1px 23px !important;
+    }
+
+    span.ui-button-icon-primary.ui-icon.ui-icon-closethick {
+        background-image: url("https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/images/ui-icons_888888_256x240.png") !important;
+        display: block !important;
+        margin-top: 0px !important
+    }
+
+    .ui-button-icon-only .ui-icon {
+        display: block !important
+    }
+
+    .ui-widget .ui-widget {
+        font-size: 2em !important
+    }
+
+    span.ui-button-icon-primary.ui-icon.ui-icon-closethick {
+        float: right;
+        /* margin-top: -9px!important;*/
+        font-size: 12px;
+    }
+
+    .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front {
+        margin-left: 233px !important;
+        width: 1134px !important;
+        margin-top: 345px;
+        z-index: 9999;
+        overflow: hidden !important
+    }
+
+    .ui-widget-header {
+        border: 1px solid #dddddd !important;
+        background: #e9e9e9 !important;
+        color: #333333 !important;
+        font-weight: bold !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#ddlAction').multiselect({
+            includeSelectAllOption: true,
+        });
+        $('#ddlRole').multiselect({
+            includeSelectAllOption: true,
+        });
+    });
+</script>
+
+@*//conflicted*@
+
+
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">*@
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">

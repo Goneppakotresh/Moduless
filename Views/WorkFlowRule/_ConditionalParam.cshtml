@@ -1,0 +1,1405 @@
+﻿@model IEMS_WEB.Models.WorkFlow.Stage
+
+@Html.HiddenFor(m => m.StageKey, new { @id = "StageKey" })
+
+@Html.HiddenFor(m => m.StageId, new { @id = "StageId" })
+
+
+@Html.HiddenFor(m => m.PropDataType, new { @id = "PropDataType" })
+
+@Html.HiddenFor(m => m.propcontrol_name, new { @id = "propcontrol_name" })
+
+@Html.HiddenFor(m => m.FromStageId, new { @id = "FromStageId" })
+
+@Html.HiddenFor(m => m.BObjId, new { @id = "BObjId" })
+
+@Html.HiddenFor(m => m.SeriesNo, new { @id = "SeriesNo" })
+
+@Html.HiddenFor(m => m.StageValues, new { @id = "StageValues" })
+
+@Html.HiddenFor(m => m.WorkflowDesignVal, new { @id = "WorkflowDesignVal" })
+
+@Html.HiddenFor(m => m.ApprovalStatus, new { @id = "hdnStatus" })
+
+<style>
+    .hidden {
+        display: none;
+    }
+    .ui-dialog .ui-dialog-content {
+        position: relative;
+        border: 0;
+        padding: .5em 1em;
+        background: none;
+        overflow-y: auto;
+        zoom: 1;
+        min-height: 450px !important;
+    }
+    .ui-dialog-titlebar.ui-widget-header.ui-corner-all.ui-helper-clearfix {
+        background-image: url(/Images/Header.png);
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-color: #e3a591 !important;
+        color: #fff !important;
+        background-image: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0.2) 3%, rgba(0,0,0,0.15) 97%, rgba(0,0,0,0.05)) !important;
+    }
+    .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+        font-weight: 500 !important
+    }
+    .ui-dialog .ui-dialog-title {
+        width: 97% !important
+    }
+
+    span.input-group-btn {
+        display: none;
+    }
+</style>
+
+<script src="~/assets/js/translator/conditionalparam.js"></script>
+<br />
+
+@*<div class="ww">
+        <a href="javascript:CloseConditionalPopup()" title='close'><i class='fa fa-close pull-right' id="iClose"></i></a>
+    </div>*@
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <label data-translate="From Stage" class="mandatory">
+                From Stage
+            </label>
+            @Html.TextBoxFor(m => m.FromStageName, new { @maxlength = "50", @Type = "text", @class = "form-control", autocomplete = "off", id = "txtFromStageName", @readonly = true })
+        </div>
+        <br />
+        <div class="col-md-3">
+            <label data-translate="Action" class="mandatory">
+                Action
+            </label>
+            @Html.DropDownListFor(m => m.ActionId, Model.lstActionDet, new { @class = "form-control choosen", id = "ddlAction" })
+        </div>
+        @*@{
+            if (Model.lstProperties.Count > 1)
+            {
+
+                <div class="col-md-3">
+                    <label>
+                        Condition Required
+                    </label>
+                    @Html.CheckBox("Condition Required", new { @id = "chkCondReq", @onchange = "chkCondReqChange()" })
+                </div>
+            }
+        }*@
+        <div class="col-md-3">
+
+
+            @Html.CheckBox("Condition Required", new { @style = "margin-left: 54px;", @id = "chkCondReq", @onchange = "chkCondReqChange()" })
+            <br />
+            <label data-translate="Condition Required">
+                Condition Required
+            </label>
+        </div>
+    </div>
+   
+</div>
+
+
+<div id="dvConditionalProp" style="display:none">
+    <div class="container-fluid">
+
+        <div class="col-md-3">
+            <label data-translate="Property" class="mandatory">
+                Property
+            </label>
+            @Html.DropDownListFor(m => m.PropertyId, Model.lstProperties, new { @class = "form-control choosen", id = "ddlProperties" })
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3" id="ddlOperationType" style="display:none">
+            <label data-translate="Operation Type" class="mandatory">
+                Operation Type
+            </label>
+            @Html.DropDownListFor(m => m.OperationType, Model.lstOperationTypes, new { @class = "form-control choosen", id = "ddlOperation" })
+        </div>
+        <div class="col-md-3" id="ValueOne" style="display:none">
+            <label id="lblValue1" data-translate="Value 1" class="mandatory">
+                Value 1 
+            </label>
+            <div id="ddlDropDownValue">   
+
+                @Html.DropDownListFor(m => m.value, Model.lstPropValues, new { @class = "form-control choosen", id = "ddlValue1", @disabled = true })
+            </div>
+            <div id="ddlTextBoxValue">
+                @Html.TextBoxFor(m => m.value, new { @maxlength = "8", @Type = "text", @class = "form-control", id = "txtValue1", autocomplete = "off", @readonly = true, @onclick = "validateTextBox1()" })
+            </div>
+        </div>
+        <div id="ValueSecond" style="display:none">
+
+            <div style="margin-left: 1px!important;" class="col-md-3" id="ValAnd">
+                <label style="visibility:hidden" data-translate="Value 2" class="mandatory">
+                    Value 2 
+                </label>
+                <input type="text" class="form-control" id="txtAND" value="AND" readonly />
+            </div>
+            <div class="col-md-1"></div>
+            <div style="margin-left:-31px!important;" class="col-md-3">
+
+                <label data-translate="Value 2" class="mandatory">
+                    Value 2 
+                </label>
+                <div id="ddlDropDownValue2">
+                    @Html.DropDownListFor(m => m.value, Model.lstPropValues, new { @class = "form-control chosen", id = "ddlValue2", @disabled = true })
+                </div>
+                <div class="col-md-1"></div>
+                <div id="ddlTextBoxValue2">
+                    @Html.TextBoxFor(m => m.value, new { @maxlength = "8", @Type = "text", @class = "form-control", id = "txtValue2", autocomplete = "off", @readonly = true, @onclick = "validateTextBox2()" })
+                </div>
+            </div>
+        </div>
+        @*<div class="col-md-1"></div>
+            <div class="col-md-1">
+            </div>*@
+    </div>
+    <br />
+    <div class="text-center">
+        <button id="btnAddProp" type="button" class="btn btn-success" name="btnAddProp" data-translate="Add Property">Add Property</button>
+    </div>
+    <br />
+    <div class="container-fluid">
+        <div class="row">
+
+
+            <div class="col-md-3">
+                <label data-translate="Logical Operator">
+                    Logical Operator
+                </label>
+                @Html.DropDownListFor(m => m.LogicalOperator, Model.lstLogicalOperator, new { @class = "form-control choosen", id = "ddlLogicalOperation" })
+            </div>
+            <div class="col-md-1">
+               <br />
+                <input id="btnOpenBracket" type="button" class="btn btn-success" name="btnOpenBracket" value="(" />
+            </div>
+            <div class="col-md-1">
+                <br />
+                <input id="btnCloseBracket" type="button" class="btn btn-success" name="btnCloseBracket" value=")" />
+            </div>
+
+            <div class="col-md-1">
+                <br />
+                <input id="btnUndo" type="button" class="btn btn-primary" name="btnUndo" value="Undo" />
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" id="dvConditionBuilder">
+        <div class="col-md-6">
+            <label data-translate="Condition Builder">
+                Condition Builder
+            </label>
+
+            @Html.TextAreaFor(m => m.ConditionBuilder, new { @Type = "text", @class = "form-control", autocomplete = "off", id = "txtConditionBuilder", @style = "resize:none", @readonly = true })
+
+            @Html.TextAreaFor(m => m.hdnConditionBuilder, new { @Type = "text", @class = "form-control", autocomplete = "off", id = "txthdnConditionBuilder", @style = "resize:none;display:none" })  @*//*@
+        </div>
+    </div>
+    <br />
+    <div class="text-center">
+        <button id="btnEvaluate" type="button" class="btn btn-success" name="btnEvaluate" data-translate="Eval">Eval</button>
+    </div>
+</div>
+<br />
+<div class="container-fluid">
+    <div class="col-md-3">
+        <label data-translate="To Stage" class="mandatory">To Stage</label>
+
+        @Html.DropDownListFor(m => m.StageId, Model.lstStage, new { @class = "form-control chosen", id = "ddlTOStage", @disabled = "disabled" })
+    </div>
+    <div class="col-md-1">
+       <br />
+        <button id="btnFreezeCond" type="button" class="btn btn-success" name="btnFreezeCond" data-translate="Freeze">Freeze</button>
+    </div>
+</div>
+<br />
+<br />
+
+        <table tabindex="3" class="table table-striped table-bordered table-hover EASyGridLayout" border="1" id="GrdConditionBuilderDet" style="width: 100%;">
+            <thead>
+                <tr style="text-align: center;">
+            <th style="text-align: center;" class="green" data-translate="Action Id">Action Id</th>
+            <th style="text-align: center;" class="green" data-translate="On Action">On Action</th>
+            <th style="text-align: center;" class="green" data-translate="Condition Builder">Condition Builder</th>
+            <th style="text-align: center;" class="green" data-translate="hdnCondition Builder">hdnCondition Builder</th>
+            <th style="text-align: center;" class="green" data-translate="To StageId">To StageId</th>
+            <th style="text-align: center;" class="green" data-translate="To Stage">To Stage</th>
+            <th style="text-align: center;" class="green" data-translate="Sequence">Sequence</th>
+            <th style="text-align: center;" class="green" data-translate="Edit">Edit</th>
+            <th style="text-align: center;" class="green" data-translate="Delete">Delete</th>
+                    @*<th style="text-align: center;" class="green">View</th>*@
+                </tr>
+            </thead>
+        </table>
+  
+<br />
+<div class="text-center">
+    <button id="btnProceed" type="button" class="btn btn-success" name="btnProceed" data-translate="Proceed & Close">Proceed & Close</button>
+</div>
+<br />
+@if (Model.StatusId == -1)  //Error message
+{
+    <script type="text/javascript">
+        alertwithredirect('Warning', Model.message, 'warning', '@Url.Action("WorkFlowCreation", "WorkFlowRule")');
+    </script>
+}
+<script type="text/javascript">
+
+    function CloseConditionalPopup() {
+        $('#dialog').dialog("close");
+        $.ajax({
+            type: "GET",
+            url: "/WorkFlowRule/OnUncheckCondReq",
+            dataType: "json",
+            async: false,
+            data: null,
+            success: function (data) {
+                $("#txtConditionBuilder").val('');
+                $("#txthdnConditionBuilder").val('');
+
+            }
+        });
+    }
+    function EditConditionBuilder(data) {
+        var StageKey = $("#StageKey").val();
+        $.ajax({
+            type: "GET",
+            url: "/WorkFlowRule/EditCondPropDetails",
+            dataType: "json",
+            async: false,
+            data: { "ValueSelected": data, "StageKey": StageKey },
+            success: function (data) {
+                $("#ddlAction").val(data.ActionId);
+                $("#ddlTOStage").val(data.ToStageId);
+                $("#ddlTOStage").prop("disabled", false);
+                $("#txtConditionBuilder").val(data.ConditionBuilder);
+                $("#txthdnConditionBuilder").val(data.hdnConditionBuilder);
+                $("#SeriesNo").val(data.SeriesNo);
+                // $("#GrdConditionBuilderDet").DataTable().ajax.reload();
+                if (data.chkCondReq == true) {
+                    document.getElementById("chkCondReq").checked = true;
+                    chkCondReqChange();
+                }
+            }
+        });
+    }
+
+
+
+    function UpdateSequence(seriesno) {
+        debugger;
+        var StageKey = $("#StageKey").val();
+
+        var sequenceid = $('#TOSequence' + seriesno).val();
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "/WorkFlowRule/AddOrUpdateSequence",
+            data: "{'seriesno': '" + seriesno + "','sequenceid': '" + sequenceid + "','StageKey': '" + StageKey + "'}",
+            dataType: "json",
+            success: function (data) {
+
+                if (data.statusId == -2) {
+                    $('#TOSequence' + seriesno).val(data.pkid).trigger("chosen:updated");
+                    alertBox('Warning!', "SequenceID " + sequenceid + "  Already Exists", 'warning', 'error');
+                }
+                else if (data.statusId == -1) {
+                    alertBox('Warning!', data.message, 'warning', 'error');
+
+                }
+                $("#GrdConditionBuilderDet").DataTable().ajax.reload();
+
+            },
+
+        });
+    }
+    //function ViewConditionBuilder(data) {
+    //    var StageKey = $("#StageKey").val();
+    //    $.ajax({
+    //        type: "GET",
+    //        url: "/WorkFlowRule/ViewCondPropDetails",
+    //        dataType: "json",
+    //        async: false,
+    //        data: { "ValueSelected": data, "StageKey": StageKey },
+    //        success: function (data) {
+    //            debugger;
+    //            $("#ddlAction").val(data.ActionId);
+    //            $("#ddlTOStage").val(data.ToStageId);
+    //            $("#ddlTOStage").prop("disabled", false);
+    //            $("#txtConditionBuilder").val(data.ConditionBuilder);
+    //            $("#txthdnConditionBuilder").val(data.hdnConditionBuilder);
+    //            $("#SeriesNo").val(data.SeriesNo);
+    //            $("#ddlAction").prop("disabled", true).trigger("chosen:updated");
+    //            $("#ddlTOStage").prop("disabled", true).trigger("chosen:updated");
+    //            $("#btnFreezeCond").hide();
+    //            document.getElementById("chkCondReq").disabled = true;
+    //            if (data.ConditionBuilder != "") {
+    //                debugger;
+    //                $("#dvConditionBuilder").show();
+    //                $("#dvConditionalProp").show();
+    //            }
+    //            //$("#GrdConditionBuilderDet").DataTable().ajax.reload();
+    //            //$("#SeriesNo").val(0);
+    //            //document.getElementById("chkCondReq").checked = false;
+    //        }
+    //    });
+    //}
+
+    function DeleteConditionBuilder(data) {
+        var StageKey = $("#StageKey").val();
+        $.ajax({
+            type: "GET",
+            url: "/WorkFlowRule/DeleteCondPropDetails",
+            dataType: "json",
+            async: false,
+            data: { "ValueSelected": data, "StageKey": StageKey },
+            success: function (data) {
+                $("#GrdConditionBuilderDet").DataTable().ajax.reload();
+                $("#SeriesNo").val(0);
+                document.getElementById("chkCondReq").checked = false;
+            }
+        });
+    }
+    function chkCondReqChange() {
+        if ($("#chkCondReq").is(':checked')) {
+            $('#btnFreezeCond').hide();
+            $('#dvConditionalProp').show();
+
+        } else {
+            if ($("#txtConditionBuilder").val() != "") {
+                $.ajax({
+                    type: "GET",
+                    url: "/WorkFlowRule/OnUncheckCondReq",
+                    dataType: "json",
+                    async: false,
+                    data: null,
+                    success: function (data) {
+                        $("#txtConditionBuilder").val('');
+                        $("#txthdnConditionBuilder").val('');
+
+                    }
+                });
+            }
+            $('#dvConditionalProp').hide();
+            $('#btnFreezeCond').show();
+        }
+    }
+    function validateTextBox2() {
+        debugger;
+        var PropData = document.getElementById("PropDataType").value;
+        if (PropData.toUpperCase() == "INT") {
+            // document.getElementById("txtValue2").reset();
+            // var value2 = $("#txtValue2").val();
+
+            $("#txtValue2").keypress(function (e) {
+                // evt = (evt) ? evt : window.event;
+                var charCode = (e.which) ? e.which : e.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+                }
+                return true;
+            });
+
+        }
+        else if (PropData.toUpperCase() == "NUMERIC") {
+            $("#txtValue2").keypress(function (evt) {
+                // evt = (evt) ? evt : window.event;
+                var keyCode = (evt.which) ? evt.which : evt.keyCode
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57) && (keyCode != 46)) {
+                    return false;
+                }
+                return true;
+            });
+        }
+        else {
+            $("#txtValue2").keypress(function (event) {
+                var keyCode = (event.which) ? event.which : event.keyCode
+                var charCode = (event.which) ? event.which : event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57))
+                    if ((keyCode < 65 || keyCode > 90) && (keyCode < 97 || keyCode > 123) && keyCode != 32 && (keyCode != 08))
+                        return false;
+                return true;
+            });
+        }
+    }
+    function validateTextBox1() {
+        debugger;
+        var PropData = document.getElementById("PropDataType").value;
+        if (PropData.toUpperCase() == "INT") {
+            $("#txtValue1").keypress(function (e) {
+                // evt = (evt) ? evt : window.event;
+                var charCode = (e.which) ? e.which : e.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+                }
+                return true;
+            });
+        }
+        else if (PropData.toUpperCase() == "NUMERIC") {
+            $("#txtValue1").keypress(function (evt) {
+                // evt = (evt) ? evt : window.event;
+                var keyCode = (evt.which) ? evt.which : evt.keyCode
+                var charCode = (evt.which) ? evt.which : evt.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57) && (keyCode != 46)) {
+                    return false;
+                }
+                return true;
+            });
+        }
+        else {
+            $("#txtValue1").keypress(function (event) {
+                var keyCode = (event.which) ? event.which : event.keyCode
+                var charCode = (event.which) ? event.which : event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57))
+                    if ((keyCode < 65 || keyCode > 90) && (keyCode < 97 || keyCode > 123) && keyCode != 32 && (keyCode != 08))
+                        return false;
+                return true;
+            });
+        }
+    }
+
+    $(document).ready(function (e) {
+        debugger
+        //$("#ddlValue1").chosen({ allow_single_deselect: true });
+        $("#btnEvaluate").hide();
+        //  $("#btnFreezeCond").hide();
+        $("#ddlAction").change(function () {
+            debugger
+            if ($("#ddlAction").val() != 0) {
+                var StageValues = $("#StageValues").val();
+                //var ArrayToStage = document.getElementById('ddlTOStage');
+                //for (var i = 0; i < ArrayToStage.length; i++) {
+                //    if (ArrayToStage[i].value != "0") {
+                //        StageValues += ArrayToStage[i].text + "~" + ArrayToStage[i].value + "|";
+                //    }
+                //}
+                //StageValues= StageValues.substring(0, StageValues.length - 1);
+                $.ajax({
+                    type: "POST",
+                    url: "/WorkFlowRule/fetchStageOnActionDet",
+                    dataType: "json",
+                    async: false,
+                    data: { "ActionId": $("#ddlAction").val(), "StageValues": StageValues, "StageKey": $("#StageKey").val(), "WorkflowDesignVal": $("#WorkflowDesignVal").val() },
+                    success: function (data) {
+                        debugger
+                        if (data.StatusId == 1) {
+                            //    alert("asdad");
+                            if (data.lstStage.length > 0) {
+                                debugger;
+                                $("#ddlTOStage").html(""); // clear before appending new list
+                                var s = '';
+                                var len = data.lstStage.length;
+                                for (var i = 0; i < len; i++) {
+                                    s += "<option value='" + data.lstStage[i]["Value"] + "'>" + data.lstStage[i]["Text"] + "</option>";
+                                }
+                                $("#ddlTOStage").html(s).trigger("chosen:updated");
+                                $("#ddlTOStage").prop("disabled", false).trigger("chosen:updated");
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+
+        $("#btnProceed").click(function (e) {
+
+            debugger;
+            var table = $('#GrdConditionBuilderDet').DataTable();
+            var tabledata = table.rows().data();
+
+            if (!table.data().count()) {
+                swal({ title: '', text: "No Actions are Provided to Stage Details", type: 'warning', showConfirmButton: true });
+                return false;
+            }
+
+            var Actiontext = 0;
+            var ArrayAction = document.getElementById('ddlAction');
+            var blCheckAction = false;
+            var blCheckCondBuilder = false;
+            debugger;
+            if (ArrayAction.length > 0) {
+                for (var i = 0; i < ArrayAction.length; i++) {
+                    blCheckAction = false;
+                    blCheckCondBuilder = false;
+                    if (ArrayAction[i].value != "0") {
+                        Actiontext = ArrayAction[i].text;
+
+                        tabledata.each(function (value, index) {
+
+                            //$('#GrdConditionBuilderDet tbody tr').each(function () {
+                            debugger;
+                            var ActionId = value.ActionId;
+                            var ConditionBuilder = value.ConditionBuilder;
+
+                            //var ActionId = $(this).closest('tr').find('.ActionId').val();
+                            // var ConditionBuilder = $(this).closest('tr').find('.ConditionBuilder').val();
+                            if (ArrayAction[i].value == ActionId) {
+                                if (blCheckAction == false) {
+                                    blCheckAction = ArrayAction[i].value == (ActionId);
+                                }
+                                if (ConditionBuilder == null || ConditionBuilder == undefined || ConditionBuilder == "") {
+                                    ConditionBuilder = "";
+                                }
+                                if (blCheckCondBuilder == false) {
+                                    if (ConditionBuilder.trim() == "") {
+                                        blCheckCondBuilder = true;
+                                    }
+                                }
+                            }
+                        });
+
+                        if (blCheckAction == false) {
+                            break;
+                        }
+                        if (blCheckCondBuilder == false) {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (blCheckAction == false) {
+                swal({ title: '', text: "Please provide the Stage Details for the Action : " + Actiontext, type: 'warning', showConfirmButton: true });
+                return false;
+            }
+            if (blCheckCondBuilder == false) {
+                swal({ title: '', text: "For Action : " + Actiontext + " there should be a default Stage", type: 'warning', showConfirmButton: true });
+                return false;
+            }
+            var StageKey = $("#StageKey").val();
+            $.ajax({
+                type: "GET",
+                url: "/WorkFlowRule/ProceedConditionBuilder",
+                dataType: "json",
+                async: false,
+                data: { "StageKey": StageKey },
+                success: function (data) {
+                    $("#dialog").dialog("close");
+                    //$("#btnProceed").click(function () {
+                    //    $("#dialog").modal("hide");
+                    //});
+                }
+            });
+        });
+
+        $("#ddlAction").change(function (e) {
+            $("#ddlAction").tooltip("hide");
+        });
+        $("#ddlAction").tooltip({
+            title: "Please Select the Action",
+            trigger: "manual"
+        });
+        $("#ddlTOStage").change(function (e) {
+            $("#ddlTOStage").tooltip("hide");
+        });
+        $("#ddlTOStage").tooltip({
+            title: "Please Select the To Stage",
+            trigger: "manual"
+        });
+        $("#btnFreezeCond").click(function (e) {
+            var ActionId = $("#ddlAction").val();
+            var ActionName = $("#ddlAction option:selected").text();
+            var FromStageId = $("#FromStageId").val();
+            var TOStageId = $("#ddlTOStage").val();
+            var TOStageName = $("#ddlTOStage option:selected").text();
+            var FromStageName = $("#txtFromStageName").val();
+            var chkCondReq = $("#chkCondReq").is(':checked');
+            var StageKey = $("#StageKey").val();
+            var SeriesNo = $("#SeriesNo").val();
+            var StageId = $("#StageId").val();
+            debugger;
+            if (ActionId == null || ActionId == "" || ActionId == 0) {
+                $("#ddlAction").tooltip("show");
+                event.preventDefault();
+                $("#ddlAction").focus();
+                return false;
+            }
+            if (TOStageId == null || TOStageId == "" || TOStageId == 0) {
+                $("#ddlTOStage").tooltip("show");
+                event.preventDefault();
+                $("#ddlTOStage").focus();
+                return false;
+            }
+            if (chkCondReq == false) {
+                $("#txtConditionBuilder").val('');
+                $("#txthdnConditionBuilder").val('');
+            }
+            $.ajax({
+                type: "POST",
+                url: "/WorkFlowRule/FreezeCondPropDetails",
+                dataType: "json",
+                async: false,
+                data: { "OnAction": ActionName, "ActionId": ActionId, "FromStage_Id": FromStageId, "ToStage_Id": TOStageId, "FromStage_Name": FromStageName, "ToStage_Name": TOStageName, "chkCondReq": chkCondReq, "StageKey": StageKey, "SeriesNo": SeriesNo, "StageId": StageId },
+                success: function (data) {
+                    debugger;
+                    if (data == "0") {
+                        swal({ title: '', text: "To Stage Already Exist", type: 'warning', showConfirmButton: true });
+                        $("#ddlTOStage").val(0);
+                        $("#txtConditionBuilder").val('');
+                        $("#txthdnConditionBuilder").val('');
+                        return false;
+                    }
+                    if (data == "2") {
+                        swal({ title: '', text: "Same Action already Exist without Condition", type: 'warning', showConfirmButton: true });
+                        $("#ddlTOStage").val(0);
+                        $("#txtConditionBuilder").val('');
+                        $("#txthdnConditionBuilder").val('');
+                        /// fccccc();
+                        return false;
+                    }
+                    if (data == "-1") {
+                        swal({ title: '', text: "Something Went Wrong.Please try again later", type: 'warning', showConfirmButton: true });
+                        $("#ddlTOStage").val(0);
+                        $("#txtConditionBuilder").val('');
+                        $("#txthdnConditionBuilder").val('');
+                        return false;
+                    }
+                    else {
+                        document.getElementById("chkCondReq").checked = false;
+                        $("#dvConditionalProp").hide();
+                        $("#ddlTOStage").val(0);
+                        $("#SeriesNo").val(0);
+                        $("#txtConditionBuilder").val('');
+                        $("#txthdnConditionBuilder").val('');
+                        $("#ddlTOStage").prop("disabled", false);
+                        //  $("#btnFreezeCond").hide();
+                        $("#GrdConditionBuilderDet").DataTable().ajax.reload();
+                    }
+                }
+            });
+        });
+
+        $("#btnUndo").click(function (e) {
+            debugger;
+            var StageId = $("#StageKey").val();
+            var SeriesNo = $("#SeriesNo").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/WorkFlowRule/UndoCondPropDetails",
+                dataType: "json",
+                async: false,
+                data: { "StageId": StageId, "SeriesNo": SeriesNo },
+                success: function (data) {
+                    ConditionBuilderExist = data.ConditionBuilderExist;
+                    hdnConditionBuilderExist = data.hdnConditionBuilderExist;
+                    $("#txtConditionBuilder").val(ConditionBuilderExist);
+                    $("#txthdnConditionBuilder").val(hdnConditionBuilderExist);
+                    $("#btnFreezeCond").hide();
+                }
+            });
+            var Condition = $("#txtConditionBuilder").val();
+            if (Condition.trim() != "") {
+                $("#btnEvaluate").show();
+            }
+            else {
+                $("#btnEvaluate").hide();
+            }
+        });
+        $('#GrdConditionBuilderDet').DataTable({
+            "scrollY": 150,
+            "scrollCollapse": true,
+            "ajax": {
+                "url": "/WorkFlowRule/GetConditionalBuilderDet",
+                "type": "POST",
+                "datatype": "json",
+                data: function (d) {
+                    d.StageKey = $("#StageKey").val();
+                }
+            },
+            "columns": [
+                {
+                    "data": "ActionId", "autoWidth": true, "class": "hidden",
+                    "render": function (data, type, row) {
+                        return '<input type="text" value="' + data + '" class="ActionId" name="ActionId"  id="ActionId' + row.ActionId + '" />' + data;
+                    }
+                },
+                {
+                    "data": "ActionName", "autoWidth": true,
+                    "render": function (data, type, row) {
+                        return '<input type="text" value="' + data + '" class="ActionName hidden" name="ActionName"  id="ActionName' + row.ActionName + '" />' + data;
+                    }
+                },
+                {
+                    "data": "ConditionBuilder", "autoWidth": true, "sortable": true,
+                    "render": function (data, type, row) {
+                        if (data.trim() == "") {
+                            return '<input type="text" value="' + data + '" class="ConditionBuilder hidden" name="ConditionBuilder"  id="ConditionBuilder' + row.ConditionBuilder + '" />Not Available';
+                        } else {
+                            return '<input type="text" value="' + data + '" class="ConditionBuilder hidden" name="ConditionBuilder"  id="ConditionBuilder' + row.ConditionBuilder + '" />' + data;
+                        }
+                    }
+                },
+                {
+                    "data": "hdnConditionBuilder", "autoWidth": true, "sortable": true, "class": "hidden",
+                    "render": function (data, type, row) {
+                        return '<input type="text" value="' + data + '" class="hdnConditionBuilder hidden" name="hdnConditionBuilder"  id="hdnConditionBuilder' + row.hdnConditionBuilder + '" />' + data;
+                    }
+                },
+                {
+                    "data": "ToStageId", "autoWidth": true, "sortable": true, "class": "hidden",
+                    "render": function (data, type, row) {
+                        return '<input type="text" value="' + data + '" class="ToStageId hidden" name="ToStageId"  id="ToStageId' + row.ToStageId + '" />' + data;
+                    }
+                },
+                {
+                    "data": "ToStageName", "autoWidth": true, "sortable": true,
+                    "render": function (data, type, row) {
+                        return '<input type="text" value="' + data + '" class="ToStageName hidden" name="ToStageName"  id="ToStageName' + row.ToStageName + '" />' + data;
+                    }
+                },
+
+
+                {
+                    "data": "Sequence", "autoWidth": true, "sortable": true,
+                    "render": function (data, type, row) {
+                        debugger;
+                        if ($("#hdnStatus").val() == 1) {
+                            if (row.ConditionBuilder != "") {
+                                return data;
+
+                            }
+                            else {
+                                return '';
+                            }
+                        }
+                        else {
+                            if (row.ConditionBuilder != "") {
+                                return '<input id="TOSequence' + row.SeriesNo + '" type="text" value="' + row.Sequence + '"class="form-control TOSequence"   name="TOSequence"  onkeypress="return isNUMBER(event,this)" onchange="UpdateSequence(' + row.SeriesNo + ')" autocomplete="off" maxlength =3 />  <label style="display:none">' + data + '</label>';
+                            }
+                            else {
+                                return '';
+                            }
+
+                        }
+                    }
+                },
+                {
+                    "data": "SeriesNo", "autoWidth": true, "sortable": true,
+                    "render": function (data, type, row) {
+                        return '<a style="color:red;"title="Clike here to Edit" href="javascript:EditConditionBuilder(' + data + ')" class="ace-icon fa fa-pencil bigger-130 blue"></a>';
+                    }
+                },
+                {
+                    "data": "SeriesNo", "autoWidth": true, "sortable": true,
+                    "render": function (data, type, row) {
+                        return '<a style="color:red;"title="Clike here to Delete" href="javascript:DeleteConditionBuilder(' + data + ')" class="ace-icon fa fa-trash bigger-130 red"></a>';
+                    }
+                },
+                //{
+                //    "data": "SeriesNo", "autoWidth": true, "sortable": true,
+                //    "render": function (data, type, row) {
+                //        return '<a style="color:red;"title="Clike here to View" href="javascript:ViewConditionBuilder(' + data + ')" class="ace-icon fa fa-eye bigger-130 red"></a>';
+                //    }
+                //}
+            ]
+        });
+
+
+        if ($("#hdnStatus").val() == 1) {
+            $('#GrdConditionBuilderDet').DataTable().column(7).visible(false);
+            $("#GrdConditionBuilderDet").DataTable().column(8).visible(false);
+            $("#ddlAction").prop("disabled", true).trigger("chosen:updated");
+            $("#ddlTOStage").prop("disabled", true).trigger("chosen:updated");
+            $("#btnFreezeCond").hide();
+            $("#btnProceed").hide();
+            document.getElementById("chkCondReq").disabled = true;
+        }
+        $("#btnEvaluate").click(function (e) {
+            var ConditionBuilderExist = $("#txtConditionBuilder").val();
+            var hdnConditionBuilderExist = $("#txthdnConditionBuilder").val();
+            $.ajax({
+                type: "POST",
+                url: "/WorkFlowRule/EvaluateCondPropDetails",
+                dataType: "json",
+                async: false,
+                data: { "ConditionBuilderVal": ConditionBuilderExist, "hdnConditionBuilderVal": hdnConditionBuilderExist, "bObjId": $("#BObjId").val() },
+                success: function (data) {
+                    if (data == 1) {
+                        $("#btnFreezeCond").show();
+                    }
+                    if (data == 0) {
+                        swal({ title: '', text: "Condition builder format is not Correct,Please check and Re-Update", type: 'warning', showConfirmButton: true });
+                        $("#txtConditionBuilder").focus();
+                        $("#btnFreezeCond").hide();
+                        return false;
+                    }
+                    if (data == -1) {
+                        swal({ title: '', text: "Something Went Wrong. Please Contact Support Team", type: 'warning', showConfirmButton: true });
+                        $("#btnFreezeCond").hide();
+                        return false;
+                    }
+                }
+            });
+        });
+
+        $("#btnOpenBracket").click(function (e) {
+            var ConditionBuilder = $("#txtConditionBuilder").val();
+            if (ConditionBuilder == null || ConditionBuilder == "" || ConditionBuilder == undefined) {
+                ConditionBuilder = "";
+            }
+            var StageId = $("#StageId").val();
+            var StageKey = $("#StageKey").val();
+            $.ajax({
+                type: "POST",
+                url: "/WorkFlowRule/AddCondPropDetails",
+                dataType: "json",
+                async: false,
+                data: { "ConditionBuilderVal": "(", "hdnConditionBuilderVal": "(", "OperationType": "OPENBRACKET", "StageId": StageId, "StageKey": StageKey, "SeriesNo": $("#SeriesNo").val() },
+                success: function (data) {
+                    $("#txtConditionBuilder").val(data.ConditionBuilderExist);
+                    $("#txthdnConditionBuilder").val(data.hdnConditionBuilderExist);
+                }
+            });
+        });
+        $("#txtConditionBuilder").tooltip({
+            title: "Please Add the Property to Provide a Close Bracket",
+            trigger: "manual"
+        });
+
+        $("#txtConditionBuilder").change(function (e) {
+            $("#txtConditionBuilder").tooltip("hide");
+        });
+        $("#btnCloseBracket").click(function (e) {
+            var ConditionBuilder = $("#txtConditionBuilder").val();
+            if (ConditionBuilder == null || ConditionBuilder == "" || ConditionBuilder == undefined) {
+                ConditionBuilder = "";
+
+            }
+            if (ConditionBuilder.trim() == "") {
+                $("#txtConditionBuilder").tooltip("show");
+                $('#txtConditionBuilder').focus();
+                event.preventDefault();
+                return false;
+            } else {
+                var StageId = $("#StageId").val();
+                var StageKey = $("#StageKey").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/WorkFlowRule/AddCondPropDetails",
+                    dataType: "json",
+                    async: false,
+                    data: { "ConditionBuilderVal": ")", "hdnConditionBuilderVal": ")", "OperationType": "CLOSEBRACKET", "StageId": StageId, "StageKey": StageKey, "SeriesNo": $("#SeriesNo").val() },
+                    success: function (data) {
+                        $("#txtConditionBuilder").val(data.ConditionBuilderExist);
+                        $("#txthdnConditionBuilder").val(data.hdnConditionBuilderExist);
+                    }
+                });
+            }
+        });
+        $("#ddlProperties").tooltip({
+            title: "Please Select Property",
+            trigger: "manual"
+        });
+
+        $("#ddlProperties").change(function (e) {
+            $("#ddlProperties").tooltip("hide");
+        });
+        $("#ddlValue1").tooltip({
+            title: "Please provide a Value",
+            trigger: "manual"
+        });
+
+        $("#ddlValue1").change(function (e) {
+            $("#ddlValue1").tooltip("hide");
+        });
+
+        $("#ddlValue2").tooltip({
+            title: "Please provide a Value 2",
+            trigger: "manual"
+        });
+
+        $("#ddlValue2").change(function (e) {
+            $("#ddlValue2").tooltip("hide");
+        });
+
+        $("#txtValue1").tooltip({
+            title: "Please provide a Value",
+            trigger: "manual"
+        });
+
+        $("#txtValue1").change(function (e) {
+            $("#txtValue1").tooltip("hide");
+        });
+        $("#txtValue2").tooltip({
+            title: "Please provide a Value 2",
+            trigger: "manual"
+        });
+
+        $("#txtValue2").change(function (e) {
+            $("#txtValue1").tooltip("hide");
+        });
+
+        $("#btnAddProp").click(function (e) {
+            debugger;
+            var PropertyId = $("#ddlProperties").val();
+            var PropertyText = $("#ddlProperties option:selected").text();
+            var sValue1 = $("#txtValue1").val();
+            var sValue2 = $("#txtValue2").val();
+
+            var dValue1 = $("#ddlValue1").val();
+            var dValue2 = $("#ddlValue2").val();
+
+            var dValue1text = $("#ddlValue1 option:selected").text();
+            var dValue2text = $("#ddlValue2 option:selected").text();
+
+            var PropDataType = $("#PropDataType").val();
+            var propcontrol_name = $("#propcontrol_name").val();
+            var OperationType = $("#ddlOperation").val();
+            var ConditionBuilderExist = $("#txtConditionBuilder").val();
+            var hdnConditionBuilderExist = $("#txthdnConditionBuilder").val();
+
+            var hdnConditionBuilder = "";
+
+            var ConditionBuilder = "";
+            if (PropertyId == null || PropertyId == "" || PropertyId == undefined) {
+                PropertyId = "0";
+            }
+            if (PropertyId == "0") {
+                $("#ddlProperties").tooltip("show");
+                $('#ddlProperties').focus();
+                event.preventDefault();
+                return false;
+            }
+            else {
+                ConditionBuilder = ConditionBuilder + " " + PropertyText;
+                hdnConditionBuilder = hdnConditionBuilder + " " + propcontrol_name;
+            }
+            if (OperationType == null || OperationType == "" || OperationType == undefined) {
+                OperationType = "";
+            }
+
+            if (OperationType.trim() != "") {
+                ConditionBuilder = ConditionBuilder + " " + OperationType;
+                hdnConditionBuilder = hdnConditionBuilder + " " + OperationType;
+            }
+            if (PropDataType.toUpperCase() == "DROPDOWN") {
+
+                if (dValue1 == null || dValue1 == "" || dValue1 == undefined) {
+                    dValue1 = "0";
+                }
+                if (dValue2 == null || dValue2 == "" || dValue2 == undefined) {
+                    dValue2 = "0";
+                }
+
+                if (dValue1 == "0") {
+                    $("#ddlValue1").tooltip("show");
+                    $('#ddlValue1').focus();
+                    event.preventDefault();
+                    return false;
+                }
+                else {
+                    ConditionBuilder = ConditionBuilder + " " + "'" + dValue1text + "'";
+                    hdnConditionBuilder = hdnConditionBuilder + " " + "'" + dValue1 + "'";
+                }
+
+                if (OperationType.toUpperCase() == "BETWEEN") {
+                    if (dValue2 == "0") {
+                        $("#ddlValue2").tooltip("show");
+                        $('#ddlValue2').focus();
+                        event.preventDefault();
+                        return false;
+                    }
+                    else {
+                        ConditionBuilder = ConditionBuilder + " AND " + "'" + dValue2text + "'";
+                        hdnConditionBuilder = hdnConditionBuilder + " AND " + "'" + dValue2 + "'";
+                    }
+                }
+            }
+            else {
+                if (sValue1 == null || sValue1 == "" || sValue1 == undefined) {
+                    sValue1 = "";
+                }
+                if (sValue2 == null || sValue2 == "" || sValue2 == undefined) {
+                    sValue2 = "";
+                }
+                if (sValue1.trim() == "") {
+                    $("#txtValue1").tooltip("show");
+                    $('#txtValue1').focus();
+                    event.preventDefault();
+                    return false;
+                }
+                else {
+                    if (PropDataType.toUpperCase() == "VARCHAR") {
+                        ConditionBuilder = ConditionBuilder + " '" + sValue1.trim() + "'";
+                        hdnConditionBuilder = hdnConditionBuilder + " '" + sValue1.trim() + "'";
+                    } else {
+                        ConditionBuilder = ConditionBuilder + " " + sValue1.trim();
+                        hdnConditionBuilder = hdnConditionBuilder + " " + sValue1.trim();
+                    }
+                }
+                if (OperationType.toUpperCase() == "BETWEEN") {
+                    if (sValue2.trim() == "") {
+                        $("#txtValue2").tooltip("show");
+                        $('#txtValue2').focus();
+                        event.preventDefault();
+                        return false;
+                    } else {
+                        if (PropDataType.toUpperCase() == "VARCHAR") {
+                            ConditionBuilder = ConditionBuilder + " AND '" + sValue2.trim() + "'";
+                            hdnConditionBuilder = hdnConditionBuilder + " AND '" + sValue2.trim() + "'";
+                        } else {
+                            ConditionBuilder = ConditionBuilder + " AND " + sValue2.trim();
+                            hdnConditionBuilder = hdnConditionBuilder + " AND " + sValue2.trim();
+                        }
+                    }
+                }
+            }
+            if (ConditionBuilder.trim() != "") {
+                var StageId = $("#StageId").val();
+                var StageKey = $("#StageKey").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/WorkFlowRule/AddCondPropDetails",
+                    dataType: "json",
+                    async: false,
+                    data: { "ConditionBuilderVal": ConditionBuilder, "hdnConditionBuilderVal": hdnConditionBuilder, "OperationType": "PROPERTY", "StageId": StageId, "StageKey": StageKey, "SeriesNo": $("#SeriesNo").val() },
+                    success: function (data) {
+                        debugger;
+                        $("#txtConditionBuilder").val(data.ConditionBuilderExist);
+                        $("#txthdnConditionBuilder").val(data.hdnConditionBuilderExist);
+                        //  ConditionBuilderExist = data.ConditionBuilderExist;
+                        ///  hdnConditionBuilderExist = data.hdnConditionBuilderExist;
+                    }
+                });
+            }
+            $("#btnEvaluate").show();
+            $("#txtValue2").val('');
+            $("#ddlValue2").val(0).trigger("chosen:updated");
+            $("#txtValue1").val('');
+            $("#ddlValue1").val(0).trigger("chosen:updated");
+            $("#ddlOperationType").val(0).trigger("chosen:updated");
+            $("#ddlOperationType").hide();
+            $("#ddlDropDownValue").hide();
+            $("#ddlTextBoxValue").hide();
+            $("#ddlDropDownValue2").hide();
+            $("#ddlTextBoxValue2").hide();
+            $("#ValueOne").hide();
+            $("#ValueSecond").hide();
+            $("#ddlProperties").val(0);
+        });
+        $("#txtConditionBuilder").tooltip({
+            title: "Please Add the Property to Provide a Logical Operator",
+            trigger: "manual"
+        });
+
+        $("#txtConditionBuilder").change(function (e) {
+            $("#txtValue1").tooltip("hide");
+        });
+        $("#ddlLogicalOperation").change(function (e) {
+            debugger;
+            var ConditionBuilderExist = $("#txtConditionBuilder").val();
+            var hdnConditionBuilderExist = $("#txthdnConditionBuilder").val();
+            var LogicalOperation = $("#ddlLogicalOperation").val();
+            if (LogicalOperation == null || LogicalOperation == "" || LogicalOperation == undefined) {
+                LogicalOperation = "0";
+            }
+            var ConditionBuilder = $("#txtConditionBuilder").val();
+            if (LogicalOperation == "0") {
+            } else {
+                if (ConditionBuilder.trim() == "") {
+                    $("#txtConditionBuilder").tooltip("show");
+                    $('#txtConditionBuilder').focus();
+                    event.preventDefault();
+                    $("#ddlLogicalOperation").val(0);
+                    return false;
+                }
+                //var property = $("#txtConditionBuilder").val();
+                //if (property.trim() != "") {
+                //    var propaarr = property.split(" ");
+                //    var lstvalue = propaarr[propaarr.length - 1];
+                //    //propaarr
+                //    if ((property.includes("LOCATION TYPE") || property.includes("ROLE") || property.includes("LEAVE TYPE") || property.includes("DAYS")) && (propaarr[propaarr.length - 1] != "AND" || propaarr[propaarr.length - 1] != "OR")) {
+                //        // $("#ddlLogicalOperation").focus();
+                //        //  alert("Please add logical operator");
+                //            return true;
+                //    }
+                //    else {
+                //        $("#ddlProperties").val(0).trigger("chosen:updated");
+                //        $("#ddlProperties").focus();
+                //        $("#ddlLogicalOperation").focus();
+                //     //   $('#ddlLogicalOperation').attr('title', 'Please add logical operator').tooltip('show');
+                //        event.preventDefault();
+                //        return false;
+                //    }
+                //}
+                else {
+                    //     alert("asdasd");
+                    var StageId = $("#StageId").val();
+                    var StageKey = $("#StageKey").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "/WorkFlowRule/AddCondPropDetails",
+                        dataType: "json",
+                        async: false,
+                        data: { "ConditionBuilderVal": $('#ddlLogicalOperation option:selected').text(), "hdnConditionBuilderVal": $('#ddlLogicalOperation option:selected').text(), "OperationType": "LOGICAL", "StageId": StageId, "StageKey": StageKey, "SeriesNo": $("#SeriesNo").val() },
+                        success: function (data) {
+                            debugger;
+                            //ConditionBuilderExist = data.ConditionBuilderExist;
+                            // hdnConditionBuilderExist = data.hdnConditionBuilderExist;
+                            $("#txtConditionBuilder").val(data.ConditionBuilderExist);
+                            $("#txthdnConditionBuilder").val(data.hdnConditionBuilderExist);
+                            //   ConditionBuilder = ConditionBuilder +" "+$('#ddlLogicalOperation option:selected').text();
+                        }
+                    });
+                    // ConditionBuilder = ConditionBuilder + " " + $('#ddlLogicalOperation option:selected').text();
+                }
+                $("#ddlLogicalOperation").val(0);
+            }
+        });
+
+        $("#ddlOperation").change(function (e) {
+            debugger;
+            if ($("#ddlOperation").val() == "0") {
+                $("#txtValue2").val('');
+                $("#ddlValue2").val(0).trigger("chosen:updated");
+                $("#txtValue1").val('');
+                $("#ddlValue1").val(0).trigger("chosen:updated");
+                $("#ddlOperationType").val(0).trigger("chosen:updated");
+                $("#ddlOperationType").hide();
+                $("#ddlDropDownValue").hide();
+                $("#ddlTextBoxValue").hide();
+                $("#ddlDropDownValue2").hide();
+                $("#ddlTextBoxValue2").hide();
+                $("#ValueOne").hide();
+                $("#ValueSecond").hide();
+
+                $("#ddlValue1").prop("disabled", true);
+                $("#ddlValue2").prop("disabled", true);
+                $("#txtValue1").prop("readonly", true);
+                $("#txtValue2").prop("readonly", true);
+            }
+            else {
+                //|| $("#ddlOperation").text() == ">=" || $("#ddlOperation").text() == "<="
+                var prop = $("#ddlProperties option:selected").text();
+                var oper = $("#ddlOperation option:selected").text();
+                if ($("#ddlProperties option:selected").text() == "DAYS" && ($("#ddlOperation option:selected").text() == "BETWEEN")) {
+                    $("#txtValue2").change(validateTextBox2);
+                    //$('#txtContact').change(keypressfunction);
+                }
+                $("#lblValue1").show();
+                $("#txtValue2").val('');
+                $("#ddlValue2").val(0).trigger("chosen:updated");
+                $("#txtValue1").val('');
+                $("#ddlValue1").val(0).trigger("chosen:updated");
+                $("#ddlDropDownValue").hide();
+                $("#ddlTextBoxValue").hide();
+                $("#ddlDropDownValue2").hide();
+                $("#ddlTextBoxValue2").hide();
+                $("#ValueOne").show();
+                $("#ValueSecond").show();
+
+                $("#ddlValue1").prop("disabled", true);
+                $("#ddlValue2").prop("disabled", true);
+                $("#txtValue1").prop("readonly", true);
+                $("#txtValue2").prop("readonly", true);
+
+                if ($("#ddlOperation option:selected").text().toUpperCase() == "BETWEEN") {
+
+                    if ($("#PropDataType").val().toUpperCase() == "DROPDOWN") {
+                        $("#ddlDropDownValue").show();
+                        $("#ddlTextBoxValue").hide();
+                        $("#ddlDropDownValue2").show();
+                        $("#ddlTextBoxValue2").hide();
+                        $("#ddlValue1").prop("disabled", false);
+                        $("#ddlValue2").prop("disabled", false);
+                    }
+                    else {
+                        $("#ddlDropDownValue").hide();
+                        $("#ddlTextBoxValue").show();
+                        $("#ddlDropDownValue2").hide();
+                        $("#ddlTextBoxValue2").show();
+                        $("#txtValue1").prop("readonly", false);
+                        $("#txtValue2").prop("readonly", false);
+                    }
+                    $("#ValueSecond").show();
+                } else {
+                    if ($("#PropDataType").val().toUpperCase() == "DROPDOWN") {
+                        $("#ddlDropDownValue").show();
+                        $("#ddlTextBoxValue").hide();
+                        $("#ddlValue1").prop("disabled", false);
+                    }
+                    else {
+                        $("#ddlDropDownValue").hide();
+                        $("#ddlTextBoxValue").show();
+                        $("#txtValue1").prop("readonly", false);
+                    }
+                    $("#ValueSecond").hide();
+                }
+            }
+        });
+        $("#ddlLogicalOperation").change(function (e) {
+            $("#ddlLogicalOperation").tooltip("hide");
+        });
+
+        $("#ddlProperties").change(function (e) {
+            debugger;
+            // var property = $("#txtConditionBuilder").val();
+            if ($("#ddlProperties").val() == "0") {
+                $("#propcontrol_name").val('');
+                $("#txtValue2").val('');
+                $("#ddlValue2").val(0).trigger("chosen:updated");
+                $("#txtValue1").val('');
+                $("#ddlValue1").val(0).trigger("chosen:updated");
+                $("#ddlOperationType").val(0).trigger("chosen:updated");
+                $("#lblValue1").hide();
+                $("#ddlOperationType").hide();
+                $("#ddlDropDownValue").hide();
+                $("#ddlTextBoxValue").hide();
+                $("#ddlDropDownValue2").hide();
+                $("#ddlTextBoxValue2").hide();
+                $("#ValueOne").hide();
+                $("#ValueSecond").hide();
+
+                $("#ddlValue1").prop("disabled", true);
+                $("#ddlValue2").prop("disabled", true);
+                $("#txtValue1").prop("readonly", true);
+                $("#txtValue2").prop("readonly", true);
+            } else {
+                $("#lblValue1").hide();
+
+                $("#propcontrol_name").val('');
+                $("#txtValue2").val('');
+                $("#ddlValue2").val(0).trigger("chosen:updated");
+                $("#txtValue1").val('');
+                $("#ddlValue1").val(0).trigger("chosen:updated");
+                $("#ddlOperationType").val(0).trigger("chosen:updated");
+                $("#ddlOperationType").hide();
+                $("#ddlDropDownValue").hide();
+                $("#ddlTextBoxValue").hide();
+                $("#ddlDropDownValue2").hide();
+                $("#ddlTextBoxValue2").hide();
+                $("#ValueOne").hide();
+                $("#ValueSecond").hide();
+
+                $("#ddlValue1").prop("disabled", true);
+                $("#ddlValue2").prop("disabled", true);
+                $("#txtValue1").prop("readonly", true);
+                $("#txtValue2").prop("readonly", true);
+                //  if (property.trim() != "") {
+                //    var propaarr = property.split(" ");
+                //    var lstvalue = propaarr[propaarr.length - 1];
+                //    //propaarr
+                //    if ((property.includes("LOCATION TYPE") || property.includes("ROLE") || property.includes("LEAVE TYPE") || property.includes("DAYS")) && (propaarr[propaarr.length - 1] == "AND" || propaarr[propaarr.length - 1] == "OR")) {
+                //        // $("#ddlLogicalOperation").focus();
+                //        //  alert("Please add logical operator");
+                //        //    return true;
+                //    }
+                //    else {
+                //        $("#ddlProperties").val(0).trigger("chosen:updated");
+                //        $("#ddlProperties").focus();
+                //        $("#ddlLogicalOperation").focus();
+                //        $('#ddlLogicalOperation').attr('title', 'Please add logical operator').tooltip('show');
+                //        event.preventDefault();
+                //        return true;
+                //    }
+                //}
+                $.ajax({
+                    type: "POST",
+                    url: "/WorkFlowRule/fetchPropertieDet",
+                    dataType: "json",
+                    data: { "ValueSelected": $("#ddlProperties").val() },
+                    success: function (data) {
+                        debugger;
+                        if (data.statusId == 1) {
+                            $("#propcontrol_name").val(data.propcontrol_name);
+                            $("#PropDataType").val(data.PropDataType.toUpperCase());
+                            if (data.PropDataType.toUpperCase() == "DROPDOWN") {
+                                if (data.lstDropDownVal.length > 0) {
+                                    debugger;
+                                    $("#ddlValue1").html(""); // clear before appending new list
+                                    var s = '';
+                                    var len = data.lstDropDownVal.length;
+                                    for (var i = 0; i < len; i++) {
+                                        s += "<option value='" + data.lstDropDownVal[i]["Value"] + "'>" + data.lstDropDownVal[i]["Text"] + "</option>";
+                                    }
+                                   // $("#ddlValue1").prop("disabled", true);
+                                    $("#ValueOne").show();
+                                    $("#ddlValue1").html(s).trigger("chosen:updated");
+                                    $("#ddlValue1").prop("disabled", false).trigger("chosen:updated");
+
+                                    $("#ddlDropDownValue").hide();
+                                    $("#ddlTextBoxValue").hide();
+                                    $("#txtValue1").val('');
+                                }
+                            }
+                            else {
+                                $("#txtValue1").val('');
+                                $("#ddlDropDownValue").hide();
+                                $("#ddlTextBoxValue").show();
+                            }
+
+                            if (data.lstOperationTypes.length > 0) {
+                                debugger;
+                                $("#ddlOperation").html(""); // clear before appending new list
+                                var s = '';
+                                var len = data.lstOperationTypes.length;
+
+                                s += "<option value='0'>Select</option>";
+                                for (var i = 0; i < len; i++) {
+                                    debugger;
+                                    s += "<option value='" + data.lstOperationTypes[i]["Value"] + "'>" + data.lstOperationTypes[i]["Text"] + "</option>";
+                                }
+                                $("#ddlOperation").html(s).trigger("chosen:updated");
+                                $("#ddlOperationType").show();
+                            } else {
+                                $("#ddlOperationType").hide();
+                            }
+                        } else if (data.statusId == 0) {
+                            swal({ title: '', text: "Property details not found,Contact Support team", type: 'warning', showConfirmButton: true });
+                            return false;
+                        }
+                        else {
+                            swal({ title: '', text: "Something Went Wrong,Please try again Later", type: 'warning', showConfirmButton: true });
+                            return false;
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+
+</script>
+
+<style>
+    .ui-button .ui-icon {
+        background-image: url("https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/images/ui-icons_888888_256x240.png") !important;
+        display: block !important
+    }
+
+    .ui-button-icon-only .ui-icon {
+        display: block !important
+    }
+
+    .ui-widget .ui-widget {
+        font-size: 2em !important
+    }
+
+    span.ui-button-icon-primary.ui-icon.ui-icon-closethick {
+        background-image: url("https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/images/ui-icons_888888_256x240.png") !important;
+        display: block !important;
+        margin-top: 0px !important
+    }
+
+    .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front {
+        margin-left: 233px !important;
+        width: 1134px !important;
+        margin-top: 345px;
+        z-index: 9999;
+        overflow: hidden !important
+    }
+
+    .ui-widget-header {
+        border: 1px solid #dddddd !important;
+        background: #e9e9e9 !important;
+        color: #333333 !important;
+        font-weight: bold !important;
+    }
+</style>

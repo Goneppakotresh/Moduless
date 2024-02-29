@@ -1,0 +1,930 @@
+﻿@model IEMS_WEB.Models.WorkFlow.WorkFlowObject
+@{
+    ViewBag.Title = "WorkFlowView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/assets/js/translator/workflowview.js"></script>
+@*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        .ui-datepicker {
+            z-index: 9999999 !important;
+        }
+
+        .modal-content {
+            width: 109%;
+        }
+
+        .chosen-container {
+            width: 100% !important;
+        }
+
+        td {
+            text-align: center !important;
+        }
+    </style>*@
+<style>
+    .ui-datepicker .ui-datepicker-title select {
+        padding: 0px 8px !important;
+        background-position-y: 0px !important;
+    }
+
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+    .ui-datepicker-prev span.ui-icon,
+    .ui-datepicker-next span.ui-icon {
+        background-image: url("https://cdn0.iconfinder.com/data/icons/flat-round-arrow-arrow-head/512/Red_Arrow_Right-512.png");
+        background-size: contain;
+        background-position: center;
+    }
+
+    .ui-datepicker-prev span.ui-icon {
+        transform: rotate(180deg);
+    }
+
+        .ui-datepicker-prev span.ui-icon:focus,
+        .ui-datepicker-next span.ui-icon:focus {
+            outline: none !important;
+        }
+        table#grdWorkFlowView thead th{
+            white-space:nowrap!important;
+        }
+        table#grdWorkFlowView tr td:nth-child(3){
+            min-width:180px!important;
+        }
+</style>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.CurrRoleId, new { @id = "hdnRoleId" })
+
+    @*@Html.HiddenFor(m => m.WorkFlowFormCode, new { @id = "hdnFormCode" })*@
+
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12">
+                <h3>
+                    <span data-translate="Work Flow Details">Workflow Details</span>
+                    <button type="button" id="btnNewWorkFlow" data-bs-toggle="modal" data-bs-target="#myModal" data-backdrop="static" data-keyboard="false" class="btn btn-success pull-right" data-translate="New Workflow"> New Workflow</button>
+
+                </h3>
+            </div>
+        </div>
+    </div>
+
+
+
+  
+
+                    <div class="row">
+                        <div class="col-md-3">
+            <label data-translate="Module">
+                                Module
+                            </label>
+                            @Html.DropDownListFor(m => m.Module, (List<SelectListItem>)ViewBag.LstModule, new { id = "ddlModuleName", @class = "form-control js-example-basic-single", @onchange = "fetchBusinessobject();" })
+                        </div>
+                        <div class="col-md-3">
+            <label data-translate="Activity Name">
+                                Activity Name
+                            </label>
+                            @Html.DropDownListFor(m => m.BusinessObjectName, Model.lstBusinessObject, new { id = "ddlBusinessObject", @class = "form-control js-example-basic-single  ddlBoObject", @onchange = "ShowNewWorkFlow();" })
+                        </div>
+                        <div class="col-md-3">
+                            <br />
+                                                        <button id="btnLoad" type="button" class="btn btn-success" name="btnLoad" data-translate="Load">Load</button>
+
+                        </div>
+                    </div>
+
+
+               
+        
+            <table id="grdWorkFlowView" class="table table-striped table-bordered table-hover EASyGridLayout">
+                <thead>
+                    <tr style="text-align: center;">
+                @*<th style="text-align: center">Module</th>*@
+                <th data-translate="Activity Name">Activity Name</th>
+                <th data-translate="Business Object ID">Business Object ID</th>
+                <th data-translate="Name">Name</th>
+                <th data-translate="Valid Upto">Valid Upto</th>
+                <th data-translate="Admin">Admin</th>
+                <th data-translate="Created On">Created On</th>
+                <th data-translate="Created By">Created By</th>
+                <th data-translate="Edit Data">Edit Data</th>
+                <th data-translate="Status">Status</th>
+                <th data-translate="Design">Design</th>
+                <th data-translate="View">View</th>
+                <th data-translate="Copy & Create">Copy & Create</th>
+                <th data-translate="Is Default">Is Default</th>
+                    </tr>
+                </thead>
+            </table>
+        
+}
+
+<div class="modal" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            
+
+            <div class=" modal-header text-center">
+                <h4 class="modal-title" id="lblNewWorkFlow">Edit/New Workflow</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <label style="display:block!important" class="control-label mandatory" data-translate="Activity Name">Activity Name</label>
+                        @Html.TextBoxFor(m => m.BusinessObjectName, new { id = "txtBoObjectName", @oncopy = "return true", @maxlength = "250", @onpaste = "return false", @readonly = true, autocomplete = "off", @class = "form-control" })
+                        <span class="error-message text-danger" id="errorActivityName"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label style="display:block!important" class="control-label mandatory" data-translate="Company">Company</label>
+                        @Html.DropDownListFor(m => m.Company, (List<SelectListItem>)ViewBag.LstCompany, new { id = "ddlCompany", @class = "form-control chosen-select" })
+                        <span class="error-message text-danger" id="errorCompany"></span>
+                    </div>
+                    <div style="display:none;" class="col-md-1">
+                        <label data-translate="IsValid">IsValid</label>
+                        @Html.TextBoxFor(m => m.sIsValid, new { id = "txtIsValid", @oncopy = "return true", @maxlength = "250", @onpaste = "return false", autocomplete = "off", @class = "form-control" })
+                    </div>
+                    <div style="display:none;" class="col-md-1">
+                        <label>BObjId</label>
+                        @Html.TextBoxFor(m => m.BObjId, new { id = "txtBusinessObjectID", @oncopy = "return true", @maxlength = "250", @onpaste = "return false", autocomplete = "off", @class = "form-control" })
+                    </div>
+                    <div class="col-md-3">
+                        <label style="display:block!important" class="control-label mandatory" data-translate="Workflow Name">
+                            Workflow Name
+                        </label>
+                        @Html.TextBoxFor(m => m.WorkFlowName, new { id = "txtWorkFlowName", @oncopy = "return true", @maxlength = "50", autocomplete = "off", @class = "form-control alphabet" })
+                        <span class="error-message text-danger" id="errorWfName"></span>
+                    </div>
+               
+                    <div class="col-md-3">
+                        <label style="display:block!important" class="control-label mandatory" data-translate="Description">Description</label>
+                        @Html.TextAreaFor(m => m.WorkFlowDescription, new { id = "txtWorkFlowDesc", @oncopy = "return true", @maxlength = "250", autocomplete = "off", @class = "form-control", style = "resize:none" })
+                        <span class="error-message text-danger" id="errorWFDesc"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label mandatory" data-translate="Admin">
+                            Admin
+                        </label>
+                        @Html.ListBoxFor(m => m.Role, (List<SelectListItem>)ViewBag.lstRole, new { id = "ddlRole", @class = "form-control js-example-basic-single", @multiple = "multiple" })
+                        <span class="error-message text-danger" id="errorAdmin"></span>
+                    </div>
+              
+                    <div class="col-md-3">
+                        <label style="display:block!important" class="control-label mandatory" data-translate="Effective From">Effective From</label>
+                        @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control", required = "required", id = "txtStartDate", oncopy = "return false", @onpaste = "return false", @ondrag = "return false", @readonly = true })
+                        <span class="error-message text-danger" id="errorEffDate"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label style="display:block!important;" data-translate="Effective To">Effective To</label>
+                        @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control", required = "required", id = "txtEndDate", oncopy = "return false", @onpaste = "return false", @ondrag = "return false", @readonly = true })
+                        <span class="error-message text-danger" id="errorEndDate"></span>
+                    </div>
+                    <div style="display:none;" class="col-md-3">
+                        <label data-translate="WorkFlowID">WorkFlowID</label>
+                        @Html.TextBoxFor(m => m.WorkFlowID, new { @class = "form-control", id = "txtWorkFlowID", oncopy = "return false", @onpaste = "return false", @ondrag = "return false", @readonly = true })
+                        @Html.HiddenFor(m => m.WorkFlowObjectId, new { @class = "form-control", id = "txtOldWorkFlowId", oncopy = "return false", @onpaste = "return false", @ondrag = "return false", @readonly = true })
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnProceed" type="button" class="btn btn-success">btnProceed</button>
+                <button id="btnClose" type="button" class="btn btn-danger" name="btnProceed" data-translate="Close" onclick="closeModelPopup()">Close</button>
+              
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+@if (Model.statusId == -1)  //Error message
+{
+    <script type="text/javascript">
+        ////alertwithredirect('Warning', Model.message, 'warning', '@Url.Action("WorkFlowView", "WorkFlowRule")');
+        swal({
+            title: '',
+            text: "Renewal Successfull",
+            type: "warning"
+        }).then(function () {
+            window.location.href = "../WorkFlowRule/WorkFlowView";
+        });
+    </script>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $.fn.modal.prototype.constructor.Constructor.DEFAULTS.backdrop = 'static';
+        $.fn.modal.prototype.constructor.Constructor.DEFAULTS.keyboard = false;
+        debugger
+        var FormCode = "WorkFlow";
+        var validateAccessRights = "";
+        var gridview = '';
+        var isAccessRightRequired = 0;
+        var roleid = $('#hdnRoleId').val();
+        //var roleIdArray = roleids.split(",");
+        //for (var a in roleIdArray) {
+        //    if (roleid == roleIdArray[a]) {
+        //        isAccessRightRequired = 1;
+        //    }
+
+        //}
+        debugger;
+        if (isAccessRightRequired != 1) {
+            $.ajax({
+
+                type: "GET",
+                url: "/AccessRights/CheckAccessRights",
+                dataType: "json",
+                data: { FormCode: FormCode },
+                success: function (data) {
+                    //if (data == -1 || data == "" || data == null || data == undefined) {
+                    //    window.location.href = "/Login/RestrictForm";
+                    //}
+
+                    if (data.includes("VIEW")) {
+                        gridview = "VIEW";
+                    }
+                    if (data.includes("CREATE")) {
+                        gridview = "CREATE";
+                        $('#btnSave').show();
+                    }
+                }
+            });
+        }
+
+
+
+        $("#ddlModuleName").val(0).trigger("chosen:updated");
+        $("#ddlBusinessObject").prop("disabled", true);
+        //$("#ddlBusinessObject").chosen({ allow_single_deselect: true });
+        var Company = $("#ddlCompany option:selected").val();
+        var businessObjectID = $("#ddlBusinessObject option:selected").val();
+        if (Company == "0" || Company == 0) {
+            $("#btnNewWorkFlow").hide();
+        }
+        else {
+            $("#btnNewWorkFlow").show();
+            $("#btnNewWorkFlow").click(function () {
+                debugger;
+                var boObject = $("#ddlBusinessObject option:selected").val();
+                var boObjectName = $("#ddlBusinessObject option:selected").text();
+                $('#myModal').modal('show');
+                $('#txtIsValid').val("1");
+                $('#txtWorkFlowID').val("0");
+                // $("#btnProceed").val("Save & Continue Design");
+                var selectedLanguage = $("input[name='language']:checked").val();
+
+                if (selectedLanguage === "en") {
+                    $('#btnProceed').text('Save & Continue Design').attr('data-translate', 'Save & Continue Design');
+                } else if (selectedLanguage === "hi") {
+                    $('#btnProceed').text('डिज़ाइन सहेजें और जारी रखें').attr('data-translate', 'डिज़ाइन सहेजें और जारी रखें');
+                }
+                $("#txtBoObjectName").val(boObjectName);
+                $("#txtBusinessObjectID").val(boObject);
+            });
+        }
+        $("#ddlModuleName").tooltip({
+            title: "Please select Module",
+            trigger: "manual"
+        });
+        $("#ddlBusinessObject_chosen").tooltip({
+            title: "Please select Business Object",
+            trigger: "manual"
+        });
+        $("#ddlModuleName").change(function (e) {
+            $("#ddlModuleName").tooltip("hide");
+        });
+        $("#ddlBusinessObject").change(function (e) {
+            $("#ddlBusinessObject_chosen").tooltip("hide");
+        });
+        $("#btnLoad").click(function () {
+            debugger;
+            var moduleval = $("#ddlModuleName option:selected").val();
+            var module = $("#ddlModuleName option:selected").text();
+            var boObject = $("#ddlBusinessObject option:selected").val();
+            var table = $('#grdWorkFlowView').DataTable().data().count();
+            if ((moduleval == "0" || moduleval == 0)) {
+                $("#btnNewWorkFlow").hide();
+            }
+            else if ((moduleval != "0" || moduleval != 0) && (boObject == "0" || boObject == 0 || boObject == undefined)) {
+                $("#btnNewWorkFlow").hide();
+            }
+            else
+                $("#btnNewWorkFlow").show();
+            $("#btnNewWorkFlow").click(function () {
+                $('#lblNewWorkFlow').html("New Workflow")
+                var selectedLanguage = $("input[name='language']:checked").val();
+
+                if (selectedLanguage === "en") {
+                    $('#lblNewWorkFlow').text('New Workflow').attr('data-translate', 'New Work flow');
+                } else if (selectedLanguage === "hi") {
+                    $('#lblNewWorkFlow').text('नया कार्य प्रवाह').attr('data-translate', 'नया कार्य प्रवाह');
+                }
+                var boObject = $("#ddlBusinessObject option:selected").val();
+                var boObjectName = $("#ddlBusinessObject option:selected").text();
+                $('#myModal').modal('show');
+                $('#txtIsValid').val("0");
+                $('#txtWorkFlowID').val("0");
+                // $("#btnProceed").val("Save & Continue Design");
+                var selectedLanguage = $("input[name='language']:checked").val();
+
+                if (selectedLanguage === "en") {
+                    $('#btnProceed').text('Save & Continue Design').attr('data-translate', 'Save & Continue Design');
+                } else if (selectedLanguage === "hi") {
+                    $('#btnProceed').text('डिज़ाइन सहेजें और जारी रखें').attr('data-translate', 'डिज़ाइन सहेजें और जारी रखें');
+                }
+                $("#txtBoObjectName").val(boObjectName);
+                $("#txtBusinessObjectID").val(boObject);
+            });
+            $("#grdWorkFlowView").DataTable().ajax.reload();
+        });
+        var currentTime = new Date();
+        var startDateFrom = new Date(currentTime.getFullYear(), currentTime.getMonth(), 1);
+        //$("#txtStartDate").datepicker({
+        //    minDate: 0,
+        //    autoHide: true,
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    dateFormat: 'dd-MM-yy',
+        //    monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        //    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        //    defaultDate: new Date(),
+        //    onSelect: function (dateStr) {
+        //        //$("#txtToDate").val(dateStr);
+        //        $("#txtEndDate").datepicker("option", { minDate: new Date(dateStr) })
+        //    }
+        //});
+
+        //$('#txtEndDate').datepicker({
+        //    minDate: 0,
+        //    autoHide: true,
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    dateFormat: 'dd-MM-yy',
+        //    monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        //    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        //    //  defaultDate: new Date(),
+        //    //   onSelect: function (dateStr) {
+        //    //toDate = new Date(dateStr);
+        //    //  fromDate = ConvertDateToShortDateString(fromDate);
+        //    //  toDate = ConvertDateToShortDateString(toDate);
+        //    //  }
+        //});
+
+        $("#txtStartDate").datepicker({
+            dateFormat: "dd-M-yy",
+
+            onSelect: function (date) {
+                var dt2 = $('#txtEndDate');
+                var startDate = $(this).datepicker('getDate');
+                var minDate = $(this).datepicker('getDate');
+                dt2.datepicker('setDate', minDate);
+                startDate.setDate(startDate.getDate() + 8500000);
+                dt2.datepicker('option', 'maxDate', startDate);
+                dt2.datepicker('option', 'minDate', minDate);
+                $(this).datepicker('option', 'minDate', minDate);
+            }
+        });
+        $('#txtEndDate').datepicker({
+            dateFormat: "dd-M-yy"
+        });
+
+        $('#grdWorkFlowView').DataTable({
+            "order": [],
+            "ajax": {
+                "url": "/WorkFlowRule/LoadWorkFlowGrid",
+                "type": "GET",
+                "datatype": "json",
+                data: function (d) {
+                    d.Module = $('#ddlModuleName option:selected').val();
+                    d.BusinessObject = $('#ddlBusinessObject').val();
+                }
+            },
+            "columns": [
+         //   { "data": "Module", "autoWidth": true, "visible": false },
+            { "data": "BusinessObjectName", "autoWidth": true },
+            { "data": "BObjId", "autoWidth": true, "visible": false },
+            { "data": "WorkFlowName", "autoWidth": true },
+            { "data": "WorkFlowValidUpto", "autoWidth": true },
+            { "data": "WorkFlowHead", "autoWidth": true, "sortable": true, "visible": false },
+            { "data": "CreatedOn", "autoWidth": true, "sortable": true, "visible": false },
+            { "data": "sCreatedBy", "autoWidth": true, "sortable": true ,"visible":false},
+            {
+                "data": "WorkFlowID", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                    return '<a style="color:red;" href="javascript:EditData(' + data + ',\'N\')" class="ace-icon fa fa-pencil bigger-130 green" title="Edit"></a>';
+                }
+            },
+             {
+                 "data": "sIsValid", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                     if (row.sIsValid == "1" || row.sIsValid == 1) {
+                         return "Validated";
+                     }
+                     else {
+                         return "Saved as Draft";
+                     }
+                     //  return "<a style='color:red;' href='javascript:OpenNewView(" + data + ")' class='ace-icon fa fa-picture-o bigger-130 blue'></a>";
+                 }
+             },
+                {
+                    "data": "WorkFlowID", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                        if ((row.sIsValid == "0" || row.sIsValid == 0) || row.IsTransactionDone == "0") {
+                            return '<a style="color:red;" href="javascript:OpenNewView(' + data + ',\'D\')" class="ace-icon fa fa-picture-o bigger-130 blue" title="Design"></a>';
+                        }
+                        else {
+                            return '';
+                        }
+                    }
+                },
+            { "data": "WorkFlowID", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                    if (row.sIsValid == "1" || row.sIsValid == 1) {
+                        return '<a style="color:red;" href="javascript:OpenNewView(' + data + ',\'V\')" class="ace-icon fa fa-eye bigger-130 blue" title="View"></a>';
+                    }
+                    else {
+                        return '';
+                    }
+                }
+            },
+             {
+                 "data": "WorkFlowID", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                     if (row.sIsValid == "1" || row.sIsValid == 1) {
+                         return '<a style="color:red;" href="javascript:EditData(' + data + ',\'C\')" class="ace-icon fa fa-clone bigger-130 green" title="Copy"></a>';
+
+                     }
+                     else {
+                         return '';
+                     }
+                 }
+             },
+
+            {
+                "data": "sIsDefault", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                    if ((row.sIsValid == "1" || row.sIsValid == 1) && (row.sIsDefault == "1" || row.sIsDefault == 1)) {
+                        return '<input type="radio" id= "btnIsDefault" checked="checked"  name="isDefault' + row.BObjId + '" value="" />';
+                    }
+                    else if ((row.sIsValid == "1" || row.sIsValid == 1) && (row.sIsDefault == "0" || row.sIsDefault == 0)) {
+                        return '<input type="radio" id= "btnIsDefault"  name="isDefault' + row.BObjId + '"  class="btnRadio" onchange="updatedefaultStatus(\'' + row.WorkFlowID + '\',\'' + row.BObjId + '\',\'' + row.BusinessObjectName + '\')"/>';
+                    }
+                    else if (row.sIsValid == "1" || row.sIsValid == 1) {
+                        return '<input type="radio"  id= "btnIsDefault" class="btnRadio" name="UpdateisDefault' + row.BObjId + '" onchange="updatedefaultStatus(\'' + row.WorkFlowID + '\',\'' + row.BObjId + '\',\'' + row.BusinessObjectName + '\')">';
+                    }
+                    else {
+                        return '';
+                    }
+                }
+
+            }
+
+            ]
+        });
+        $("#txtBusinessObjectID").tooltip({
+            title: "Please Enter Business Object",
+            trigger: "manual"
+        });
+        $("#txtBusinessObjectID").change(function (e) {
+            $("#txtBusinessObjectID").tooltip("hide");
+        });
+        $("#ddlCompany_chosen").tooltip({
+            title: "Please Select Company",
+            trigger: "manual"
+        });
+        $("#ddlCompany").change(function (e) {
+            $("#ddlCompany_chosen").tooltip("hide");
+        });
+        $("#txtWorkFlowName").tooltip({
+            title: "Please Enter WorkFlow Name",
+            trigger: "manual"
+        });
+        $("#txtWorkFlowName").change(function (e) {
+            $("#txtWorkFlowName").tooltip("hide");
+        });
+
+        $("#txtWorkFlowDesc").tooltip({
+            title: "Please Enter WorkFlow Description",
+            trigger: "manual"
+        });
+        $("#txtWorkFlowDesc").change(function (e) {
+            $("#txtWorkFlowDesc").tooltip("hide");
+        });
+        $("#ddlRole_chosen").tooltip({
+            title: "Please Select Role",
+            trigger: "manual"
+        });
+        $("#ddlRole").change(function (e) {
+            $("#ddlRole_chosen").tooltip("hide");
+        });
+        $("#txtStartDate").tooltip({
+            title: "Please Select From Date",
+            trigger: "manual"
+        });
+        $("#txtStartDate").change(function (e) {
+            $("#txtStartDate").tooltip("hide");
+        });
+        $("#txtEndDate").tooltip({
+            title: "To Date must be greater than From Date",
+            trigger: "manual"
+        });
+        $("#txtEndDate").change(function (e) {
+            $("#txtEndDate").tooltip("hide");
+        });
+
+        $("#btnProceed").click(function (e) {
+            debugger;
+            var Company = $("#ddlCompany option:selected").val();
+            var BoNAmeID = $("#txtBusinessObjectID").val();
+            var RoleCount = $("#ddlRole option:selected").length;
+            var Role = $.map($("#ddlRole option:selected"), function (el, i) { return $(el).val(); });
+            var WFlowName = $('#txtWorkFlowName').val();
+            var WFlowDesc = $('#txtWorkFlowDesc').val();
+            var StartDate = $('#txtStartDate').val();
+            var EndDate = $('#txtEndDate').val();
+            var btnName = $("#btnProceed").val();
+            var WorkFlowID = $('#txtWorkFlowID').val();
+            var OldWorkFlowId = $('#txtOldWorkFlowId').val();
+            var isValid = $("#txtIsValid").val();
+
+            //if (BoNAmeID == "") {
+            //    $("#txtBusinessObjectID").tooltip("show");
+            //    event.preventDefault();
+            //    $("#txtBusinessObjectID").focus();
+            //    return false;
+            //}
+            //else
+            var CheckValidation = true;
+            if (Company == "0" || Company == undefined) {
+                $('#errorCompany').html('Please! Select The Company');
+                $('#ddlCompany').focus();
+                //$("#ddlCompany_chosen").tooltip("show");
+                //$("#ddlCompany").focus();
+                CheckValidation = false;
+                return false;
+            } else {
+                $('#errorCompany').html('');
+                CheckValidation = true;                
+            }
+            if (WFlowName == "") {
+                //$("#txtWorkFlowName").tooltip("show");
+                //event.preventDefault();
+                $('#errorWfName').html('Please Enter the WorkFlow Name Here');
+                $("#txtWorkFlowName").focus();
+                CheckValidation = false;
+                return false;
+
+            } else {
+                $('#errorWfName').html('');
+                CheckValidation = true;
+            }
+            if (!WFlowName.match(/[A-Za-z]/)) {
+                //$('#txtWorkFlowName').prop('title', 'WorkFlow Name should contain At least one letter').tooltip('show');
+                $('#errorWfName').html('WorkFlow Name should contain At least one letter');
+                $('#txtWorkFlowName').val('');
+                $("#txtWorkFlowName").focus();
+                CheckValidation = false;
+                return false;
+
+            } else {
+                $('#errorWfName').html('');
+                CheckValidation = true;
+            }
+            if (WFlowDesc == "") {
+                $('#errorWFDesc').html('Please Enter The Description here');
+                //$("#txtWorkFlowDesc").tooltip("show");
+                //event.preventDefault();
+                $("#txtWorkFlowDesc").focus();
+                CheckValidation = false;
+                return false;
+            } else {
+                $('#errorWFDesc').html('');
+                CheckValidation = true;
+            }
+            if (!WFlowDesc.match(/[A-Za-z]/)) {
+                //$('#txtWorkFlowDesc').attr('title', 'WorkFlow Description should contain At least one letter').tooltip('show');
+                $('#errorWFDesc').html('WorkFlow Description should contain At least one letter');
+                //event.preventDefault();
+                $('#txtWorkFlowDesc').val('');
+                $("#txtWorkFlowDesc").focus();
+                CheckValidation = false;
+                return false;
+            } else {
+                $('#errorWFDesc').html('');
+                CheckValidation = true;
+            }
+            if (RoleCount == 0) {
+                $('#errorAdmin').html('Please Select the Admin!');
+                //$("#ddlRole_chosen").tooltip("show");
+                $('#ddlRole_chosen').focus();
+                CheckValidation = false;
+                return false;
+
+            } else {
+                $('#errorAdmin').html('');
+                CheckValidation = true;
+            }
+            if (StartDate == "") {
+                $('#errorEffDate').html('Please Select The Effective From Date!');
+                //$("#txtStartDate").tooltip("show");
+                //event.preventDefault();
+                $('#txtStartDate').focus();
+                CheckValidation = false;
+                return false;
+
+            } else {
+                $('#errorEffDate').html('');
+                CheckValidation = true;
+            }
+            if (StartDate != "" && (EndDate != "" && Date.parse(EndDate) < Date.parse(StartDate))) {
+                $('#errorEndDate').html('Effective To Date should be greater then Effective From Date!');
+                //$("#errorEndDate").tooltip("show");
+                //event.preventDefault();
+                $('#txtEndDate').focus();
+                CheckValidation = false;
+                return false;
+
+            } else {
+                $('#errorEndDate').html('');
+                CheckValidation = true;
+            }
+            if (CheckValidation) {
+                debugger;
+                $.ajax({
+                    type: "POST",
+                    //contentType: "application/json; charset=utf-8",
+                    url: "../WorkFlowRule/SaveUpdateWorkFlowDetails",
+                    data: {Company: Company,BoNAmeID:BoNAmeID,WFlowName:WFlowName,WFlowDesc:WFlowDesc,Role:Role,StartDate:StartDate,EndDate:EndDate,WorkFlowID:WorkFlowID,isValid:isValid},
+                    dataType: "json",
+                    success: function (data) {
+                        debugger;
+                        if (data.statusId == -1) {
+                            swal({ title: '', text: data.message, type: 'warning', showConfirmButton: true });
+                            @*alertwithredirect('Warning', data.message, 'warning', '@Url.Action("WorkFlowView", "WorkFlowRule")');*@
+                        }
+                        else if (data.statusId == 1) {
+                            swal({ title: '', text: data.message, type: 'success', showConfirmButton: true });
+                            $('#grdWorkFlowView').DataTable().ajax.reload();
+                            $('#myModal').modal('hide');
+                            $("#ddlCompany").prop("disabled", false);
+                            $('#ddlCompany').val(0).trigger("chosen:updated");
+                            $('#ddlRole').val('').trigger("chosen:updated");
+                            //$("#ddlRole").chosen({ allow_single_deselect: true });
+                            $('#txtWorkFlowName').val("");
+                            $('#txtWorkFlowDesc').val("");
+                            $('#txtStartDate').val("");
+                            $("#txtStartDate").prop("disabled", false);
+                            $('#txtEndDate').val("");
+                            $('#txtWorkFlowID').val("");
+                            $("#txtIsValid").val();
+                            //  alertwithredirect('Success', data.message, 'success', '@Url.Action("WorkFlowView", "WorkFlowRule")');
+                        }
+                        else {
+                            //alertwithredirect('Success', data.message, 'success', '../WorkFlowRule/WorkFlowCreation?WorkFlowId=' + data.statusId + '&Type=N&OldWorkFlowId=' + OldWorkFlowId);
+                            swal({
+                                title: '',
+                                text: data.message,
+                                type: "success"
+                            }).then(function () {
+                                debugger
+                                window.location.href = "../WorkFlowRule/WorkFlowCreation?WorkFlowId=" + data.statusId + "&Type=N&OldWorkFlowId=" + OldWorkFlowId;
+                            });
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+        $("#ddlRole_chosen").change(function (e) {
+            $("#ddlRole_chosen").tooltip("destroy");
+        });
+    });
+    function OpenNewView(Id,ActionType) {
+        debugger;
+        window.location.href = "/WorkFlowRule/WorkFlowCreation?WorkFlowId=" + Id + "&Type=" + ActionType;
+    }
+
+    function EditData(Id,type) {
+        debugger;
+        // $('#lblNewWorkFlow').html("Edit Workflow")
+        $('#lblNewWorkFlow').html("Edit Workflow")
+        var selectedLanguage = $("input[name='language']:checked").val();
+
+        if (selectedLanguage === "en") {
+            $('#lblNewWorkFlow').text('Edit Workflow').attr('data-translate', 'Edit Workflow');
+        } else if (selectedLanguage === "hi") {
+            $('#lblNewWorkFlow').text('कार्य प्रवाह संपादित करें').attr('data-translate', 'कार्य प्रवाह संपादित करें');
+        }
+        //if (type.toLowerCase() == "c") {
+        //    $('#txtOldWorkFlowId').val(Id);
+        //    $("#txtBusinessObjectID").val($("#ddlBusinessObject option:selected").val());
+        //    $("#txtBoObjectName").val($("#ddlBusinessObject option:selected").text());
+        //    $("#btnProceed").val("Proceed");
+        //    $('#myModal').modal('show');
+        //} else
+        //{
+            var url = '@Url.Action("FetchDataForUpdate", "WorkFlowRule")';
+            $.post(url, { id: Id },
+         function (data) {
+             debugger;
+             if (data.WorkFlowName != "") {
+                 if (type.toLowerCase() == "c") {
+                     debugger;
+                     $('#txtOldWorkFlowId').val(Id);
+                     $("#txtBoObjectName").val(data.BusinessObjectName);
+                     $("#txtBusinessObjectID").val(data.BObjId);
+                     $("#txtIsValid").val('0');
+
+                     $("#ddlCompany").val(data.Company);
+                     //$("#ddlCompany").chosen({ allow_single_deselect: true });
+                     $('#ddlCompany').trigger("chosen:updated");
+                    // $("#ddlCompany").prop("disabled", true);
+                     $("#txtBusinessObjectID").val(data.BObjId);
+                     $("#txtBusinessObjectID").prop("disabled", true);
+                     $("#ddlRole").val(data.Role);
+                     $('#ddlRole').trigger("chosen:updated");
+                     //$("#ddlRole").chosen({ allow_single_deselect: true });
+                     $('#txtWorkFlowName').val(data.WorkFlowName);
+                     $('#txtWorkFlowDesc').val(data.WorkFlowDescription);
+                     $('#txtWorkFlowID').val(0);
+                     $('#txtWorkFlowID').prop("disabled", true);
+                     $("#txtBoObjectName").val(data.BusinessObjectName);
+                     $("#txtBoObjectName").prop("disabled", true);
+                     // $("#btnProceed").val("Save & Continue Design");
+                        var selectedLanguage = $("input[name='language']:checked").val();
+
+                        if (selectedLanguage === "en") {
+                            $('#btnProceed').text('Save & Continue Design').attr('data-translate', 'Save & Continue Design');
+                        } else if (selectedLanguage === "hi") {
+                            $('#btnProceed').text('डिज़ाइन सहेजें और जारी रखें').attr('data-translate', 'डिज़ाइन सहेजें और जारी रखें');
+                        }
+                     $('#myModal').modal('show');
+                 } else {
+                     $("#ddlCompany").val(data.Company);
+                     //$("#ddlCompany").chosen({ allow_single_deselect: true });
+                     $("#ddlCompany").prop("disabled", true);
+                     $('#ddlCompany').trigger("chosen:updated");
+                     $("#txtBusinessObjectID").val(data.BObjId);
+                     $("#txtBusinessObjectID").prop("disabled", true);
+                     $("#ddlRole").val(data.Role);
+                     $('#ddlRole').trigger("chosen:updated");
+                     //$("#ddlRole").chosen({ allow_single_deselect: true });
+                     $('#txtWorkFlowName').val(data.WorkFlowName);
+                     $('#txtWorkFlowDesc').val(data.WorkFlowDescription);
+                     $('#txtStartDate').val(data.StartDate);
+                     $("#txtStartDate").prop("disabled", true);
+                     $('#txtEndDate').val(data.EndDate);
+                     $('#txtWorkFlowID').val(data.WorkFlowID);
+                     $('#txtWorkFlowID').prop("disabled", true);
+                     $("#txtBoObjectName").val(data.BusinessObjectName);
+                     $("#txtBoObjectName").prop("disabled", true);
+                     $("#txtIsValid").val(data.sIsValid);
+                     // $("#btnProceed").val("Update");
+                     
+
+                        var selectedLanguage = $("input[name='language']:checked").val();
+
+                        if (selectedLanguage === "en") {
+                            $('#btnProceed').text('Update').attr('data-translate', 'Update');
+                        } else if (selectedLanguage === "hi") {
+                            $('#btnProceed').text('अद्यतन').attr('data-translate', 'अद्यतन');
+                        }
+                     $('#myModal').modal('show');
+                 }
+
+             } else {
+
+             }
+         });
+     // }
+    }
+
+    function fetchBusinessobject() {
+        debugger;
+        var Module = $('#ddlModuleName').val();
+        $("#btnNewWorkFlow").hide();
+        if (Module != 0) {
+            $('#ddlBusinessObject').prop("disabled", false);
+            var url = '@Url.Action("FetchBusinessObject", "WorkFlowRule")';
+            $.post(url, { Module: Module },
+            function (lstBusinessObject) {
+                debugger;
+                $("#ddlBusinessObject").html(""); // clear before appending new list
+                var s = '';
+                var len = lstBusinessObject.length;
+                //s = "<option value='0'>Select </option>";
+                for (var i = 0; i < len ; i++) {
+                    s += "<option value='" + lstBusinessObject[i]["Value"] + "'>" + lstBusinessObject[i]["Text"] + "</option>";
+                }
+                $('#ddlBusinessObject').html(s);
+                $('#ddlBusinessObject').trigger("chosen:updated");
+            });
+        }
+        else {
+            $('#ddlBusinessObject').val('');
+            $('#ddlBusinessObject').prop("disabled", true);
+            $('#ddlBusinessObject').trigger("chosen:updated");
+        }
+    }
+
+    function ShowNewWorkFlow() {
+        var BusinessObject = $('#ddlBusinessObject option:selected').val();
+        if (BusinessObject == "0" || BusinessObject == 0) {
+            $("#btnNewWorkFlow").hide();
+        }
+    }
+
+    function updatedefaultStatus(WorkFlowID, BObjId, BusinessObjectName) {
+        debugger;
+        var businessid = $("#ddlBusinessObject option:selected").val();
+        var url = '@Url.Action("SetDefaultWorkFlow", "WorkFlowRule")';
+        $.post(url, {
+            WorkFlowID: WorkFlowID,
+            Businessid: BObjId,
+            BusinessObjectName: BusinessObjectName
+        },
+        function (data) {
+            debugger;
+            $('#grdWorkFlowView').DataTable().ajax.reload();
+            //var Module = $('#ddlModuleName option:selected').text();
+            //var BusinessObject = $('#ddlBusinessObject option:selected').text();
+            if (data.statusId == 1) {
+                swal({ title: '', text: "Business Object:" + data.BusinessObjectName + " Default Workflow has been updated Successfully", type: 'success', showConfirmButton: true });
+            }
+            else {
+                swal({ title: '', text: "Something Went Wrong. Please Contact Support Team", type: 'warning', showConfirmButton: true });
+            }
+            //swal(data.message);
+            //   alertwithredirect('Success', data.message, 'success' , "");
+        });
+        // }
+    }
+    function closeModelPopup() {
+        debugger;
+        window.location.reload();
+        $('#errorEffDate').val('');
+        $('#errorAdmin').val('');
+        $('#errorAdmin').val('');
+        $('#errorWFDesc').val('');
+        $('#errorCompany').val('');
+        $('#errorWfName').val('');
+        $("#ddlRole option:selected").removeAttr("selected").trigger("chosen: updated");
+        $("#ddlRole").trigger("chosen: updated");
+        $("#ddlCompany").prop("disabled", false);
+        $('#ddlCompany').val(0).trigger("chosen:updated");
+        $('#ddlRole').val('').trigger("chosen:updated");
+        //$("#ddlRole").chosen({ allow_single_deselect: true });
+        $('#txtWorkFlowName').val("");
+        $('#txtWorkFlowDesc').val("");
+        $('#txtStartDate').val("");
+        $("#txtStartDate").prop("disabled", false);
+        $('#txtEndDate').val("");
+        $('#txtWorkFlowID').val("");
+        $("#txtIsValid").val();
+        //  $("#btnProceed").val("Create WorkFlow");
+        $('#myModal').modal('hide');
+    }
+    // $("#ddlCompany").val(0);
+    //   $("#ddlCompany").chosen({ allow_single_deselect: true });
+    // $("#ddlRole").val(0);
+    //     $("#ddlRole").chosen({ allow_single_deselect: true });
+
+    @*function StatusUpdate(WorkFlowID, statusId) {
+        debugger;
+        if (statusId == 0) {
+            var res = confirm("Are you sure want to Activate the WorkFlow Status?");
+            if (res == true) {
+                var activeWorkFlowStatus = 1;
+            }
+            else {
+                var activeWorkFlowStatus = 0;
+            }
+        } else {
+            var res = confirm("Are you sure want to Deactivate the WorkFlow Status? ");
+            if (res == true) {
+                var inactiveWorkFlowStatus = 1;
+            }
+            else {
+                var inactiveWorkFlowStatus = 0;
+            }
+        }
+        if (res == true) {
+            var url = '@Url.Action("ActivateDeactivateWorkFlow", "WorkFlowRule")';
+            $.post(url, {
+                workflowID: WorkFlowID,
+                Status: statusId,
+            },
+            function (data) {
+                debugger;
+                $('#grdWorkFlowView').DataTable().ajax.reload();
+                alertwithredirect('Success', data.message, 'success', '@Url.Action("WorkFlowView", "WorkFlowRule")');
+            });
+        }
+    }*@
+</script>
+

@@ -1,0 +1,20 @@
+﻿<div class="col-md-offset-2 col-md-9">
+    <dnt-captcha asp-captcha-generator-max="999999"
+                 asp-captcha-generator-min="111111"
+                 asp-captcha-generator-language="English"
+                 asp-captcha-generator-display-mode="ShowDigits"
+                 asp-use-relative-urls="true"
+                 asp-placeholder="Enter Captcha"
+                 asp-validation-error-message="Please enter the security code."
+                 asp-font-name="Tahoma"
+                 asp-font-size="20"
+                 asp-fore-color="#333333"
+                 asp-back-color="#ccc"
+                 asp-text-box-class="text-box form-control"
+                 asp-text-box-template="<span class='input-group-prepend'><span class='form-group-text'></span></span>{0}"
+                 asp-validation-message-class="text-danger"
+                 asp-refresh-button-class=""
+                 asp-use-noise="false" />
+   
+</div>
+<i style="position:absolute;top:11px;left:108px" id="pass-status" class="fa fa-refresh btn-sm" aria-hidden="true" onClick="refersh()"></i>

@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "CircleOffice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div style="height:100%;display:flex;justify-content:center;align-items:center!important;" class="row">
+
+               
+                <br />
+                @*<h3 class="text-center">Login</h3>*@
+                <form class="login-form">
+                    
+                    <p style="text-align:center;font-size:25px;color:red;">User Is Not Mapped to IEMS 2.0.......!</p>
+                    
+
+                </form>
+
+        </div>
+    </div>
+
+}

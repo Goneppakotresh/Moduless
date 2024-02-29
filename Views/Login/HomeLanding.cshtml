@@ -1,0 +1,1754 @@
+﻿@{
+	ViewBag.Title = "LicencePropertyView";
+}
+
+
+@{
+	//ViewBag.Title = "DataTable";
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	@* <meta http-equiv="Content-Security-Policy" content="frame-src 'self' *.YourProjectURL.com;"> *@
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+@* 	<meta http-equiv="refresh" content="0; url = https://sso.rajasthan.gov.in/signin" />
+ *@	<link rel="shortcut icon" type="~/assets/images/logo/logo.png" />
+	@* <link rel="shortcut icon" type="image/png" href="images/titleimg.png" /> *@
+	<link href="~/HomePage_Files/css/ThemeRedV1.css" rel="stylesheet" />
+	<link href="~/HomePage_Files/css/styleV1.css" rel="stylesheet" />
+	@*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" />*@
+
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet" />
+	@*<link href="~/HomePage_Files/css/All.css" rel="stylesheet" />*@
+
+	@*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" />*@
+	<link href="~/HomePage_Files/css/bootstrap-5.css" rel="stylesheet" />
+
+	@*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>*@
+	<script src="~/HomePage_Files/js/bootstrap_bundle.js"></script>
+
+
+	@*<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />*@
+	<link href="~/HomePage_Files/css/jquery_ui.css" rel="stylesheet" />
+	@*<script src="https://code.jquery.com/jquery-3.6.0.js"></script>*@
+	<script src="~/HomePage_Files/js/jquery_3.js"></script>
+
+	@*<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>*@
+	<script src="~/HomePage_Files/js/jquery_ui.js"></script>
+
+	@*<script src="https://code.highcharts.com/highcharts.js"></script>*@
+	<script src="~/HomePage_Files/js/Highcharts.js"></script>
+	@*<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>*@
+	<style>
+		.ui-tabs .ui-tabs-panel {
+			height: 177px !important;
+			overflow: auto;
+		}
+
+		.header {
+			display: flex !important;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.contentRow2 .content1 {
+			width: 100% !important
+		}
+
+		@@media only screen and (min-width:3000px)and (max-width:3100px) {
+
+			.vertical-header {
+				font: bold 15px Sans-Serif !important;
+				line-height: 38px !important;
+				top: 135px !important;
+				left: -104px !important;
+				width: 318px !important;
+			}
+
+			.vertical-header2 {
+				font: bold 14px Sans-Serif !important;
+				line-height: 36px !important;
+				width: 195px !important;
+				margin-top: 41px !important;
+				margin-left: 37px !important;
+			}
+
+			.content2 {
+				padding-left: 72px !important;
+			}
+		}
+
+		@@media only screen and (min-width:2500px)and (max-width:2600px) {
+
+
+			.vertical-header2 {
+				margin-top: 46px !important;
+				margin-left: 48px !important;
+			}
+		}
+
+		@@media only screen and (min-width:2300px)and (max-width:2400px) {
+
+			.vertical-header {
+				font: bold 15px Sans-Serif !important;
+				line-height: 38px !important;
+				top: 135px !important;
+				left: -124px !important;
+				width: 318px !important;
+			}
+
+			.vertical-header2 {
+				font: bold 14px Sans-Serif !important;
+				line-height: 36px !important;
+				width: 195px !important;
+				margin-top: 41px !important;
+				margin-left: -8px !important;
+			}
+
+			.content2 {
+				padding-left: 52px !important;
+			}
+		}
+
+		@@media only screen and (min-width:2001px)and (max-width:2100px) {
+
+			.vertical-header {
+				top: 142px !important;
+				left: -124px !important;
+				width: 318px !important;
+			}
+
+			.vertical-header2 {
+				width: 199px !important;
+				margin-top: 47px !important;
+				margin-left: -17px !important;
+			}
+
+			.content2 {
+				padding-left: 52px !important;
+			}
+		}
+
+
+		@@media only screen and (min-width:1900px)and (max-width:2000px) {
+
+			.vertical-header {
+				top: 142px !important;
+				left: -124px !important;
+				width: 318px !important;
+			}
+
+			.vertical-header2 {
+				width: 199px !important;
+				margin-top: 47px !important;
+				margin-left: -20px !important;
+			}
+
+			.content2 {
+				padding-left: 52px !important;
+			}
+		}
+
+
+		@@media only screen and (min-width:1700px)and (max-width:1800px) {
+			img.homeimage {
+				height: 300px !important;
+			}
+
+			div#container {
+				height: 300px !important;
+			}
+
+			.vertical-header {
+				top: 133px !important;
+				left: -125px !important;
+				width: 300px !important;
+			}
+
+			.vertical-header2 {
+				width: 199px !important;
+				margin-top: 47px !important;
+				margin-left: -36px !important;
+			}
+		}
+
+		@@media only screen and (min-width:1401px)and (max-width:1500px) {
+
+			.vertical-header2 {
+				width: 199px !important;
+				margin-top: 47px !important;
+				margin-left: -10px !important;
+			}
+		}
+
+		@@media only screen and (min-width:1300px)and (max-width:1400px) {
+			img.homeimage {
+				height: 300px !important;
+			}
+
+			div#container {
+				height: 300px !important;
+			}
+
+			.vertical-header {
+				top: 133px !important;
+				left: -129px !important;
+				width: 300px !important;
+			}
+
+			.vertical-header2 {
+				width: 199px !important;
+				margin-top: 47px !important;
+				margin-left: -49px !important;
+			}
+
+			.arrow {
+				margin-right: 5px !important;
+				margin-top: -6px !important;
+			}
+
+			.subtext {
+				font-size: 10px !important;
+			}
+		}
+
+		@@media only screen and (min-width:1200px)and (max-width:1299px) {
+			img.homeimage {
+				height: 300px !important;
+			}
+
+			div#container {
+				height: 300px !important;
+			}
+
+			.vertical-header {
+				top: 136px !important;
+				left: -131px !important;
+				width: 300px !important;
+				line-height: 18px !important;
+			}
+
+			.vertical-header2 {
+				width: 199px !important;
+				margin-top: 47px !important;
+				margin-left: -56px !important;
+				line-height: 18px !important;
+			}
+
+			.panel a {
+				padding: 0px !important;
+				font-size: 17px !important;
+			}
+
+			.subtext {
+				font-size: 11px !important;
+			}
+
+			.footer-content {
+				font-size: 14px !important;
+			}
+		}
+
+		@@media only screen and (min-width:1000px)and (max-width:1100px) {
+			img.homeimage {
+				height: 250px !important;
+			}
+
+			div#container {
+				height: 250px !important;
+			}
+
+			.vertical-header {
+				top: 114px !important;
+				left: -108px !important;
+				width: 250px !important;
+				line-height: 12px !important
+			}
+
+			.vertical-header2 {
+				width: 193px !important;
+				margin-top: 47px !important;
+				margin-left: -61px !important;
+				line-height: 12px !important
+			}
+
+			.panel a {
+				padding: 0px !important;
+				font-size: 17px !important;
+			}
+
+			#pointer h6 {
+				font-size: 11px !important;
+				line-height: 12px !important;
+			}
+
+			#pointer1 h6 {
+				font-size: 11px !important;
+				line-height: 12px !important;
+			}
+
+			.subtext {
+				font-size: 9px !important
+			}
+
+			.col-md-3.footer-content {
+				padding-left: 12px !important;
+				font-size: 12px !important;
+			}
+
+			.rsil-equip .icon {
+				width: 78px !important;
+			}
+		}
+
+		@@media only screen and (min-width:800px)and (max-width:900px) {
+			img.homeimage {
+				height: 250px !important;
+			}
+
+			div#container {
+				height: 250px !important;
+			}
+
+			.vertical-header {
+				top: 116px !important;
+				left: -110px !important;
+				width: 250px !important;
+				font: bold 8px Sans-Serif !important;
+			}
+
+			.vertical-header2 {
+				width: 193px !important;
+				margin-top: 55px !important;
+				font: bold 8px Sans-Serif !important;
+				margin-left: -68px !important;
+				line-height: 8px !important;
+			}
+
+			.footer3 h1 {
+				font-size: 13px !important;
+			}
+
+			#pointer h6 {
+				font-size: 9px !important;
+				line-height: 10px !important;
+				padding: 7px !important;
+			}
+
+			#pointer1 h6 {
+				font-size: 9px !important;
+				line-height: 10px !important;
+				padding: 7px !important;
+			}
+
+			.subtext {
+				font-size: 9px !important
+			}
+
+			.content2 {
+				padding-left: 80px !important;
+			}
+
+			.col-md-3.footer-content {
+				padding-left: 12px !important;
+				font-size: 12px !important;
+				word-break: break-word !important
+			}
+		}
+
+		@@media only screen and (min-width:700px)and (max-width:799px) {
+			img.homeimage {
+				height: 250px !important;
+			}
+
+			ul.navbar-nav li a {
+				margin-left: 79px !important;
+			}
+
+			div#container {
+				height: 250px !important;
+			}
+
+			.vertical-header {
+				top: 116px !important;
+				left: -113px !important;
+				width: 250px !important;
+				font: bold 8px Sans-Serif !important;
+			}
+
+			.vertical-header2 {
+				width: 195px !important;
+				margin-top: -134px !important;
+				font: bold 8px Sans-Serif !important;
+				margin-left: -86px !important;
+				line-height: 22px !important;
+			}
+
+			.footer3 h1 {
+				font-size: 11px !important;
+			}
+
+			#pointer h6 {
+				font-size: 9px !important;
+				line-height: 10px !important;
+				padding: 7px !important;
+			}
+
+			#pointer1 h6 {
+				font-size: 9px !important;
+				line-height: 10px !important;
+				padding: 7px !important;
+			}
+
+			.subtext {
+				font-size: 9px !important
+			}
+
+			.content2 {
+				padding-left: 80px !important;
+			}
+
+			.col-md-3.footer-content {
+				padding-left: 10px !important;
+				font-size: 10px !important;
+			}
+
+			.rsil-equip .icon {
+				width: 80px !important
+			}
+		}
+
+		@@media only screen and (min-width:601px)and (max-width:699px) {
+			img.homeimage {
+				height: 250px !important;
+			}
+
+			div#container {
+				height: 250px !important;
+			}
+
+			.footer-content {
+				border: none !important;
+			}
+
+			.vertical-header {
+				top: 116px !important;
+				left: -113px !important;
+				width: 250px !important;
+				font: bold 8px Sans-Serif !important;
+				display: none !important
+			}
+
+			.vertical-header2 {
+				top: 407px !important;
+				margin-left: 9px !important;
+				position: absolute !important;
+				-webkit-transform: rotate(0deg) !important;
+				-moz-transform: rotate(0deg) !important;
+				-ms-transform: rotate(0deg) !important;
+				-o-transform: rotate(0deg) !important;
+				width: 568px !important;
+				line-height: 13px !important;
+			}
+
+			.footer3 h1 {
+				font-size: 9px !important;
+			}
+
+			#pointer h6 {
+				font-size: 9px !important;
+				line-height: 10px !important;
+				padding: 7px !important;
+			}
+
+			#pointer1 h6 {
+				font-size: 9px !important;
+				line-height: 10px !important;
+				padding: 7px !important;
+			}
+
+			.subtext {
+				font-size: 9px !important
+			}
+
+			.col-md-3.footer-content {
+				padding-left: 10px !important;
+				font-size: 10px !important;
+			}
+
+			.rsil-equip .icon {
+				width: 80px !important
+			}
+		}
+
+		@@media only screen and (max-width:600px) {
+
+			.col-md-2.col-sm-2.Chief-minister {
+				width: 100% !important;
+			}
+
+			.vertical-header {
+				display: none !important
+			}
+
+			.vertical-header2 {
+				display: none !important
+			}
+
+			.footer-content {
+				border-right: none !important;
+			}
+		}
+
+		.subtext {
+			font-size: 10px
+		}
+	</style>
+
+
+	<style type="text/css">
+		img.cm {
+			border: 1px solid #d4d4d4 !important;
+		}
+
+		.arrow {
+			border: 1px solid #333;
+			padding: 5px;
+			border-radius: 50%;
+			font-size: 25px;
+			color: #fff;
+			display: inline-block;
+			background: #d5d08e;
+			float: right;
+			margin-right: 14px;
+			margin-top: -7px;
+		}
+
+		body {
+			overflow-x: hidden !important
+		}
+
+		.navbar-collapse {
+			z-index: 9999 !important
+		}
+
+			.navbar-collapse.collapse {
+				background-color: #BF360C !important;
+			}
+
+
+		/*  body {
+									zoom: 1.2!important;
+								}*/
+		.content-1 {
+			background-color: antiquewhite;
+		}
+
+		.rsil-equip .icon {
+			height: 60px;
+			width: 60px;
+			border: 2px solid #FF5F15;
+			border-radius: 16%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: #fff;
+		}
+
+		#pointer {
+			width: 150px;
+			height: 40px;
+			position: relative;
+			background: #FF5F15;
+			margin: auto 0;
+			box-shadow: 1px 0px #FF5F15;
+		}
+
+			#pointer h6 {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 1px 10px;
+				color: #fff !important;
+				font-size: 12px;
+				line-height: 12px;
+			}
+
+			#pointer:before {
+				content: "";
+				position: absolute;
+				right: -20px;
+				bottom: 0;
+				width: 0;
+				height: 0;
+				border-left: 20px solid #FF5F15;
+				border-top: 20px solid transparent;
+				border-bottom: 20px solid transparent;
+			}
+
+		#pointer1 {
+			width: 150px;
+			height: 40px;
+			position: relative;
+			background: #9b870c;
+			margin: auto 0;
+			box-shadow: 1px 0px #9b870c;
+		}
+
+			#pointer1 h6 {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 1px 10px;
+				color: #fff !important;
+				font-size: 11px;
+				line-height: 12px;
+			}
+
+			#pointer1:before {
+				content: "";
+				position: absolute;
+				right: -20px;
+				bottom: 0;
+				width: 0;
+				height: 0;
+				border-left: 20px solid #9b870c;
+				border-top: 20px solid transparent;
+				border-bottom: 20px solid transparent;
+			}
+
+		.rsil-equip .icon img {
+			height: 45px;
+			width: 45px;
+		}
+
+		.dashbord > * {
+			padding-right: 0 !important;
+			padding-left: 0 !important;
+			/* margin-top: var(--bs-gutter-y); */
+			position: relative !important
+		}
+		/*.highcharts-figure,
+								.highcharts-data-table table {
+									min-width: 100%;
+									max-width: 100%;
+									margin: 0 auto;
+								}*/
+
+		/*#container {
+									height: 400px;
+								}*/
+
+		.highcharts-data-table table {
+			font-family: Verdana, sans-serif;
+			border-collapse: collapse;
+			border: 1px solid #ebebeb;
+			margin: 10px auto;
+			text-align: center;
+			width: 100%;
+			max-width: 500px;
+		}
+
+		.highcharts-data-table caption {
+			padding: 1em 0;
+			font-size: 1.2em;
+			color: #555;
+		}
+
+		.highcharts-data-table th {
+			font-weight: 600;
+			padding: 0.5em;
+		}
+
+		.highcharts-data-table td,
+		.highcharts-data-table th,
+		.highcharts-data-table caption {
+			padding: 0.5em;
+		}
+
+		.highcharts-data-table thead tr,
+		.highcharts-data-table tr:nth-child(even) {
+			background: #f8f8f8;
+		}
+
+		.highcharts-data-table tr:hover {
+			background: #f1f7ff;
+		}
+
+
+
+		.content {
+			transition: all .3s;
+		}
+
+		.font-button {
+			padding: 0px;
+			cursor: pointer;
+		}
+
+		.SearchOrders a {
+			color: White;
+			display: none;
+		}
+
+		@@media only screen and (max-width:1100px) {
+			SearchOrders a {
+				display: block;
+			}
+		}
+
+		.caret {
+			display: inline-block;
+			margin-left: 2px;
+			vertical-align: middle;
+			border-top: 5px dashed;
+			border-top: 5px solid\9;
+			border-right: 5px solid transparent;
+			border-left: 5px solid transparent;
+		}
+
+		.header_Menu .menu > .menu-item > .sub-menu > .menu-item {
+			display: block;
+			background-image: url('../../HomePage_Files/img/Icons/dot.png');
+			background-repeat: repeat;
+		}
+
+		.content .header {
+			background-color: #e3a591 !important;
+			border-top-right-radius: 10px;
+			border-top-left-radius: 10px;
+		}
+
+		.tab-link {
+			border-top: 1px dotted #808080 !important;
+			padding: 10px 0 !important;
+		}
+
+		.ui-widget-content {
+			background: transparent !important;
+		}
+
+		.ui-widget-header {
+			border: none !important;
+			background: none !important;
+		}
+
+		.ui-widget.ui-widget-content {
+			border: none !important;
+		}
+
+		.ui-tabs .ui-tabs-panel {
+			border: 1px solid #BF360C !important;
+			background-image: url('../../HomePage_Files/img/Icons/dot.png') !important;
+		}
+
+		#quick-links {
+			border: 1px solid #BF360C !important;
+			margin-top: 10px !important;
+			background-image: url('../../HomePage_Files/img/Icons/dot.png');
+			padding-top: 15px;
+		}
+
+		.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+			border: 1px solid #BF360C !important;
+			background: #BF360C !important;
+			font-weight: normal !important;
+			color: #ffffff !important;
+		}
+
+		.ui-state-default {
+			border: 1px solid #e3a591 !important;
+			background: #e3a591 !important;
+			font-weight: normal !important;
+			color: #fff !important;
+		}
+
+
+		.panel {
+			box-sizing: border-box;
+			position: relative;
+			display: inline-block;
+			/*width: 300px;*/
+			height: 120px;
+			margin: 10px;
+			font-size: 32px;
+			font-weight: 600;
+			color: #fff;
+			overflow: hidden;
+			border-radius: 8px;
+			text-align: center;
+		}
+
+			.panel a {
+				position: relative;
+				display: block;
+				padding: 12px 25px 25px 1px;
+				color: #fff;
+				text-decoration: none;
+				z-index: 2;
+				font-size: 12px !important;
+			}
+
+				.panel a span {
+					display: block;
+					font-size: 30px;
+					font-weight: 700;
+					line-height: 57px;
+					text-align: center;
+				}
+
+			.panel:after {
+				position: absolute;
+				font-family: FontAwesome;
+				color: #000000;
+				z-index: 1;
+				transition: all 0.5s;
+				line-height: normal;
+			}
+
+			.panel.post {
+				background-color: #b8aa0e;
+			}
+
+				.panel.post:after {
+					content: "\f08d";
+					font-size: 200px;
+					color: #a5980d;
+					top: 45px;
+					right: 60px;
+					-webkit-transform: rotate(45deg);
+					transform: rotate(45deg);
+				}
+
+				.panel.post:hover:after {
+					top: 8px;
+				}
+
+			.panel.comment {
+				background-color: #0377c0;
+			}
+
+				.panel.comment:after {
+					content: "\f075";
+					font-size: 180px;
+					color: #036bac;
+					top: 30px;
+					right: 35px;
+				}
+
+				.panel.comment:hover:after {
+					top: -5px;
+				}
+
+			.panel.page {
+				background-color: #279824;
+			}
+
+				.panel.page:after {
+					content: "\f15c";
+					font-size: 160px;
+					color: #238820;
+					top: 62px;
+					right: 39px;
+				}
+
+				.panel.page:hover:after {
+					top: 24px;
+				}
+
+			.panel.user {
+				background-color: #fc1c3e;
+			}
+
+				.panel.user:after {
+					content: "\f007";
+					font-size: 200px;
+					color: #ec0326;
+					top: 45px;
+					right: 35px;
+				}
+
+				.panel.user:hover:after {
+					top: 7px;
+				}
+
+			.panel:hover:after {
+				transition: all 0.5s;
+			}
+
+		.topstrip {
+			background-color: antiquewhite !important;
+			background-image: none !important;
+			pointer-events: none !important
+		}
+
+		.footer3 {
+			/*            background-color: antiquewhite !important;
+						*/ background-image: none !important;
+		}
+
+		.header_Menu .wrapper {
+			display: table !important;
+		}
+
+		/*.navbar {
+									height: 50px !important;
+								}*/
+
+		.header_Menu .menu > .menu-item {
+			margin-left: 80px !important;
+		}
+
+			.header_Menu .menu > .menu-item > a {
+				padding: 4px 0 !important;
+			}
+
+		.vertical-header {
+			font: bold 12px Sans-Serif;
+			letter-spacing: 2px;
+			text-transform: uppercase;
+			background: #e3a591;
+			color: #fff;
+			padding: 5px 10px;
+			margin: 0 0 10px 0;
+			line-height: 24px;
+			border-top-right-radius: 10px;
+			border-top-left-radius: 10px;
+			position: absolute;
+			top: 141px;
+			left: -142px;
+			-webkit-transform: rotate(90deg);
+			-moz-transform: rotate(90deg);
+			-ms-transform: rotate(90deg);
+			-o-transform: rotate(90deg);
+			width: 317px;
+		}
+
+		.public {
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
+
+		.vertical-header2 {
+			font: bold 12px Sans-Serif;
+			letter-spacing: 2px;
+			text-transform: uppercase;
+			background: #e3a591;
+			color: #fff;
+			padding: 5px 10px;
+			margin: 0 0 10px 0;
+			line-height: 24px;
+			border-top-right-radius: 10px;
+			border-top-left-radius: 10px;
+			/*position: absolute;
+									top: 48px;
+									left: -110px;*/
+			-webkit-transform: rotate(90deg);
+			-moz-transform: rotate(90deg);
+			-ms-transform: rotate(90deg);
+			-o-transform: rotate(90deg);
+			width: 202px;
+			margin-top: 46px;
+			margin-left: -44px;
+		}
+
+		ul.navbar-nav li a {
+			white-space: nowrap !important;
+		}
+
+		.footer2 {
+			background-color: #BF360C !important;
+		}
+
+		.footer-content {
+			text-align: justify;
+			color: #fff;
+			border-right: 1px solid #fff;
+			padding-left: 12px;
+			line-height: 24px;
+			font-size: 13px !important;
+		}
+
+		.header1 {
+			width: auto !important;
+			float: none !important;
+			padding: 10px !important;
+		}
+
+		.header {
+			display: flex !important
+		}
+
+		.header2 {
+			width: auto !important;
+			float: initial !important;
+			text-align: center !important;
+			padding: 10px 15px !important;
+			margin-top: 0 !important;
+		}
+
+		.nav-link {
+			color: #fff !important
+		}
+
+		ul.navbar-nav li a {
+			margin-left: 100px;
+			/* position: absolute; */
+			/* text-align: center; */
+		}
+	</style>
+
+</head>
+<body>
+	<form method="post" action="https://finance.rajasthan.gov.in/website/default.aspx" id="form1">
+
+		<div>
+			<div class="topstrip">
+				<div class="left">
+					&nbsp;<span id="LblTemperature"></span>
+				</div>
+				<div class="right">
+					<div class="item1">
+						<a href="#skiptocontent" title="Skip to main content">Skip to main content</a>&nbsp;|
+					</div>
+					<div class="item2">
+						<a href="ScreenReaderAccess.html" title="Screen Reader Access">Screen Reader Access</a>&nbsp;|
+					</div>
+					<div class="item3">
+						<input type="image" name="ctl00$ibbrown" id="ibbrown" title="Brown Theme" alt="Brown Theme" src="~/HomePage_Files/img/Icons/brown.jpg" style="height:10px;width:10px;" />
+						&nbsp;
+						<input type="image" name="ctl00$ibred" id="ibred" title="Red Theme" alt="Red Theme" src="~/HomePage_Files/img/Icons/red.jpg" style="height:10px;width:10px;" />
+						&nbsp;
+						<input type="image" name="ctl00$ibblue" id="ibblue" title="Blue Theme" alt="Blue Theme" src="~/HomePage_Files/img/Icons/blue.jpg" style="height:10px;width:10px;" />&nbsp;&nbsp;|&nbsp;
+						<a class="font-button plus" title="Increase Font Size">A+</a>&nbsp;&nbsp;<a class="font-button Normal" title="Normal Font Size">A</a>&nbsp;&nbsp;&nbsp;<a class="font-button minus" title="Decrease Font Size">A-</a>&nbsp;|
+					</div>
+					<div class="item4">
+						<span id="Label1">Website Updated: 14-Aug-2023</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="header">
+				<div class="header1">
+					<a href="#">
+
+						<img src="~/HomePage_Files/img/Icons/HeaderBig.jpg" alt="HeaderBig" title="Finance Department, GoR" class="ImageBig" />
+
+					</a>
+					<a href="#" style="display: inline-block;">
+						<img src="~/HomePage_Files/img/Icons/HeaderSmall.jpg" alt="HeaderSmall" title="Finance Department, GoR"
+							 class="ImageSmall" />
+					</a>
+
+				</div>
+				<div class="header2">
+
+
+					<a href="#">
+						<img src="~/HomePage_Files/img/Icons/G20_logo1.svg.png" style="display: inline-block;" title="State Budget 2023-2024"
+							 alt="State Budget 2023-2024" />
+					</a>
+
+
+				</div>
+
+				<div class="header2">
+					<img src="~/HomePage_Files/img/Icons/azadi-ka-amrit.jpg" alt="Chief Minister of Rajasthan" title="Chief Minister of Rajasthan" />
+				</div>
+				<div class="header2">
+					<img src="~/HomePage_Files/img/Icons/swachha-bharatha.png" alt="Chief Minister of Rajasthan" title="Chief Minister of Rajasthan" />
+				</div>
+				<div class="header2">
+					<img style="margin-top: 18px!important;" src="~/assets/images/iems2.0_Home.png" />
+				</div>
+
+			</div>
+			<section class="container_Menu">
+				<nav class="navbar navbar-expand-sm">
+					<div class="container-fluid">
+
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="collapsibleNavbar">
+							<ul class="navbar-nav">
+								<li class="nav-item">
+									<a class="nav-link" href="#">Home</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#">About Us</a>
+								</li>
+								@*<li class="nav-item">
+								<a class="nav-link" href="#">Reports</a>
+								</li>
+								<li class="nav-item">
+								<a class="nav-link" href="#">RTI</a>
+								</li>*@
+								<li class="nav-item">
+									<a class="nav-link" href="#">Register</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#">Feedback</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/login/login">Login</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</section>
+			@*<div id="stickymenu">
+			<header_menu class="header_Menu">
+			<section class="container_Menu">
+			<a name="skiptocontent"></a>
+
+			<div class="wrapper">
+			<button type="button" class="burger" id="burger">
+			<span class="burger-line"></span>
+			<span class="burger-line"></span>
+			<span class="burger-line"></span>
+			<span class="burger-line"></span>
+			</button>
+			<span class="overlay" id="overlay"></span>
+			<nav class="navbar" id="navbar">
+			<ul class="menu">
+			<li class="menu-item"><a href="#">Home</a></li>
+			<li class="menu-item menu-item-child">
+			<a href="#" data-toggle="sub-menu" id="submenu1">About Us <i class="caret"></i></a>
+			<ul class="sub-menu" id="aboutus">
+			<li class="menu-item"><a href="AboutDepartment.html">Lorem Epsum</a></li>
+			<li class="menu-item" style="border-bottom:3px solid #000000;"><a href="OrganisationalStructure.html">Lorem Epsum</a></li>
+			</ul>
+			</li>
+			<li class="menu-item menu-item-child">
+			<a href="#" data-toggle="sub-menu" id="submenu2">Acts & Policies <i class="caret"></i></a>
+			<ul class="sub-menu" id="budget">
+			<li class="menu-item"><a href="StateBudgetAll.html">Lorem Epsum</a></li>
+			<li class="menu-item"><a href="BudgetObjectCodes.html">Lorem Epsum</a></li>
+			<li class="menu-item"><a href="https://finance.rajasthan.gov.in/docs/budget/budgetmanual/budgetmanual_vol1_270912.pdf" target="_blank">Lorem Epsum</a></li>
+			<li class="menu-item" style="border-bottom:3px solid #000000;"><a href="https://finance.rajasthan.gov.in/docs/budget/budgetmanual/budgetmanual_vol2_270912.pdf" target="_blank">Lorem Epsum</a></li>
+			</ul>
+			</li>
+			<li class="menu-item"><a href="#">Reports</a></li>
+			<li class="menu-item menu-item-child">
+			<a href="#" data-toggle="sub-menu" id="submenu3">RTI <i class="caret"></i></a>
+			<ul class="sub-menu">
+			<li class="menu-item"><a href="https://finance.rajasthan.gov.in/docs/rules/rsr/rsrrules.pdf" target="_blank">Rajasthan Service Rules, Volume-I</a></li>
+			<li class="menu-item"><a href="https://finance.rajasthan.gov.in/docs/rules/rsr/rsrrules-vol-II.pdf" target="_blank">Rajasthan Service Rules, Volume-II</a></li>
+			<li class="menu-item"><a id="LbPayScalesRules" href="javascript:__doPostBack(&#39;ctl00$LbPayScalesRules&#39;,&#39;&#39;)">Pay Scales Rules</a></li>
+			</ul>
+			</li>
+			<li class="menu-item"><a href="#">Register</a></li>
+			<li class="menu-item menu-item-child">
+			<a href="#" data-toggle="sub-menu" id="A1">Feedback<i class="caret"></i></a>
+			<ul class="sub-menu" id="telephonedirectory">
+			<li class="menu-item"><a href="TelephoneDirectory.html">Lorem Epsum</a></li>
+			<li class="menu-item" style="border-bottom:3px solid #000000;"><a href="English.html">Lorem Epsum</a></li>
+			</ul>
+			</li>
+			<li class="menu-item"><a href="/login/login">Login</a></li>
+			<li class="menu-item"><a href="FeedbackForm.html">Mobile App</a></li>
+			<li class="menu-item"><a href="ContactUs.html">Contact Us</a></li>
+			</ul>
+			</nav>
+			<div class="SearchOrders" style="padding-right:30px;">
+			<a href="SearchOrders.html">&#x1F50D; Search</a>
+			</div>
+			</div>
+			</section>
+			</header_menu>
+			</div>*@
+			<div class="container-fluid content-1 content">
+
+
+				<div id="demo1" style="z-index: -100;" class="row dashbord">
+					<div class="col-md-5">
+						<a href="#">
+							<img src="https://excise.rajasthan.gov.in/WebsiteFiles/exe1.jpg" class="homeimage" alt="Finance" title="Finance" style="height:317px;width:100%" />
+						</a>
+
+					</div>
+					@*<div class="col-md-2  Chief-minister" style="width:19%">
+					<a href="#">
+
+					<img src="~/HomePage_Files/img/Icons/1680183725-9566.png" alt="Chief-minister" class="cm" title="Chief-minister" style="height:317px;width:100%" />
+					</a>
+
+					</div>*@
+					<div class="col-md-3" style="position:relative!important">
+						<figure class="highcharts-figure">
+							<div id="container" style="height:317px" ;></div>
+
+						</figure>
+
+					</div>
+					<div class="col-md-1" style="width:3%!important">
+						<h3 class="vertical-header">Revenue Generation</h3>
+
+					</div>
+					<div class="col-md-3">
+						<a href="#">
+							<img src="~/assets/images/map.jpeg" class="homeimage" alt="map" title="map" style="height:317px;width:100%" />
+						</a>
+
+					</div>
+
+					<div class="col-md-1" style="width:3%!important">
+						<h3 class="vertical-header ">Excise Map of Rajastan</h3>
+
+					</div>
+
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-md-11 rsil-equip" style="position:relative!important">
+						<div class="row">
+							<div class="col-md-3">
+								<ul>
+									<li style="display:flex">
+										<div class="icon">
+
+											<img src="~/HomePage_Files/img/Icons/finding.png" class="img-fluid" alt="" />
+										</div>
+										<div id="pointer">
+											<h6 class="mt-2"> Brand wise MRP List</h6>
+										</div>
+									</li>
+
+
+
+								</ul>
+							</div>
+							<div class="col-md-3">
+								<ul>
+									<li style="display:flex">
+										<div class="icon">
+											<img src="~/HomePage_Files/img/Icons/resume.png" class="img-fluid" alt="" />
+										</div>
+										<div id="pointer1">
+											<h6><a style="text-decoration:none!important;color:#fff!important" href="../OtherLicensee/OccasionLicensee/ApplyOccasionLicensee"> Occasional Licence Application</a></h6>
+										</div>
+									</li>
+
+
+
+								</ul>
+							</div>
+							<div class="col-md-3">
+								<ul>
+									<li style="display:flex">
+										<div class="icon">
+
+											<img src="~/HomePage_Files/img/Icons/approve.png" class="img-fluid" alt="" />
+										</div>
+										<div id="pointer">
+											<h6><a style="text-decoration:none!important;color:#fff!important" href="../RetailOn/LicenseGeneration/LicenseGeneration"> Retail On Licensee</a></h6>
+										</div>
+									</li>
+
+
+
+								</ul>
+							</div>
+							<div class="col-md-3">
+								<ul>
+									<li style="display:flex">
+										<div class="icon">
+
+											<img src="~/HomePage_Files/img/Icons/multiple-choice.png" class="img-fluid" alt="" />
+										</div>
+										<div id="pointer1">
+											<h6 class="mt-2">Directory</h6>
+										</div>
+									</li>
+
+
+
+								</ul>
+							</div>
+							<div class="col-md-3">
+								<ul>
+									<li style="display:flex">
+										<div class="icon">
+
+											<img src="~/HomePage_Files/img/Icons/location.png" class="img-fluid" alt="" />
+										</div>
+										<div id="pointer1">
+											<h6 class="mt-2">Nearby Retail Outlet</h6>
+										</div>
+									</li>
+
+
+
+								</ul>
+							</div>
+							<div class="col-md-3">
+								<ul>
+									<li style="display:flex">
+										<div class="icon">
+
+											<img src="~/HomePage_Files/img/Icons/registration.png" class="img-fluid" alt="" />
+										</div>
+										<div id="pointer">
+											<h6>Commercial Place registration</h6>
+										</div>
+									</li>
+
+
+
+								</ul>
+							</div>
+							<div class="col-md-3">
+								<ul>
+									<li style="display:flex">
+										<div class="icon">
+
+											<img src="~/HomePage_Files/img/Icons/feedback.png" class="img-fluid" alt="" />
+										</div>
+										<div id="pointer1">
+											<h6 class="mt-2">lodge a Complaint</h6>
+										</div>
+									</li>
+
+
+
+								</ul>
+							</div>
+							<div class="col-md-3">
+								<ul>
+									<li style="display:flex;position:relative!important">
+										<div class="icon">
+
+											<img src="~/HomePage_Files/img/Icons/project-status.png" class="img-fluid" alt="" />
+										</div>
+										<div id="pointer">
+											<h6><a style="text-decoration:none!important;color:#fff!important" href="../RetailOn/LicenseGeneration/TrackApplication"> Application Status</a></h6>
+										</div>
+									</li>
+								</ul>
+							</div>
+
+						</div>
+
+					</div>
+					<div class="col-md-1">
+						<h3 class="vertical-header2 responsive">PubliC e-Services</h3>
+					</div>
+				</div>
+				<div class="contentRow1 row">
+					<div class="content1 col-md-4">
+						<div class="header">
+							News
+						</div>  <div>
+							<div id="tabs">
+								<ul>
+									<li><a href="#tabs-1">Excise</a></li>
+									<li><a href="#tabs-2">RSBCL</a></li>
+									<li><a href="#tabs-3">RSGSM</a></li>
+								</ul>
+								<div id="tabs-1">
+									@* <ul> *@
+									@*  <li class="tab-link">Lorem ipsum dolor sit amet, consetetur sadipscing</li>
+									<li class="tab-link">Another item</li>
+									<li class="tab-link">This is another item in an unordered list.</li> *@
+									<ul>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/आमसूचना (1).pdf">वाहन आम सूचना- जिला आबकारी अधिकारी हनुमानगढ़</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/AAM SUCHNA DEO BARMER.PDF">वाहन आम सूचना- जिला आबकारी अधिकारी बाड़मेर</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/13650.pdf">Salient features of Excise and Temperence Policy 2024-25</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/Excise and Temperence Policy 2024-25.pdf">Excise and Temperence Policy 2024-25</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/avedan patra-1.pdf">भांग अनुज्ञापत्र के नवीनीकरण वर्ष 2024-25 हेतु आवेदन पत्र</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/bhang vigyapti-1-2-2.pdf">भांग अनुज्ञाधारियों के नवीनीकरण वर्ष 2024-25 हेतु सूचना</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/HQ 544 Renewal vighyapti 2024-25 02-02-2024.pdf">खुदरा मदिरा दुकानों के नवीनीकरण वर्ष 2024-25 हेतु विज्ञप्ति</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/BB.pdf">वाहन नीलामी - कार्यालय जिला आबकारी अधिकारी बांसवाडा</a>
+										</li>
+										<li class="news">
+											<a class="hcur " data-file="Uploads/null">Final Seniority List of Junior Assistant (Non TSP)</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/DocScanner Jan 18, 2024 2-45 PM-2-4.pdf">सार्वजनिक सूचना - कार्यालय जिला आबकारी अधिकारी उदयपुर</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/1773.pdf">मदिरा के अवैध परिवहन में प्रयुक्त जब्त वाहनों की नीलामी माह मार्च 24 तक सम्पादित कराने के संबंध में।</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/Bakaya 12.pdf">आबकारी विभाग के वर्ष 2021- 22 तक के सभी बाकीदारों की सूचना</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/42 (1).pdf">अधिसूचना -42</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/41 (1).pdf">अधिसूचना -41</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/39.pdf">अधिसूचना -39</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/11692.pdf">Summary of Amendment in Excise and Temperance Policy 2022-23 and 2023-24</a>
+										</li>
+										<li class="news">
+											<a class="hcur clsdoc" data-file="Uploads/11691.pdf">Amendment in Excise and Temperance Policy 2022-23 and 2023-24</a>
+										</li>
+									</ul>
+									@* </ul> *@
+								</div>
+								<div id="tabs-2">
+									<ul><li class="news"><a class="hcur  " data-file="Uploads/null">Hiring of Driver for Driving Govt. Vehicle for the FY 2023-24 and 2024-25</a></li><li class="news"><a class="hcur  clsdoc" data-file="Uploads/DocScanner 31 Jan 2024 3-06 pm(1) (1).pdf">Selection list for the post of Ministrial employee</a></li><li class="news"><a class="hcur  clsdoc" data-file="Uploads/DocScanner 31 Jan 2024 3-03 pm (1).pdf">Selection list for the post of Informatic Assistant</a></li><li class="news"><a class="hcur  clsdoc" data-file="Uploads/DocScanner 31 Jan 2024 3-04 pm(1) (1).pdf">Selection list for the post of Jr. Accountant</a></li><li class="news"><a class="hcur  clsdoc" data-file="Uploads/DocScanner 31 Jan 2024 3-07 pm.pdf">Selection list for the post of Supervisor</a></li><li class="news"><a class="hcur  clsdoc" data-file="Uploads/DocScanner 31 Jan 2024 3-05 pm(1).pdf">Selection list for the post of Depot Manager</a></li><li class="news"><a class="hcur  clsdoc" data-file="Uploads/15.12.2023.pdf">Office order Regarding equipped CoERRA Auditorium &amp; Conference Hall</a></li></ul>
+								</div>
+								<div id="tabs-3">
+									<ul>
+									@* 	<li class="tab-link">Lorem ipsum dolor sit amet, consetetur sadipscing</li>
+										<li class="tab-link">Another item</li>
+										<li class="tab-link">This is another item in an unordered list.</li> *@
+
+									</ul>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+
+					<div class="content2 col-md-4">
+
+						<div class="row ms-auto">
+							<div class="panel post col-md-5 ">
+								<a href="javascript:void();">Distilleries<span>8 </span></a>
+							</div>
+							<div class="panel comment col-md-5">
+								<a href="javascript:void();">Bottling Plants<span>39</span></a>
+							</div>
+
+
+
+							<div class="panel page col-md-5">
+								<a href="javascript:void();">Composite Liquor shops<span>5 </span></a>
+							</div>
+							<div class="panel user col-md-5">
+								<a href="javascript:void();">
+									Bars
+									<h6 class="subtext">(Hotels/Restaurants/Clubs)</h6>
+
+									<span>4 </span>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="content3 col-md-4">
+						<div class="header">
+							Acts, Rules, Policies & Other Documents
+						</div>
+						<div>
+							<div id="quick-links">
+
+								<ul>
+									<li><a href="#tabs-1">Excise</a></li>
+									<li><a href="#tabs-2">RSBCL</a></li>
+									<li><a href="#tabs-3">RSGSM</a></li>
+								</ul>
+								<div id="tabs-1">
+									<ul><li><a class="clsmenufile" data-id="89" data-name="Microbrewery Nofitication 01-04-2021" data-flag="2" data-file="Uploads/MN.pdf" style="cursor:pointer;"> Microbrewery Nofitication 01-04-2021</a></li><ul style="display:none;" id="p_id-89"></ul><li><a class="clsmenufile" data-id="131" data-name="Details of the Fees levied by the Department" data-flag="1" data-file="Downloads/RSED/PDF/NewLicanseFee.pdf" style="cursor:pointer;"> Details of the Fees levied by the Department</a></li><ul style="display:none;" id="p_id-131"></ul><li><a class="cls_par_plus" data-id="79" data-name="Liquor Producers" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> Liquor Producers</a></li><ul style="display: none;" id="p_id-79"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="80" data-name="Bottling Plant" data-flag="1" data-file="RSED/ASP/web/producers.htm"> Bottling Plant</a></li><ul style="display:none;" id="p_id-80"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="81" data-name="Distilleries" data-flag="1" data-file="RSED/ASP/web/producers.htm"> Distilleries</a></li><ul style="display:none;" id="p_id-81"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="82" data-name="Breweries" data-flag="1" data-file="RSED/ASP/web/producers.htm"> Breweries</a></li><ul style="display:none;" id="p_id-82"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="83" data-name="Reduction Centers of RSGSM" data-flag="1" data-file="Root\Reduction-Centers1.aspx"> Reduction Centers of RSGSM</a></li><ul style="display:none;" id="p_id-83"></ul></ul><li><a class="clsmenufile" data-id="78" data-name="Heritage Liqueur" data-flag="1" data-file="Root\Heritage-Liqueur1.aspx" style="cursor:pointer;"> Heritage Liqueur</a></li><ul style="display:none;" id="p_id-78"></ul><li><a class="clsmenufile" data-id="77" data-name="Important Information for General Public" data-flag="1" data-file="Root\Important-Information1.aspx" style="cursor:pointer;"> Important Information for General Public</a></li><ul style="display:none;" id="p_id-77"></ul><li><a class="clsmenufile" data-id="61" data-name="ROSTER" data-flag="1" data-file="Root\Excise_Roster1.aspx" style="cursor:pointer;"> ROSTER</a></li><ul style="display:none;" id="p_id-61"></ul><li><a class="clsmenufile" data-id="7" data-name="RTI" data-flag="2" data-file="Downloads/RSED/Information%20Act%20_First%20file.pdf" style="cursor:pointer;"> RTI</a></li><ul style="display:none;" id="p_id-7"></ul><li><a class="clsmenufile" data-id="6" data-name="Tenders" data-flag="0" data-file="null" style="cursor:pointer;"> Tenders</a></li><ul style="display:none;" id="p_id-6"></ul><li><a class="cls_par_plus" data-id="4" data-name="Policy" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> Policy</a></li><ul style="display:none;" id="p_id-4"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="118" data-name="Amendment in Excise and Temperance Policy 2024-25" data-flag="2" data-file="Downloads/RSED/PDF/AmendmentinExciseandTemperancePolicy2024_25.pdf"> Amendment in Excise and Temperance Policy 2024-25</a></li><ul style="display:none;" id="p_id-118"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="148" data-name="Amendment in Excise and Temperance Policy 2022-23/24" data-flag="2" data-file="Downloads/RSED/PDF/AmendmentinExciseandTemperancePolicy2022_23_24.pdf"> Amendment in Excise and Temperance Policy 2022-23/24</a></li><ul style="display:none;" id="p_id-148"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="154" data-name="Excise and Temperance Policy for the year 2022-23/24" data-flag="2" data-file="Downloads/RSED/PDF/ExcisePolicy22-23.pdf"> Excise and Temperance Policy for the year 2022-23/24</a></li><ul style="display:none;" id="p_id-154"></ul></ul><li><a class="cls_par_plus" data-id="2" data-name="Rules" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> Rules</a></li><ul style="display:none;" id="p_id-2"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="21" data-name="The Rajasthan Excise Rules, 1956" data-flag="2" data-file="Downloads/RSED/PDF/RajasthanExciseRules1956Amended-Aug11-2006.pdf"> The Rajasthan Excise Rules, 1956</a></li><ul style="display:none;" id="p_id-21"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="60" data-name="Rajasthan Distilleries Rules 1976" data-flag="2" data-file="Downloads/RSED/PDF/Rajasthan%20Distilleries%20Rules%201976.pdf"> Rajasthan Distilleries Rules 1976</a></li><ul style="display:none;" id="p_id-60"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="62" data-name="Rajasthan Brewery Rules, 1972" data-flag="2" data-file="Downloads/RSED/PDF/Rajasthan%20Brewery%20Rules,%201972.pdf"> Rajasthan Brewery Rules, 1972</a></li><ul style="display:none;" id="p_id-62"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="63" data-name="Rajasthan Winery Rules, 2016" data-flag="2" data-file="Uploads/Rajasthan%20Winery%20Rules-2016.pdf"> Rajasthan Winery Rules, 2016</a></li><ul style="display:none;" id="p_id-63"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="64" data-name="Rajasthan Excise Laboratory (State and subordinate) Service Rules 2015" data-flag="2" data-file="Uploads/Rajasthan%20Excise%20Laboratory%20(State%20and%20subordinate)%20Service%20Ruels%202015.pdf"> Rajasthan Excise Laboratory (State and subordinate) Service Rules 2015</a></li><ul style="display:none;" id="p_id-64"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="65" data-name="Rajasthan Excise Subordinate Service (General Branch) Rules 1974" data-flag="2" data-file="Uploads/Rajasthan%20Excise%20Subordinate%20Service%20(General%20Branch)%20Rules%201974.pdf"> Rajasthan Excise Subordinate Service (General Branch) Rules 1974</a></li><ul style="display:none;" id="p_id-65"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="66" data-name="Rajasthan Excise Service (General Branch) Rules, 1974" data-flag="2" data-file="Uploads/Excise-Service%20Rules%20(General%20Branch).pdf"> Rajasthan Excise Service (General Branch) Rules, 1974</a></li><ul style="display:none;" id="p_id-66"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="67" data-name="Rajasthan Excise Service (Preventive Officers) Rules, 1967" data-flag="2" data-file="Uploads/Rajasthan%20Excise%20Service%20Rules%20(Preventive%20Officers).pdf"> Rajasthan Excise Service (Preventive Officers) Rules, 1967</a></li><ul style="display:none;" id="p_id-67"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="68" data-name="Rajasthan Excise Subordinate Service (Preventive Branch) Rules, 1976" data-flag="2" data-file="Uploads/EPF-Raj%20Subordinate%20Rules%20(Preventive%20Branch).pdf"> Rajasthan Excise Subordinate Service (Preventive Branch) Rules, 1976</a></li><ul style="display:none;" id="p_id-68"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="69" data-name="Rajasthan Excise Subordinate Service (General Branch)(Amendment) Rules, 2017" data-flag="2" data-file="Uploads/Amendment-Rajasthan%20Excise%20Subordinate%20Service.pdf"> Rajasthan Excise Subordinate Service (General Branch)(Amendment) Rules, 2017</a></li><ul style="display:none;" id="p_id-69"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="70" data-name="Rajasthan Excise (Preventive Officers) Service (Amendment) Rules, 2017" data-flag="2" data-file="Uploads/RajExciseService_EPF_AmendRules-2017.pdf"> Rajasthan Excise (Preventive Officers) Service (Amendment) Rules, 2017</a></li><ul style="display:none;" id="p_id-70"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="71" data-name="Rajasthan Excise (General Branch) Service (Amendment) Rules, 2017" data-flag="2" data-file="Uploads/RajExciseService_Gen_AmendRules-2017.pdf"> Rajasthan Excise (General Branch) Service (Amendment) Rules, 2017</a></li><ul style="display:none;" id="p_id-71"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="72" data-name="Rajasthan Distilleries (Second Amendment) Rules, 2017" data-flag="2" data-file="Uploads/RajasthanDistilleriesRules-2017-Amend.pdf"> Rajasthan Distilleries (Second Amendment) Rules, 2017</a></li><ul style="display:none;" id="p_id-72"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="73" data-name="Rajasthan Brewery (Amendment) Rules, 2018" data-flag="2" data-file="Downloads/RSED/PDF/BreweryRules2018.pdf"> Rajasthan Brewery (Amendment) Rules, 2018</a></li><ul style="display:none;" id="p_id-73"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="74" data-name="Rajasthan Distilleries (Amendment) Rules, 2018" data-flag="2" data-file="Downloads/RSED/PDF/DistilleriesRules2018.pdf"> Rajasthan Distilleries (Amendment) Rules, 2018</a></li><ul style="display:none;" id="p_id-74"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="23" data-name="The Rajasthan Molasses Rules, 1985" data-flag="2" data-file="Downloads/RSED/PDF/The%20Rajasthan%20Molasses%20Rules,%201985.pdf"> The Rajasthan Molasses Rules, 1985</a></li><ul style="display:none;" id="p_id-23"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="24" data-name="The Rajasthan Excise Grant of Hotel - Club Bar Licence 1973" data-flag="2" data-file="Downloads/RSED/PDF/The%20Rajasthan%20Excise%20Grant%20of%20Hotel%20-%20Club%20Bar%20Licence%201973.pdf"> The Rajasthan Excise Grant of Hotel - Club Bar Licence 1973</a></li><ul style="display:none;" id="p_id-24"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="25" data-name="Rajasthan Excise Grant of Restaurant Bar Licence Rules, 2004" data-flag="2" data-file="Downloads/RSED/PDF/Rajasthan%20Excise%20Grant%20of%20Restaurant%20Bar%20Licence%20Rules,%202004.pdf"> Rajasthan Excise Grant of Restaurant Bar Licence Rules, 2004</a></li><ul style="display:none;" id="p_id-25"></ul></ul><li><a class="cls_par_plus" data-id="1" data-name="Act" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> Act</a></li><ul style="display:none;" id="p_id-1"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="20" data-name="The Rajasthan Excise Act 1950" data-flag="2" data-file="Downloads/RSED/PDF/RajasthanExciseAct1950-Amended.pdf"> The Rajasthan Excise Act 1950</a></li><ul style="display:none;" id="p_id-20"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="22" data-name="The Rajasthan Excise (Amendment) Act, 2007 (Act No. 6 of 2007)" data-flag="2" data-file="Downloads/RSED/PDF/Amendment_Act_6June_Eng.pdf"> The Rajasthan Excise (Amendment) Act, 2007 (Act No. 6 of 2007)</a></li><ul style="display:none;" id="p_id-22"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="54" data-name="Narcotics Drugs &amp; Psychotropic Substances Act" data-flag="2" data-file="Downloads/RSED/PDF/NARCOTIC-DRUGS-AND-PSYCHOTROPIC-SUBSTANCES-ACT.pdf"> Narcotics Drugs &amp; Psychotropic Substances Act</a></li><ul style="display:none;" id="p_id-54"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="55" data-name="Medicinal and Toilet Preparations Act 1955" data-flag="2" data-file="Downloads/RSED/PDF/Medicinal and Toilet Preparations Act 1955.pdf"> Medicinal and Toilet Preparations Act 1955</a></li><ul style="display:none;" id="p_id-55"></ul></ul><li><a class="clsmenufile" data-id="86" data-name="Leading Decisions under Rajasthan EXCISE Act 1950" data-flag="1" data-file="Root\Home.aspx" style="cursor:pointer;"> Leading Decisions under Rajasthan EXCISE Act 1950</a></li><ul style="display:none;" id="p_id-86"></ul></ul>
+								</div>
+								<div id="tabs-2">
+									<ul><li><a class="cls_par_plus" data-id="8" data-name="Liquor Sourcing Policy" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> Liquor Sourcing Policy</a></li><ul style="display:none;" id="p_id-8"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="104" data-name="2020-2021(Amendment)" data-flag="2" data-file="Downloads/RSBCL/LSP_20202021_Amendment.pdf"> 2020-2021(Amendment)</a></li><ul style="display:none;" id="p_id-104"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="105" data-name="2018-2019 Revised Annexure" data-flag="2" data-file="Downloads/RSBCL/LSP2018-19RevisedAnnexure.pdf"> 2018-2019 Revised Annexure</a></li><ul style="display:none;" id="p_id-105"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="106" data-name="2018-2019" data-flag="2" data-file="Downloads/RSBCL/LSP2018-19.pdf"> 2018-2019</a></li><ul style="display:none;" id="p_id-106"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="107" data-name="2017-2018" data-flag="2" data-file="Downloads/RSBCL/LSP2017-18.pdf"> 2017-2018</a></li><ul style="display:none;" id="p_id-107"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="108" data-name="2016-2017" data-flag="2" data-file="Downloads/RSBCL/LSP%202016-17.pdf"> 2016-2017</a></li><ul style="display:none;" id="p_id-108"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="109" data-name="2015-2016" data-flag="2" data-file="Downloads/RSBCL/LiquorSalesPolicy2015-16.pdf"> 2015-2016</a></li><ul style="display:none;" id="p_id-109"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="119" data-name="2022-2023" data-flag="2" data-file="Downloads/RSBCL/LiquorSourcingPolicy2022-23.pdf"> 2022-2023</a></li><ul style="display:none;" id="p_id-119"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="30" data-name="2021-2022" data-flag="2" data-file="Downloads/RSBCL/LiqourSourcingPolicy2021-22.pdf"> 2021-2022</a></li><ul style="display:none;" id="p_id-30"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="31" data-name="2020-2021" data-flag="2" data-file="Downloads/RSBCL/LiqourSourcingPolicy2020-21.pdf"> 2020-2021</a></li><ul style="display:none;" id="p_id-31"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="32" data-name="2019-2020" data-flag="2" data-file="Downloads/RSBCL/LSP2019-20.pdf"> 2019-2020</a></li><ul style="display:none;" id="p_id-32"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="136" data-name="2022-2023(Amendment)" data-flag="2" data-file="Downloads/RSBCL/2022-2023Amendment.pdf"> 2022-2023(Amendment)</a></li><ul style="display:none;" id="p_id-136"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="138" data-name="2022-2023(Corrigendum)" data-flag="2" data-file="Downloads/RSBCL/LiquorSourcingPolicy2022-23Corrigendum2.pdf"> 2022-2023(Corrigendum)</a></li><ul style="display:none;" id="p_id-138"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="139" data-name="2022-2023(Corrigendum)-II" data-flag="2" data-file="Downloads/RSBCL/CorrigendumLiquorSourcingPolicy2022-23.pdf"> 2022-2023(Corrigendum)-II</a></li><ul style="display:none;" id="p_id-139"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="147" data-name="Corrigendum in LSP 2022-23" data-flag="2" data-file="Downloads/RSBCL/LiquorSourcingPolicy2022-23Corrigendum3.pdf"> Corrigendum in LSP 2022-23</a></li><ul style="display:none;" id="p_id-147"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="149" data-name="2023-2024" data-flag="2" data-file="Downloads/RSBCL/LiqourSourcingPolicy202324.pdf"> 2023-2024</a></li><ul style="display:none;" id="p_id-149"></ul></ul><li><a class="cls_par_plus" data-id="9" data-name="Liquor Sales Policy" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> Liquor Sales Policy</a></li><ul style="display:none;" id="p_id-9"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="120" data-name="2022-2023" data-flag="2" data-file="Downloads/RSBCL/LiqourSalesPolicy2022-23.pdf"> 2022-2023</a></li><ul style="display:none;" id="p_id-120"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="33" data-name="2021-2022" data-flag="2" data-file="Downloads/RSBCL/LiqourSalesPolicy2021-22.pdf"> 2021-2022</a></li><ul style="display:none;" id="p_id-33"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="34" data-name="2020-2021" data-flag="2" data-file="Downloads/RSBCL/LiqourSalesPolicy2020-21.pdf"> 2020-2021</a></li><ul style="display:none;" id="p_id-34"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="35" data-name="2019-2020" data-flag="2" data-file="Downloads/RSBCL/LiquorSalesPolicy20192020.pdf"> 2019-2020</a></li><ul style="display:none;" id="p_id-35"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="137" data-name="2022-2023(Corrigendum)" data-flag="2" data-file="Downloads/RSBCL/CorrigendumLiquorSalesPolicy2022-23.pdf"> 2022-2023(Corrigendum)</a></li><ul style="display:none;" id="p_id-137"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="150" data-name="2023-2024" data-flag="2" data-file="Downloads/RSBCL/LipourSalesPolicyFor202324.pdf"> 2023-2024</a></li><ul style="display:none;" id="p_id-150"></ul></ul><li><a class="cls_par_plus" data-id="10" data-name="Annual Report" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> Annual Report</a></li><ul style="display:none;" id="p_id-10"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="41" data-name="2005-2006" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20052006.Pdf"> 2005-2006</a></li><ul style="display:none;" id="p_id-41"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="42" data-name="2006-2007" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20062007.Pdf"> 2006-2007</a></li><ul style="display:none;" id="p_id-42"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="43" data-name="2007-2008" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20072008.Pdf"> 2007-2008</a></li><ul style="display:none;" id="p_id-43"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="44" data-name="2008-2009" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20082009.Pdf"> 2008-2009</a></li><ul style="display:none;" id="p_id-44"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="45" data-name="2009-2010" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20092010.Pdf"> 2009-2010</a></li><ul style="display:none;" id="p_id-45"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="46" data-name="2010-2011" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20102011.Pdf"> 2010-2011</a></li><ul style="display:none;" id="p_id-46"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="47" data-name="2011-2012" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20112012.Pdf"> 2011-2012</a></li><ul style="display:none;" id="p_id-47"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="48" data-name="2012-2013" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20122013.Pdf"> 2012-2013</a></li><ul style="display:none;" id="p_id-48"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="49" data-name="2013-2014" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20132014.Pdf"> 2013-2014</a></li><ul style="display:none;" id="p_id-49"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="50" data-name="2014-2015" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20142015.Pdf"> 2014-2015</a></li><ul style="display:none;" id="p_id-50"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="37" data-name="2017-2018" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20172018.Pdf"> 2017-2018</a></li><ul style="display:none;" id="p_id-37"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="52" data-name="2018-2019" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20182019.Pdf"> 2018-2019</a></li><ul style="display:none;" id="p_id-52"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="53" data-name="2019-2020" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20192020.Pdf"> 2019-2020</a></li><ul style="display:none;" id="p_id-53"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="36" data-name="2016-2017" data-flag="2" data-file="Downloads/RSBCL/AnnualReportInsideRSBCL20172018.pdf"> 2016-2017</a></li><ul style="display:none;" id="p_id-36"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="51" data-name="2015-2016" data-flag="2" data-file="Downloads/RSBCL/RSBCL%20Balance%20Sheet_2015-16.Pdf"> 2015-2016</a></li><ul style="display:none;" id="p_id-51"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="144" data-name="2021-2022" data-flag="2" data-file="Downloads/RSBCL/AnnualReport20212022.Pdf"> 2021-2022</a></li><ul style="display:none;" id="p_id-144"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="145" data-name="2020-2021" data-flag="2" data-file="Downloads/RSBCL/AnnualReport2020202108122022.Pdf"> 2020-2021</a></li><ul style="display:none;" id="p_id-145"></ul></ul><li><a class="cls_par_plus" data-id="11" data-name="Administrative Report" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> Administrative Report</a></li><ul style="display:none;" id="p_id-11"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="121" data-name="2020-21" data-flag="2" data-file="Uploads/AdministariveReport2020-21.pdf"> 2020-21</a></li><ul style="display:none;" id="p_id-121"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="122" data-name="2021-22" data-flag="2" data-file="Uploads/AdministariveReport2021-22.pdf"> 2021-22</a></li><ul style="display:none;" id="p_id-122"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="110" data-name="2018-19" data-flag="2" data-file="Uploads/AdministariveReport2018-19.pdf"> 2018-19</a></li><ul style="display:none;" id="p_id-110"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="111" data-name="2017-18" data-flag="2" data-file="Uploads/AdministariveReport2017-18.pdf"> 2017-18</a></li><ul style="display:none;" id="p_id-111"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="112" data-name="2016-17" data-flag="2" data-file="Uploads/administative%2016-17.pdf"> 2016-17</a></li><ul style="display:none;" id="p_id-112"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="113" data-name="2015-16" data-flag="2" data-file="Uploads/RSBCL-AR2015-16.pdf"> 2015-16</a></li><ul style="display:none;" id="p_id-113"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="114" data-name="2014-15" data-flag="2" data-file="Uploads/RSBCL-AR2014-15.pdf"> 2014-15</a></li><ul style="display:none;" id="p_id-114"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="115" data-name="2013-14" data-flag="2" data-file="Uploads/RSBCL-AR2013-14.pdf"> 2013-14</a></li><ul style="display:none;" id="p_id-115"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="116" data-name="2012-13" data-flag="2" data-file="Uploads/RSBCL-AR2012-13.pdf"> 2012-13</a></li><ul style="display:none;" id="p_id-116"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="38" data-name="2019-20" data-flag="2" data-file="Uploads/AdministariveReport2019-20.pdf"> 2019-20</a></li><ul style="display:none;" id="p_id-38"></ul></ul><li><a class="clsmenufile" data-id="12" data-name="CSR Policy" data-flag="2" data-file="Downloads/RSBCL/RSBCL-CSR%20POLICY.pdf" style="cursor:pointer;"> CSR Policy</a></li><ul style="display:none;" id="p_id-12"></ul><li><a class="clsmenufile" data-id="13" data-name="Tenders" data-flag="1" data-file="RSBCL/Website/Tender.aspx" style="cursor:pointer;"> Tenders</a></li><ul style="display:none;" id="p_id-13"></ul><li><a class="clsmenufile" data-id="14" data-name="RTI" data-flag="2" data-file="Downloads/RSBCL/RTI1-DEC-2023.pdf" style="cursor:pointer;"> RTI</a></li><ul style="display:none;" id="p_id-14"></ul><li><a class="clsmenufile" data-id="56" data-name="Stock Availability at Depots" data-flag="1" data-file="Root\Stock-Position1.aspx" style="cursor:pointer;"> Stock Availability at Depots</a></li><ul style="display:none;" id="p_id-56"></ul><li><a class="clsmenufile" data-id="57" data-name="Approved Banks &amp; Branches" data-flag="1" data-file="Root\Approved-Bank-Branches1.aspx" style="cursor:pointer;"> Approved Banks &amp; Branches</a></li><ul style="display:none;" id="p_id-57"></ul><li><a class="clsmenufile" data-id="58" data-name="Approved Suppliers &amp; Brands" data-flag="1" data-file="Root\Approved-Suppliers-Brands1.aspx" style="cursor:pointer;"> Approved Suppliers &amp; Brands</a></li><ul style="display:none;" id="p_id-58"></ul><li><a class="clsmenufile" data-id="93" data-name="On Line challan &amp; Demand Generation" data-flag="1" data-file="DISYPLAYMSESSAGE.aspx" style="cursor:pointer;"> On Line challan &amp; Demand Generation</a></li><ul style="display:none;" id="p_id-93"></ul><li><a class="cls_par_plus" data-id="94" data-name="RSBCL At a Glance" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> RSBCL At a Glance</a></li><ul style="display:none;" id="p_id-94"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="95" data-name="Introduction" data-flag="1" data-file="RSBCL/Website/RSBCL-at-a-Glance1.aspx"> Introduction</a></li><ul style="display:none;" id="p_id-95"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="96" data-name="Board of Directors" data-flag="1" data-file="RSBCL/Website/Board-of-Directors1.aspx"> Board of Directors</a></li><ul style="display:none;" id="p_id-96"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="97" data-name="Memorandum" data-flag="2" data-file="Uploads/MEMORANDUM.pdf"> Memorandum</a></li><ul style="display:none;" id="p_id-97"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="98" data-name="Achievements" data-flag="1" data-file="Root\Achievements1.aspx"> Achievements</a></li><ul style="display:none;" id="p_id-98"></ul></ul><li><a class="clsmenufile" data-id="99" data-name="Organisation of RSBCL" data-flag="1" data-file="RSBCL/Website/Organisation-of-RSBCL1.aspx" style="cursor:pointer;"> Organisation of RSBCL</a></li><ul style="display:none;" id="p_id-99"></ul><li><a class="clsmenufile" data-id="100" data-name="Contacts" data-flag="1" data-file="RSBCL/Website/RSBCL-Contacts1.aspx" style="cursor:pointer;"> Contacts</a></li><ul style="display:none;" id="p_id-100"></ul><li><a class="clsmenufile" data-id="101" data-name="RSBCL Depots" data-flag="1" data-file="RSBCL/Website/RSBCL-Depots1.aspx" style="cursor:pointer;"> RSBCL Depots</a></li><ul style="display:none;" id="p_id-101"></ul><li><a class="clsmenufile" data-id="102" data-name="Important Downloads" data-flag="1" data-file="RSBCL/Website/Important-Downloads.aspx" style="cursor:pointer;"> Important Downloads</a></li><ul style="display:none;" id="p_id-102"></ul></ul>
+								</div>
+								<div id="tabs-3">
+									<ul>
+										<li><a class="cls_par_plus" data-id="15" data-name="Annual Report" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> Annual Report</a></li>
+										<ul style="display:none;" id="p_id-15"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="132" data-name="Annual Report 2018" data-flag="2" data-file="Downloads/RSGSM/annual_report_2018.pdf"> Annual Report 2018</a></li><ul style="display:none;" id="p_id-132"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="133" data-name="Annual Report 2019" data-flag="2" data-file="Downloads/RSGSM/annual_report_2019.pdf"> Annual Report 2019</a></li><ul style="display:none;" id="p_id-133"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="134" data-name="Annual Report 2020" data-flag="2" data-file="Downloads/RSGSM/annual_report_2020.pdf"> Annual Report 2020</a></li><ul style="display:none;" id="p_id-134"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="39" data-name="Annual Report 2017-2018" data-flag="2" data-file="Downloads/RSGSM/annual_report_2017_18.pdf"> Annual Report 2017-2018</a></li><ul style="display:none;" id="p_id-39"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="40" data-name="Annual Report 2016-2017" data-flag="2" data-file="Downloads/RSGSM/annual_report_2016_17.pdf"> Annual Report 2016-2017</a></li><ul style="display:none;" id="p_id-40"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="152" data-name="Annual Report 2020-21" data-flag="2" data-file="Downloads/RSGSM/annual_report_2020-21.pdf"> Annual Report 2020-21</a></li><ul style="display:none;" id="p_id-152"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="153" data-name="Annual Report 2021-21" data-flag="2" data-file="Downloads/RSGSM/annual_report_2021-22.pdf"> Annual Report 2021-21</a></li><ul style="display:none;" id="p_id-153"></ul></ul>
+										<li><a class="cls_par_plus" data-id="16" data-name="PRASASNIK PRATIVEDAN" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> PRASASNIK PRATIVEDAN</a></li>
+										<ul style="display:none;" id="p_id-16"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="123" data-name="PRASASNIK PRATIVEDAN 2015-16" data-flag="2" data-file="Downloads/RSGSM/Prasasanik_Partivaden_2015_16.pdf"> PRASASNIK PRATIVEDAN 2015-16</a></li><ul style="display:none;" id="p_id-123"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="124" data-name="PRASASNIK PRATIVEDAN 2016-17" data-flag="2" data-file="Downloads/RSGSM/Prasasanik_Partivaden_2016_17.pdf"> PRASASNIK PRATIVEDAN 2016-17</a></li><ul style="display:none;" id="p_id-124"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="125" data-name="PRASASNIK PRATIVEDAN 2017-18" data-flag="2" data-file="Downloads/RSGSM/Prasasanik_Partivaden_2017_18.pdf"> PRASASNIK PRATIVEDAN 2017-18</a></li><ul style="display:none;" id="p_id-125"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="126" data-name="PRASASNIK PRATIVEDAN 2018-19" data-flag="2" data-file="Downloads/RSGSM/Prasasanik_Partivaden_2018_19.pdf"> PRASASNIK PRATIVEDAN 2018-19</a></li><ul style="display:none;" id="p_id-126"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="128" data-name="PRASASNIK PRATIVEDAN 2019-20" data-flag="2" data-file="Downloads/RSGSM/Prasasanik_Partivaden_2019_20.pdf"> PRASASNIK PRATIVEDAN 2019-20</a></li><ul style="display:none;" id="p_id-128"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="129" data-name="PRASASNIK PRATIVEDAN 2020-21" data-flag="2" data-file="Downloads/RSGSM/Prasasanik_Partivaden_2020_21.pdf"> PRASASNIK PRATIVEDAN 2020-21</a></li><ul style="display:none;" id="p_id-129"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="130" data-name="PRASASNIK PRATIVEDAN 2021-22" data-flag="2" data-file="Downloads/RSGSM/Prasasanik_Partivaden_2021_22.pdf"> PRASASNIK PRATIVEDAN 2021-22</a></li><ul style="display:none;" id="p_id-130"></ul></ul>
+										<li><a class="clsmenufile" data-id="17" data-name="CSR Policy" data-flag="2" data-file="Uploads/RSGSM_CSR_policy.pdf" style="cursor:pointer;"> CSR Policy</a></li>
+										<ul style="display:none;" id="p_id-17"></ul>
+										<li><a class="clsmenufile" data-id="18" data-name="Tenders" data-flag="1" data-file="Root\RSGSM-Tenders1.aspx" style="cursor:pointer;"> Tenders</a></li>
+										<ul style="display:none;" id="p_id-18"></ul>
+										<li><a class="clsmenufile" data-id="19" data-name="RTI" data-flag="2" data-file="Downloads/RSGSM/RTI-2005.pdf" style="cursor:pointer;"> RTI</a></li>
+										<ul style="display:none;" id="p_id-19"></ul>
+										<li>
+											<a class="clsmenufile" data-id="59" data-name="Stock Availability For Sale at Depots" data-flag="1" data-file="Root\Saleablestockposition.aspx
+
+
+" style="cursor:pointer;"> Stock Availability For Sale at Depots</a>
+										</li>
+										<ul style="display:none;" id="p_id-59"></ul>
+										<li><a class="cls_par_plus" data-id="140" data-name="Sugar Cane Report" data-flag="0" data-file="null" style="cursor:pointer;"><span class="fa fa-plus"></span> Sugar Cane Report</a></li>
+										<ul style="display:none;" id="p_id-140"><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="141" data-name="Recovery of Sugar from Cane" data-flag="2" data-file="Downloads/RSGSM/RecoveryofSugarfromCane.pdf"> Recovery of Sugar from Cane</a></li><ul style="display:none;" id="p_id-141"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="142" data-name="Variety Wise Cane Procurement" data-flag="2" data-file="Downloads/RSGSM/VarietywiseCaneProcurement.pdf"> Variety Wise Cane Procurement</a></li><ul style="display:none;" id="p_id-142"></ul><li><a style="margin-left: 3%;cursor:pointer;" class="clsmenufile" data-id="143" data-name="Sugarcane Seniority List" data-flag="1" data-file="Root/Cane_Senirity_List.aspx"> Sugarcane Seniority List</a></li><ul style="display:none;" id="p_id-143"></ul></ul>
+										<li><a class="clsmenufile" data-id="146" data-name="Notice of 77th AGM" data-flag="2" data-file="Uploads/Notice77thAdjournAGM.pdf" style="cursor:pointer;"> Notice of 77th AGM</a></li>
+										<ul style="display:none;" id="p_id-146"></ul>
+										<li><a class="clsmenufile" data-id="151" data-name="Other Document" data-flag="2" data-file="Downloads/RSGSM/ExtractofBoardMeeting.pdf" style="cursor:pointer;"> Other Document</a></li>
+										<ul style="display:none;" id="p_id-151"></ul>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+				<div class="contentRow2 row">
+					<div class="content1 col-md-12">
+						<div class="header">
+							Services Provided For
+						</div>  <div>
+							<div id="tabss">
+								<ul>
+									<li><a href="#tabs-1">LIQUOR & BEER SUPPLIER</a></li>
+									<li><a href="#tabs-2">RETAIL SHOP & BAR LICENSEES</a></li>
+									<li><a href="#tabs-3">PUBLIC</a></li>
+								</ul>
+								<div id="tabs-1">
+									<ul>
+										<li class="tab-link">Brand & Label Approval</li>
+
+
+									</ul>
+								</div>
+								<div id="tabs-2">
+									<ul>
+										<li class="tab-link">AMNESTY SCHEME</li>
+										<li class="tab-link">Apply For new Bar License</li>
+										<li class="tab-link">Licensee Login</li>
+										<li class="tab-link">Apply for Shop Location Entry Form</li>
+										<li class="tab-link">Apply for Godown Location Entry Form</li>
+										<li class="tab-link">Shop Naukar Nama Entry Form</li>
+									</ul>
+								</div>
+								<div id="tabs-3">
+									<ul>
+										<li class="tab-link">Search Brand MRP</li>
+										<li class="tab-link">Administrative Report</li>
+										<li class="tab-link">POS Vendor Login</li>
+										<li class="tab-link">Approved Rate List</li>
+										<li class="tab-link">Lodge A Complaint   </li>
+										<li class="tab-link">
+											Apply For Ocassional License
+										</li>
+										<li class="tab-link">
+											Sanctioned Bar and Shops
+										</li>
+										<li class="tab-link">
+											License Generation and Location Status Report
+										</li>
+										<li class="tab-link">
+											Daily Inspection
+										</li>
+										<li class="tab-link">
+											Cancelled Bar
+										</li>
+										<li class="tab-link">
+											Service DASHBOARD
+										</li>
+										<li class="tab-link">
+											Technical document for integration of IEMS with POS
+										</li>
+										<li class="tab-link">
+											List of Registered POS Vendors in IEMS
+										</li>
+										<li class="tab-link">
+											See all News & Photos
+										</li>
+										<li class="tab-link">
+											DashBoard
+										</li>
+										<li class="tab-link">
+											आबकारी बंदोबस्त 2023-24 हेतु दिशानिर्देश एवं दुकानों की सूची एवं मोडल शॉप की ई-नीलामी हेतु दिशा निर्देश
+										</li>
+										<li class="tab-link">
+											Apply For Commercial Place Registration
+										</li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+
+
+				</div>
+			</div>
+			<link href="~/HomePage_Files/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+			<link href="~/HomePage_Files/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+			<!-- Template Main CSS File -->
+			<link href="~/HomePage_Files/css/style.css" rel="stylesheet" />
+			@*<section id="gallery" class="gallery content-1 mt-2">
+			<div class="container" data-aos="fade-up">
+			<div class="section-title">
+			<h3>Gallery</h3>
+			</div>
+
+			<div class="gallery-slider swiper">
+			<div class="swiper-wrapper align-items-center">
+			<div class="swiper-slide"><a class="gallery-lightbox" href="~/HomePage_Files/img/gallery/gallery-1.jpg"><img src="~/HomePage_Files/img/gallery/gallery-1.jpg" class="img-fluid" alt="" /></a></div>
+			<div class="swiper-slide"><a class="gallery-lightbox" href="~/HomePage_Files/img/gallery/gallery-2.jpg"><img src="~/HomePage_Files/img/gallery/gallery-2.jpg" class="img-fluid" alt="" /></a></div>
+			<div class="swiper-slide"><a class="gallery-lightbox" href="~/HomePage_Files/img/gallery/gallery-3.jpg"><img src="~/HomePage_Files/img/gallery/gallery-3.jpg" class="img-fluid" alt="" /></a></div>
+			<div class="swiper-slide"><a class="gallery-lightbox" href="~/HomePage_Files/img/gallery/gallery-4.jpg"><img src="~/HomePage_Files/img/gallery/gallery-4.jpg" class="img-fluid" alt="" /></a></div>
+			<div class="swiper-slide"><a class="gallery-lightbox" href="~/HomePage_Files/img/gallery/gallery-5.jpg"><img src="~/HomePage_Files/img/gallery/gallery-5.jpg" class="img-fluid" alt="" /></a></div>
+			<div class="swiper-slide"><a class="gallery-lightbox" href="~/HomePage_Files/img/gallery/gallery-6.jpg"><img src="~/HomePage_Files/img/gallery/gallery-6.jpg" class="img-fluid" alt="" /></a></div>
+			<div class="swiper-slide"><a class="gallery-lightbox" href="~/HomePage_Files/img/gallery/gallery-7.jpg"><img src="~/HomePage_Files/img/gallery/gallery-7.jpg" class="img-fluid" alt="" /></a></div>
+			<div class="swiper-slide"><a class="gallery-lightbox" href="~/HomePage_Files/img/gallery/gallery-8.jpg"><img src="~/HomePage_Files/img/gallery/gallery-8.jpg" class="img-fluid" alt="" /></a></div>
+			</div>
+			<div class="swiper-pagination"></div>
+
+			</div>
+
+
+			</div>
+			</section>*@
+			<script src="~/HomePage_Files/vendor/glightbox/js/glightbox.min.js"></script>
+			<script src="~/HomePage_Files/vendor/swiper/swiper-bundle.min.js"></script>
+			<script src="~/HomePage_Files/js/main.js"></script>
+			<div class="footer">
+				<div class="footer2 ">
+					<div class="row">
+						<div class="col-md-3 footer-content">
+							<span>
+								You are visitor No.:
+								847816023
+							</span><br />
+							<span id="lblVisitor">
+								Last Updated:
+								15-Aug-2023
+							</span>
+
+						</div>
+						<div class="col-md-3 footer-content">
+
+
+							Nodal Officer
+							<br />
+							SH.O.P.Bunkar <br />
+							Additional Commissioner(Administration),
+							<br />
+							0294-2412274
+							<br />
+							aca.udaipur.excise@rajasthan.gov.in
+						</div>
+						<div class="col-md-3 footer-content">
+
+							Dy.General Manager (MIS)
+							<br />
+							0141-2744236
+							<br />
+							dgmmis.rsbcl@rajasthan.gov.in
+
+						</div>
+						<div class="col-md-3 footer-content" style="border:none!important">
+
+							Sh. Pawan Kumar Garg Company Secretary
+							<br />
+							0141-2741956
+							<br />
+							cosecy.rsgsm@rajasthan.gov.in
+
+						</div>
+					</div>
+				</div> 
+				<div style="margin-left: 29%;
+    margin-right: 50%;
+    display: flex;
+    width: 100%;
+    font-weight: bold;" class="footer3">
+
+
+					<a href="https://risl.rajasthan.gov.in/"><img style="width:143px;height:43px;" src="https://risl.rajasthan.gov.in/wp-content/themes/risl/images/home-logo.png" /></a>
+					@* <span style="margin-top:12px!important">Owned, developed and maintained by Rajcomp info service limited</span> *@
+					© Owned, developed and maintained by Rajcomp info service limited
+					
+				</div>
+				<div class="text-center">
+					
+				</div>
+			</div>
+		</div>
+	</form>
+	<script>
+		$(function () {
+			$("#tabs").tabs();
+			$("#tabss").tabs();
+			$("#quick-links").tabs();
+		});
+		Highcharts.chart('container', {
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: 'Monthly Revenue'
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+				categories: [
+					'Jan',
+					'Feb',
+					'Mar',
+					'Apr',
+					'May',
+					'Jun',
+					'Jul',
+					'Aug',
+					'Sep',
+					'Oct',
+					'Nov',
+					'Dec'
+				],
+				crosshair: true
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: 'Month'
+				}
+			},
+			tooltip: {
+				headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+				pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+					'<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+				footerFormat: '</table>',
+				shared: true,
+				useHTML: true
+			},
+			plotOptions: {
+				column: {
+					pointPadding: 0.2,
+					borderWidth: 0
+				}
+			},
+			series: [{
+				name: 'Revenue',
+				data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4,
+					194.1, 95.6, 54.4]
+
+			}]
+		});
+	</script>
+</body>
+</html>

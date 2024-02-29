@@ -1,0 +1,80 @@
+﻿<style>
+    .container {
+        width: 100%;
+    }
+
+    .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+        float: left;
+        padding: 0.0em 0em;
+        text-decoration: none;
+    }
+
+    #myTab li {
+        /* margin-right: 15px; */
+        padding: 10px;
+    }
+</style>
+<div id="tabs" class="container">
+    <ul id="myTab">
+        <li class="ui-tabs-tab ui-corner-top ui-state-default ui-tab Tab1" id="Feelicensee" onclick="fun(1)">
+            <a data-toggle="tab" href="#Tab1" data-target="draft">
+                @Html.ActionLink("Other License", "FeeDetails", "FeeDetails", new { MasterModule = "", area = "FeeStructure" })
+
+            </a>
+        </li>
+
+        <li class="ui-tabs-tab ui-corner-top ui-state-default ui-tab Tab2" id="Feelicensee" onclick="fun(2)">
+            <a data-toggle="tab" href="#Tab1" data-target="draft">
+                @Html.ActionLink("Manufacture Unit Registration", "FeeLicensee", "FeeLicensee", new { MasterModule = "", area = "FeeStructure" })
+            </a>
+        </li>
+        <li class="ui-tabs-tab ui-corner-top ui-state-default ui-tab Tab3" id="FeeRenewal" onclick="fun(3)">
+            <a data-toggle="tab" href="#Tab1" data-target="inbox">
+                @Html.ActionLink("Manufacture Unit Renewal", "FeeLicenseeRenewal", "FeeLicenseeRenewal", new { MasterModule = "", area = "FeeStructure" })
+
+            </a>
+        </li>
+    @*     <li class="ui-tabs-tab ui-corner-top ui-state-default ui-tab Tab4" id="MstChallan" onclick="fun(4)">
+            <a data-toggle="tab" href="#Tab1" data-target="draft">
+                @Html.ActionLink("MST Challan", "MstChallan", "MstChallan", new { MasterModule = "", area = "FeeStructure" })
+
+            </a>
+        </li>  *@
+     @*    <li class="ui-tabs-tab ui-corner-top ui-state-default ui-tab Tab5" id="BudgetHeadMapping" onclick="fun(5)">
+            <a data-toggle="tab" href="#Tab1" data-target="draft">
+                @Html.ActionLink("Budget Head", "BudgetHeadMapping", "MstChallan", new { MasterModule = "", area = "FeeStructure" })
+            </a>
+        </li> *@
+   @*       <li class="ui-tabs-tab ui-corner-top ui-state-default ui-tab Tab6" id="ChallanDetails" onclick="fun(6)">
+            <a data-toggle="tab" href="#Tab1" data-target="draft">
+                @Html.ActionLink("Challan Detail", "ChallanDetail", "MstChallan", new { MasterModule = "", area = "FeeStructure" })
+
+            </a>
+        </li>  *@
+
+        <li class="ui-tabs-tab ui-corner-top ui-state-default ui-tab Tab4" id="FeeMasterDetail" onclick="fun(4)">
+            <a data-toggle="tab" href="#Tab1" data-target="draft">
+                <i>@Html.ActionLink("Retail On Licensee", "FeeMasterDetail", "FeeMasterDetail", new { MasterModule = "", area = "MasterModule" })</i>
+
+            </a>
+        </li>
+
+        <li class="ui-tabs-tab ui-corner-top ui-state-default ui-tab Tab5" id="FeeMfgBrand" onclick="fun(5)">
+            <a data-toggle="tab" href="#Tab1" data-target="draft">
+                <i>@Html.ActionLink("Brand and Label", "FeeMfgBrand", "FeeMfgBrand", new { MasterModule = "", area = "MasterModule" })</i>
+
+            </a>
+        </li>
+        <li class="ui-tabs-tab ui-corner-top ui-state-default ui-tab Tab6" id="FeeMfgBrand" onclick="fun(6)">
+            <a data-toggle="tab" href="#Tab1" data-target="draft">
+                <i>@Html.ActionLink("Occassional License", "OccasionalLicenseFeeDetails", "FeeDetails", new { MasterModule = "", area = "FeeStructure" })</i>
+            </a>
+        </li>
+    </ul>
+</div>
+<script>
+    $(function () {
+        $("#tabs").tabs();
+        //Change Tabs
+    });
+</script>

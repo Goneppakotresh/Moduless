@@ -1,0 +1,182 @@
+﻿@model IEMS_WEB.Models.CreateUserResponseModel
+@{
+    ViewBag.Title = "CreateUsersView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/assets/js/translator/createusers.js"></script>
+
+<div class="page-title">
+    <div class="row">
+        <div class="col-12">
+            <h3> <span data-translate="User View">Users View</span> <button type="button" class="btn btn-success pull-right" id="btnNew" data-translate="New"> New</button></h3>
+        </div>
+    </div>
+</div>
+
+<fieldset class="border p-2">
+    <legend class="float-none w-auto p-2" data-translate="Users">Users</legend>
+   
+    
+        <table id="grdUser" cellpadding="0" cellspacing="0" style="width:100%!important" class="table display table-boardered">
+            <thead>
+                <tr style="text-align: center;">
+                    <th style="text-align: center;" data-translate="User Name">User Name</th>
+                    <th style="text-align: center;" data-translate="Fist Name">Fist Name</th>
+                    <th style="text-align: center;" data-translate="Last Name">Last Name</th>
+                    <th style="text-align: center;" data-translate="Full Name">Full Name</th>
+                    <th style="text-align: center;" data-translate="Email">Email</th>
+                    <th style="text-align: center;" data-translate="Mobile No">Mobile No</th>
+                    <th style="text-align: center;" data-translate="LocationName">LocationName</th>
+                    <th style="text-align: center;" data-translate="Address">Address</th>
+                    <th style="text-align: center;" data-translate="Role">Role</th>
+                    <th style="text-align: center;" data-translate="SSO Id">SSO Id</th>
+                    <th style="text-align: center;" data-translate="Location Code">Location Code</th>
+                <th style="text-align: center;" data-translate="edit">Edit</th>
+                    <th style="text-align: center;" data-translate="View">View</th>
+                    <th style="text-align: center;" data-translate="Status">Status</th>
+
+                </tr>
+            </thead>
+        </table>
+  
+    </fieldset>
+<script type="text/javascript">
+     $(document).ready(function () {
+
+         $('#btnNew').click(function () {
+            window.location.href = "../CreateUser/CreateUsers";
+
+         })
+
+
+                 $("#grdUser").DataTable({
+            ajax: {
+                url: "../CreateUser/GetUserDetails",
+                type: "POST",
+                datatype: "json"
+            },
+            columns: [
+                { data: "UserName", autoWidth: true, visible: false },
+                { data: "FirstName", autoWidth: true, visible: false },
+                { data: "LastName", autoWidth: true, visible: false },
+                { data: "FullName", autoWidth: true },
+                { data: "Email", autoWidth: true },
+                { data: "MobileNo", autoWidth: true },
+                { data: "LocationName", autoWidth: true },
+                { data: "Address", autoWidth: true },
+                { data: "Role", autoWidth: true },
+                { data: "SSOId", autoWidth: true },
+                { data: "LocationCode", autoWidth: true, visible: false },
+                {
+                    data: "UserId",
+                    autoWidth: true,
+                    sortable: false,
+                    render: function (t, a, e) {
+                        return '<a title="Click here to Edit" href="javascript:EditorViewDetails(\'' + e.UserId + '\',\'Edit\')"><i class="fa fa-edit" style="font-size: 16px"></i></a>';
+                    }
+                },
+                {
+                    data: "UserId",
+                    autoWidth: true,
+                    sortable: false,
+                    render: function (t, a, e) {
+                        return '<a title="Click here to Edit" href="javascript:EditorViewDetails(\'' + e.UserId + '\',\'View\')"><i class="fa fa-eye" style="font-size: 16px"></i></a>';
+                    }
+                },
+                {
+                    "data": "IsActiveStatus", "autoWidth": true, "sortable": true, "render": function (data, type, row) {
+                        if (data == 1) {
+                            return '<label  class="switch"><input type="checkbox" name="checked" checked="checked" id="switch' + row.UserId + '" onchange= javascript:UpdateStatus(' + row.UserId + ',' + 1 + ') class="tgl tgl-flat checkbox" checked="checked"/><span class="slider round"></span></label>';
+                        }
+                        else {
+                            return '<label class="switch"><input type="checkbox" name="checked" id="switch' + row.UserId + '" onchange = javascript:UpdateStatus(' + row.UserId + ',' + 0 + ') class="tgl tgl-flat checkbox"/><span class="slider round"></span></label>';
+                        }
+                    }
+                },
+            ],
+            columnDefs: [{ targets: [0, 1, 2, 9], visible: false }]
+        });
+});
+    function EditorViewDetails(UserId, EditOrView) {
+        window.location.href = "../CreateUser/CreateUsers?EditViewKey=" + EditOrView + "&UserId=" + UserId;
+
+    }
+
+    function UpdateStatus(UserId,Status) {
+        var easytesxtval = "";
+        var msgval = "";
+        var btnColour = "";
+        if (Status == 1) {
+            easytesxtval = "User Will Be Deactivated...";
+            msgval = "Deactivate";
+            btnColour = "#DD6B55";
+
+        }
+        if (Status == 0) {
+            easytesxtval = "User Will Be Activated...";
+            msgval = "Activate";
+            btnColour = "#5cb85c";
+
+        }
+        confirmalertval('Are You sure you want to Change Status?', easytesxtval, msgval, btnColour, UserId, Status);
+    }
+
+    function confirmalertval(EasyTitle, EasyText, msgvalue, buttonColor, UserId, Status) {
+        {
+            Swal.fire({
+                title: EasyTitle,
+                text: EasyText,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: buttonColor,
+                confirmButtonText: msgvalue,
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "GET",
+                        url: "../CreateUser/UpdateActiveStatus",
+                        dataType: "json",
+                        async: false,
+                        data: { "UserId": UserId },
+                        success: function (data) {
+                            if (data.ResponseCode == "1") {
+
+
+                                swal({
+                                    text: data.ResponseMessage,
+                                    type: "success"
+                                }).then(function () {
+                                    window.location.href = "../CreateUser/CreateUsersView"
+                                });
+                            }else{
+                                swal({
+                                    text: "Something Went Wrong..!!",
+                                    type: "warning"
+                                }).then(function () {
+                                    window.location.href = "../CreateUser/CreateUsersView"
+                                });
+                            }
+                           
+                        }
+                    });
+               
+                }
+                else {
+                    if(Status == 0) {
+                $('#switch' + UserId).prop("checked", false);
+            }else {
+                $('#switch' + UserId).prop("checked", true);
+
+            }
+                    return false;
+                }
+            })
+        }
+    }
+
+                </script>

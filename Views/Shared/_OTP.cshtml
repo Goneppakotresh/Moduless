@@ -1,0 +1,77 @@
+﻿@model IEMS_WEB.Models.OTPViewModel
+
+
+<div id="HiddenItems" style="display:none">
+    @Html.HiddenFor(m => m.OTPObj.OTPKey, new { @class = "form-control", id = "txtOTPKey" })
+    @Html.HiddenFor(m => m.OTPObj.MobileNumber, new { @class = "form-control", id = "txtMobileNumberval" })
+    <input style="display:none" id="hdnVerifiedShow" />
+    <input style="display:none" id="hdnVerifiedKey" />
+    <input style="display:none" id="hdnDisableIds" />
+</div>
+
+
+<p>
+    <center>Please enter the One-Time Password To verify your Mobile Number</center>
+</p>
+<p>
+    <center>A One-Time Password has been Sent to <b>@Model.OTPObj.MobileNumber.Substring(0, 3)**@Model.OTPObj.MobileNumber.Substring(5, 1)***@Model.OTPObj.MobileNumber.Substring(9, 1)</b></center>
+</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.OTPObj.OTPVal, new { @minlength = "6", @maxlength = "6", @class = "form-control", autocomplete = "off", @value = "", id = "txtOTPVal", @type = "password", @placeholder = "Enter OTP Here" })
+                <span class="invalidOTP">OTP is Invalid</span>
+            </div>
+        </div>
+        @*<center><b>@Model.ResponseMessage</b></center>*@
+        <br />
+    </div>
+</div>
+
+
+
+<div class="modal-footer">
+    <input class="btn btn-success mr-1" id="btnValidate" type="button" name="Validate" value="Validate" />
+    <button type="button" id="btnCloseOTPValidate" class="btn btn-danger">Close</button>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnValidate").click(function (e) {
+            debugger;
+            var MobileNumber = $('#txtMobileNumberval').val();
+            var OTPVal = $('#txtOTPVal').val();
+            var KeyVal = $('#txtOTPKey').val();
+            $.ajax({
+                type: "POST",
+                // contentType: "application/json; charset=utf-8",
+                url: "/OTP/ValidateOTP",
+                data: { MobileNumber: MobileNumber, OTPVal: OTPVal },
+                success: function (data) {
+                    if (data.IsValidated) {
+                        debugger;
+                        $("span.verfied" + KeyVal).show();
+                        $("span.verify" + KeyVal).hide();
+                        $("#Is" + KeyVal + "Verified").val(1);
+                        $('#myOTPModal').modal('hide');
+
+                        $("#" + $("#hdnVerifiedShow").val()).hide();
+                        $("#" + $("#hdnVerifiedKey").val()).show();
+                        $("#" + $("#hdnVerifiedKey").val()).val('1');
+                        $("#" + $("#hdnDisableIds").val()).attr("disabled", true);
+                    }
+                    else {
+
+                        $("span.invalidOTP").show();
+                    }
+                }
+            });
+        });
+        $("#btnCloseOTPValidate").click(function (e) {
+            $('#myOTPModal').modal('hide');
+        });
+
+
+    });
+
+</script>

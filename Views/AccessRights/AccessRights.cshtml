@@ -1,0 +1,624 @@
+﻿@model IEMS_WEB.Models.WorkFlow.AccessRights
+
+@{
+    ViewBag.Title = "AccessRights";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/assets/js/translator/accessrights.js"></script>
+<script>
+    $(function () {
+        $("#tabs").tabs();
+    });
+</script>
+<style>
+    .ui-widget-header {
+        background: none !important;
+        border-top: none !important;
+    }
+
+    #tabs .ui-tabs-nav .ui-state-active a {
+        color: #fff !important;
+        background: #438eb9 !important;
+    }
+
+    table#grdaccserights thead th{
+        font-weight:600!important;
+        color: #000!important;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    <div>
+        @Html.Hidden("lblID", new { @id = "lblID" })
+    </div>
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12">
+                <h3 data-translate="Access Rights">
+                    Access Rights
+
+
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-horizontal" id="CustomerMasterSection">
+                <br />
+                <div id="tabs">
+                    <ul>
+                        <li><a href="#tabs-1" data-translate="Access Rights">Access Rights</a></li>
+                        <li><a href="#tabs-2" data-translate="Access Transfer">Access Transfer</a></li>
+
+                    </ul>
+
+                    <div id="tabs-1">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="control-label mandatory" data-translate="Module">
+                                        Module
+                                    </label>
+                                    @Html.DropDownListFor(m => m.Modulename, Model.lstmodules, new { @maxlength = "50", @class = "form-control", autocomplete = "off", id = "ddModule", onchange = "getsubmoduledet()" })
+                                    @Html.ValidationMessageFor(model => model.Modulename, "", new { @class = "text-danger validation-message", id = "errorMsgModuleId" })
+
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="control-label mandatory" data-translate="Sub Module">
+                                        Sub Module
+                                    </label>
+                                    @Html.DropDownListFor(m => m.SubModulename, Model.lstsubmodules, new { @maxlength = "50", @class = "form-control", autocomplete = "off", id = "ddSubmodule", @disabled = "disabled" })
+                                    @Html.ValidationMessageFor(model => model.SubModulename, "", new { @class = "text-danger validation-message", id = "errorMsgSubModuleId" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="control-label mandatory" data-translate="Role">
+                                        Role 
+                                    </label>
+                                    @Html.DropDownListFor(m => m.Role, Model.lstroles, new { @class = "form-control", autocomplete = "off", id = "ddRole", @disabled = "disabled" })
+                                    @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger validation-message", id = "errorMsgRoleId" })
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="text-center">
+                            <button id="btnLoad" type="button" class="btn btn-success" name="btnSave" value="Load" data-translate="Load">Load</button>
+                            <button id="btnReset" type="button" class="btn btn-danger" name="btnReset" value="Reset" data-translate="Reset">Reset</button>
+                        </div>
+                        <label> <input id="grdselectall" type="checkbox" onclick="fn_CheckAllValues()" /><span data-translate="Click Here to Select all">Click Here to Select all</span></label>
+                        <br />
+                        <div class="container-fluid">
+                            <table id="grdaccserights" class="table table-striped table-bordered table-hover EASyGridLayout">
+                                <thead>
+                                    <tr style="text-align: center;">
+                                        <th style="text-align: center" data-translate="Forms name">Forms name</th>
+                                        <th style="text-align: center" data-translate="Create">Create</th>
+                                        @*<th style="text-align: center">Print</th>*@
+                                        <th style="text-align: center" data-translate="View">View</th>
+                                        <th style="text-align: center" data-translate="Approver">Approver</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <br />
+                        <div class="text-center">
+                            <button id="btnsave" type="button" class="btn btn-success" name="btnSave" data-translate="Save">Save</button>
+
+                        </div>
+                    </div>
+                    @*<div id="tabs-2">
+
+                </div>
+                </div>
+                </div>
+                </div>
+                @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+<script>
+    var ARRID = new Array();
+    function fn_CheckAllValues() {
+        debugger;
+        $('#grdaccserights').DataTable().$("input[type='checkbox']").prop('checked', $('#grdselectall').prop('checked'));
+        $('#grdaccserights tbody tr input[type="checkbox"]:checked').each(function () {
+            ARRID.push($('#grdaccserights').DataTable().row($(this).closest('tr')).data().SmId);
+        });
+        if ($('#grdselectall').prop('checked') == false) {
+            ARRID = [];
+        }
+    }
+    function fn_CheckAlltransferValues() {
+        debugger;
+        $('#grdtransfer').DataTable().$("input[type='checkbox']").prop('checked', $('#grdselectalltransfer').prop('checked'));
+        $('#grdtransfer tbody tr input[type="checkbox"]:checked').each(function () {
+            ARRID.push($('#grdtransfer').DataTable().row($(this).closest('tr')).data().SmId);
+        });
+        if ($('#grdselectalltransfer').prop('checked') == false) {
+            ARRID = [];
+        }
+    }
+    $(document).ready(function () {
+
+
+        // CheckAccessRights();
+
+        //$("#ddModule").chosen({ allow_single_deselect: true });
+        //$("#ddSubmodule").chosen({ allow_single_deselect: true });
+        //$("#ddRole").chosen({ allow_single_deselect: true });
+        $('#grdaccserights').DataTable({
+            "ajax": {
+                "url": "/AccessRights/GetAccessrigtsdet",
+                "type": "GET",
+                "datatype": "json",
+                data: function (d) {
+                    d.moduleid = $('#ddModule').val(),
+                        d.submoduleid = $("#ddSubmodule").val(),
+                        d.roleid = $("#ddRole").val()
+                }
+            },
+            "columns": [
+                { "data": "Formname", "autoWidth": true },
+                {
+                    "data": "Create", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                        var create = row.Create.split("~")
+                        if (create[0] == "0") {
+                            return "";
+                        }
+                        else if (create[1] != "0") {
+                            return '<input type="checkbox" checked id=' + create[0] + '  value="' + create[0] + '"   class="chkcreate call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                        } else {
+                            return '<input type="checkbox" id=' + create[0] + '  value="' + create[0] + '"   class="chkcreate call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                        }
+                    }
+                },
+                //{
+                //    "data": "Print", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                //        var Print = row.Print.split("~")
+                //        if (Print[0] == "0") {
+                //            return "";
+                //        }
+                //        else if (Print[1] != "0") {
+                //            return '<input type="checkbox" checked id=' + Print[0] + '  value="' + Print[0] + '"   class="chkprint call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                //        } else {
+                //            return '<input type="checkbox" id=' + Print[0] + '  value="' + Print[0] + '"   class="chkprint call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                //        }
+                //    }
+                //},
+                {
+                    "data": "View", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                        debugger;
+                        var View = row.View.split("~")
+                        if (View[0] == "0") {
+                            return "";
+                        }
+                        else if (View[1] != "0") {
+                            return '<input type="checkbox" checked id=' + View[0] + '  value="' + View[0] + '"   class="chkview call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                        } else {
+                            return '<input type="checkbox" id=' + View[0] + '  value="' + View[0] + '"   class="chkview call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                        }
+                    }
+                },
+                {
+                    "data": "Approver", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                        debugger;
+                        var Approver = row.Approver.split("~")
+                        if (Approver[0] == "0") {
+                            return "";
+                        }
+                        else if (Approver[1] != "0") {
+                            return '<input type="checkbox" checked id=' + Approver[0] + '  value="' + Approver[0] + '"   class="chkApprover call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                        } else {
+                            return '<input type="checkbox" id=' + Approver[0] + '  value="' + Approver[0] + '"   class="chkApprover call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                        }
+                    }
+                },
+            ]
+        });
+        $('#grdtransfer').DataTable(
+            {
+                "ajax": {
+                    "url": "/AccessRights/GetAccessrigtsdet",
+                    "type": "GET",
+                    "datatype": "json",
+                    data: function (d) {
+                        d.moduleid = $('#ddModuletransfer').val(),
+                            d.submoduleid = $("#ddSubmoduletransfer").val(),
+                            d.roleid = $("#ddRoletransfer").val()
+                    }
+                },
+                "columns": [
+                    { "data": "Formname", "autoWidth": true },
+                    {
+                        "data": "Create", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                            var create = row.Create.split("~")
+                            if (create[0] == "0") {
+                                return "";
+                            }
+                            else if (create[1] != "0") {
+                                return '<input type="checkbox" checked id=' + create[0] + '  value="' + create[0] + '"   class="chkcreate call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                            } else {
+                                return '<input type="checkbox" id=' + create[0] + '  value="' + create[0] + '"   class="chkcreate call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                            }
+                        }
+                    },
+                    //{
+                    //    "data": "Print", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                    //        var Print = row.Print.split("~")
+                    //        if (Print[0] == "0") {
+                    //            return "";
+                    //        }
+                    //        else if (Print[1] != "0") {
+                    //            return '<input type="checkbox" checked id=' + Print[0] + '  value="' + Print[0] + '"   class="chkprint call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                    //        } else {
+                    //            return '<input type="checkbox" id=' + Print[0] + '  value="' + Print[0] + '"   class="chkprint call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                    //        }
+                    //    }
+                    //},
+                    {
+                        "data": "View", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                            debugger;
+                            var View = row.View.split("~")
+                            if (View[0] == "0") {
+                                return "";
+                            }
+                            else if (View[1] != "0") {
+                                return '<input type="checkbox" checked id=' + View[0] + '  value="' + View[0] + '"   class="chkview call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                            } else {
+                                return '<input type="checkbox" id=' + View[0] + '  value="' + View[0] + '"   class="chkview call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                            }
+                        }
+                    },
+                    {
+                        "data": "Approver", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                            debugger;
+                            var Approver = row.Approver.split("~")
+                            if (Approver[0] == "0") {
+                                return "";
+                            }
+                            else if (Approver[1] != "0") {
+                                return '<input type="checkbox" checked id=' + Approver[0] + '  value="' + Approver[0] + '"   class="chkApprover call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                            } else {
+                                return '<input type="checkbox" id=' + Approver[0] + '  value="' + Approver[0] + '"   class="chkApprover call-checkbox">';//<span class="lbl"><a href="#"></a> </span>
+                            }
+                        }
+                    },
+                ]
+            });
+        $("#btnReset").click(function () {
+            window.location.href = "/AccessRights/AccessRights";
+        })
+        $("#btnResetreq").click(function () {
+            window.location.href = "/AccessRights/AccessRights";
+        })
+        $("#btnloaddet").click(function () {
+            debugger;
+            var moduleid = $('#ddModuletransfer').val();
+            var submoduleid = $("#ddSubmoduletransfer").val();
+            var roleid = $("#ddRoletransfer").val();
+            if (moduleid == "0") {
+                $('#errorBlock').show();
+                $('#lblMessage').text("Please select Module");
+                $("#ddModuletransfer").focus();
+                return false;
+            }
+            else if (submoduleid == "0") {
+                $('#errorBlock').show();
+                $('#lblMessage').text("Please select Sub Module");
+                $("#ddSubmoduletransfer").focus();
+                return false;
+            }
+            else if (roleid == "0") {
+                $('#errorBlock').show();
+                $('#lblMessage').text("Please select Role");
+                $("#ddRoletransfer").focus();
+                return false;
+            }
+            else {
+                $("#ddModuletransfer").prop("disabled", true);
+                $('#ddModuletransfer').trigger("chosen:updated");
+                $("#ddSubmoduletransfer").prop("disabled", true);
+                $('#ddSubmoduletransfer').trigger("chosen:updated");
+                $("#ddRoletransfer").prop("disabled", true);
+                $('#ddRoletransfer').trigger("chosen:updated");
+                $("#btnloaddet").prop("disabled", true);
+                $("#ddTransfertorole").prop("disabled", false);
+                $('#ddTransfertorole').trigger("chosen:updated");
+                $("#btntransfer").prop("disabled", false);
+                $('#grdtransfer').DataTable().ajax.reload();
+            }
+        })
+        $("#btnLoad").click(function () {
+            debugger;
+            var moduleid = $('#ddModule').val();
+            var submoduleid = $("#ddSubmodule").val();
+            var roleid = $("#ddRole").val();
+            if (moduleid == "0") {
+                $('#errorMsgModuleId').html("Please select Module");
+                $("#ddModule").focus();
+                return false;
+            }
+            else if (submoduleid == "0") {
+                $('#errorMsgSubModuleId').html("Please select Sub Module");
+                $("#ddSubmodule").focus();
+                return false;
+            }
+            else if (roleid == "0") {
+                $('#errorMsgRoleId').html("Please select Role");
+                $("#ddRole").focus();
+                return false;
+            }
+            else {
+                $("#ddModule").prop("disabled", true);
+                $('#ddModule').trigger("chosen:updated");
+                $("#ddSubmodule").prop("disabled", true);
+                $('#ddSubmodule').trigger("chosen:updated");
+                $("#ddRole").prop("disabled", true);
+                $('#ddRole').trigger("chosen:updated");
+                $('#grdaccserights').DataTable().ajax.reload();
+            }
+        })
+        $("#btntransfer").click(function () {
+            debugger;
+            var checkvalues = "";
+            var table = $('#grdtransfer').DataTable();
+            var moduleid = $('#ddModuletransfer').val();
+            var submoduleid = $("#ddSubmoduletransfer").val();
+            var roleid = $("#ddRoletransfer").val();
+            var transferroleid = $("#ddTransfertorole").val();
+            if (transferroleid == "0") {
+                $('#errorBlock').show();
+                $('#lblMessage').text("Please select Transfer Role");
+                $("#ddRoletransfer").focus();
+                return false;
+            } else if (transferroleid == roleid) {
+                $('#errorBlock').show();
+                $('#lblMessage').text("Transfer Role and Role should not be same");
+                $("#ddtransferrole").focus();
+                return false;
+            }
+            table.rows().every(function (index, element) {
+                var row = $(this.node());
+                debugger;
+                var create = row.find('.chkcreate').val();
+                var deleteid = row.find('.chkdelete').val();
+                var editid = row.find('.chkedit').val();
+                var printid = row.find('.chkprint').val();
+                var saveid = row.find('.chkSave').val();
+                var viewid = row.find('.chkview').val();
+                var Approverid = row.find('.chkApprover').val();
+                if (row.find(".chkcreate").is(":checked")) {
+                    checkvalues += create + '|';
+                }
+                if (row.find(".chkdelete").is(":checked")) {
+                    checkvalues += deleteid + '|';
+                }
+                if (row.find(".chkedit").is(":checked")) {
+                    checkvalues += editid + '|';
+                }
+                if (row.find(".chkprint").is(":checked")) {
+                    checkvalues += printid + '|';
+                }
+                if (row.find(".chkSave").is(":checked")) {
+                    checkvalues += saveid + '|';
+                }
+                if (row.find(".chkview").is(":checked")) {
+                    checkvalues += viewid + '|';
+                }
+                if (row.find(".chkApprover").is(":checked")) {
+                    checkvalues += Approverid + '|';
+                }
+            });
+            //if (checkvalues == "") {
+            //    $('#errorBlock').show();
+            //    $('#lblMessage').text("No record found to Proceed further ");
+            //    return false;
+            //} else {
+            var value = confirm("Are you sure, do you want to Transfer");
+            if (value) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "../AccessRights/SaveAccesrights",
+                    data: "{'moduleid':'" + moduleid + "','submoduleid':'" + submoduleid + "','roleid':'" + transferroleid + "','checkedvales':'" + checkvalues + "'}",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.statusId == "-1") {
+                            //alertwithredirect('Success', '@Model.message', 'warning', '@Url.Action("AccessRights", "AccessRights")');
+                            Swal.fire('Error in Save Data', '', 'success')
+                            return false;
+                        }
+                        else if (data.statusId == "1") {
+                            // alertwithredirect('Success', '@Model.message', 'success', '@Url.Action("AccessRights", "AccessRights")');
+                            Swal.fire('Saved Successfully', '', 'success')
+                        }
+
+                    },
+                    error: function () {
+                        alert();
+                    }
+                });
+            }
+            //}
+        })
+    })
+    $("#btnsave").click(function () {
+        debugger;
+        var rowcount = $('#grdaccserights').DataTable().data().count();
+        if (rowcount == 0) {
+            Swal.fire('Please Give Access Rights', '', 'warning')
+            return false;
+        }
+        var checkvalues = "";
+        var table = $('#grdaccserights').DataTable();
+        var moduleid = $('#ddModule').val();
+        var submoduleid = $("#ddSubmodule").val();
+        var roleid = $("#ddRole").val();
+        if (moduleid == 0) {
+
+        } else {
+
+        }
+        table.rows().every(function (index, element) {
+            var row = $(this.node());
+            debugger;
+            var create = row.find('.chkcreate').val();
+            var deleteid = row.find('.chkdelete').val();
+            var editid = row.find('.chkedit').val();
+            var printid = row.find('.chkprint').val();
+            var saveid = row.find('.chkSave').val();
+            var viewid = row.find('.chkview').val();
+            var Approverid = row.find('.chkApprover').val();
+            if (row.find(".chkcreate").is(":checked")) {
+                checkvalues += create + '|';
+            }
+            if (row.find(".chkdelete").is(":checked")) {
+                checkvalues += deleteid + '|';
+            }
+            if (row.find(".chkedit").is(":checked")) {
+                checkvalues += editid + '|';
+            }
+            if (row.find(".chkprint").is(":checked")) {
+                checkvalues += printid + '|';
+            }
+            if (row.find(".chkSave").is(":checked")) {
+                checkvalues += saveid + '|';
+            }
+            if (row.find(".chkview").is(":checked")) {
+                checkvalues += viewid + '|';
+            }
+            if (row.find(".chkApprover").is(":checked")) {
+                checkvalues += Approverid + '|';
+            }
+        });
+        var value = confirm("are you sure do you want to continue");
+        if (value) {
+
+            // alert(moduleid);
+
+
+
+
+            $.ajax({
+                type: "POST",
+                //  contentType: "application/json",
+                datatype: "json",
+                url: "../AccessRights/SaveAccesrights",
+                data: { moduleid: moduleid, submoduleid: submoduleid, roleid: roleid, checkedvales: checkvalues },
+                success: function (accessrights) {
+                    debugger;
+                    if (accessrights.data == "-1") {
+                        Swal.fire('Error in Save Data', '', 'warning')
+                        return false;
+                    }
+                    else if (accessrights.data == "1") {
+                        Swal.fire('Saved Successfully', '', 'success')
+                        return true;
+                    }
+                }
+            });
+        }
+        //}
+    })
+    function getsubmoduledet() {
+        debugger;
+        var moduleid = $("#ddModule").val();
+        $('#errorMsgModuleId').html("");
+        if (moduleid == "0") {
+            $("#ddSubmodule").val("0");
+            $("#ddRole").val("0");
+            $("#ddSubmodule").prop("disabled", true);
+            $('#ddSubmodule').trigger("chosen:updated");
+            $("#ddRole").prop("disabled", true);
+            $('#ddRole').trigger("chosen:updated");
+            return false;
+        }
+        else {
+            var url = '@Url.Action("GetSubModule", "AccessRights")';
+            $.post(url, { moduleid: moduleid },
+                function (lstsubmodules) {
+                    $("#ddSubmodule").html("");
+                    var s = '';
+                    var len = lstsubmodules.length;
+                    for (var i = 0; i < len; i++) {
+                        s += "<option value='" + lstsubmodules[i]["Value"] + "'>" + lstsubmodules[i]["Text"] + "</option>";
+                    }
+                    $('#ddSubmodule').html(s);
+                    $("#ddSubmodule").prop("disabled", false);
+                    $('#ddSubmodule').trigger("chosen:updated");
+                    $("#ddRole").prop("disabled", false);
+                    $('#ddRole').trigger("chosen:updated");
+                });
+        }
+    }
+    $('#ddSubmodule').change(function () {
+        $('#errorMsgSubModuleId').html("");
+    });
+    $("#ddRole").change(function () {
+        $('#errorMsgRoleId').html("");
+    });
+    function getsubmoduledettransfer() {
+        debugger;
+        var moduleid = $("#ddModuletransfer").val();
+        if (moduleid == "0") {
+            $("#ddSubmoduletransfer").val("0");
+            $("#ddRole").val("0");
+            $("#ddSubmoduletransfer").prop("disabled", true);
+            $('#ddSubmoduletransfer').trigger("chosen:updated");
+            $("#ddRoletransfer").prop("disabled", true);
+            $('#ddRoletransfer').trigger("chosen:updated");
+            return false;
+        }
+        else {
+            var url = '@Url.Action("GetSubModule", "AccessRights")';
+            $.post(url, { moduleid: moduleid },
+                function (lstsubmodules) {
+                    $("#ddSubmoduletransfer").html(""); // clear before appending new list
+                    var s = '';
+                    var len = lstsubmodules.length;
+                    for (var i = 0; i < len; i++) {
+                        s += "<option value='" + lstsubmodules[i]["Value"] + "'>" + lstsubmodules[i]["Text"] + "</option>";
+                    }
+                    $('#ddSubmoduletransfer').html(s);
+                    $("#ddSubmoduletransfer").prop("disabled", false);
+                    $('#ddSubmoduletransfer').trigger("chosen:updated");
+                    $("#ddRoletransfer").prop("disabled", false);
+                    $('#ddRoletransfer').trigger("chosen:updated");
+                });
+        }
+    }
+
+    /*CheckAccessRights - Raghavendra, 29.09.2023*/
+    function CheckAccessRights() {
+        debugger;
+        try {
+            $.ajax({
+                url: '@Url.Action("CheckAccessRights", "AccessRights")',
+                type: "GET",
+                dataType: "html",
+                data: { BOCode: 'MASTERS' },
+                async: false,
+                success: function (result) {
+                    var AccessResult = JSON.parse(result);
+                    if (AccessResult.indexOf("APPROVER") > -1) {
+                        return true;
+                    }
+                    if (AccessResult.indexOf("CREATE") == -1) {
+                        $('#btnAdd').css("display", "none"); //"New"" button should be disable.
+                    }
+                    if (AccessResult.indexOf("VIEW") == -1) {
+                        //code to view access only.
+                    }
+                }
+            });
+        }
+        catch (ex) {
+            $('#errorBlock').css("display", "block");
+            $('#lblMessage').text(ex);
+        }
+    }
+
+</script>

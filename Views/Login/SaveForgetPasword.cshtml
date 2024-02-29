@@ -1,0 +1,641 @@
+﻿@model IEMS_WEB.Models.ForgetPassword
+
+@{
+   // Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="frame-src 'self' *.YourProjectURL.com;">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Koho admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities." />
+    <meta name="keywords" content="admin template, Koho admin template, dashboard template, flat admin template, responsive admin template, web app" />
+    <meta name="author" content="pixelstrap" />
+   
+    <!-- Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet" />
+    @*<link rel="stylesheet" type="text/css" href="~/assets/css/vendors/font-awesome.css" />*@
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="https://fontawesome.com/v3/assets/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/themify.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/flag-icon.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/feather-icon.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/scrollbar.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/select2.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css" />
+    <link id="color" rel="stylesheet" href="~/assets/css/color-1.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/responsive.css" />
+ 
+
+    <link href="~/assets/css/Jquery_ui.css" rel="stylesheet" />
+ 
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/datatables.css">
+    <script src="~/assets/js/jquery-3.6.0.min.js"></script>
+
+
+    <script src="~/assets/js/Chosen.js"></script>
+    <link href="~/assets/css/Chosen.css" rel="stylesheet" />
+
+  
+    <script src="~/assets/js/Jquery_Datatable_min.js"></script>
+
+ 
+    <script src="~/assets/js/Jquery_datatable_ui.js"></script>
+
+    <script src="~/assets/js/Jquery_ui.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+   
+    <style>
+
+        .alert {
+            border-radius: 8px;
+            padding: 15px;
+            overflow: hidden;
+            width: 500px !important;
+            position: absolute !important;
+            z-index: 9999999 !important;
+            top: -30px !important;
+            right: -41px !important;
+        }
+
+
+
+        .customizer-links {
+            display: none !important
+        }
+
+        iframe#\:2\.container {
+            display: none !important;
+        }
+
+        .progress-bar {
+            background-color: green !important
+        }
+
+        .progress {
+            height: 7px !important
+        }
+
+        .goog-te-gadget-simple {
+            font-size: 7pt !important;
+        }
+
+        .goog-te-gadget img {
+            display: none !important
+        }
+
+        .modal-backdrop.in {
+            opacity: 0.5 !important;
+        }
+    </style>
+</head>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div style="height:100%;display:flex;justify-content:center;align-items:center!important;" class="row">
+
+            <div style="box-shadow: 2px 2px 15px 2px #d4d4d4!important;" class="col-md-6 login-sec">
+                <a>
+                    <img style="margin-left: auto !important;margin-right: auto;display: block !important;width: 75%;" src="~/HomePage_Files/img/Icons/HeaderBig.jpg">
+
+                    <br />
+
+                    <img style="width: 50%;margin-left: auto;margin-right: auto;display: block;" src="~/assets/images/iems2.0_Home.png" />
+                </a>
+                <br />
+                @*<h3 class="text-center">Login</h3>*@
+                <form class="login-form">
+                  
+                       
+                            <div class="col-md-6 mx-auto">
+                    <div class="form-group hideUserName">
+
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", autocomplete = "off", placeholder = "Enter User Name", id = "txtUsername" })
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger", id = "dspUserName" })
+                    </div>
+                  
+                        </div>
+                    <div class="form-group hideSendOtp text-center" @*style="display:none"*@>
+                        <div class="form-input position-relative">
+                            <input type="button" value="Generate OTP" class="btn btn-success" id="btnSendOtp" />
+                        </div>
+                    </div>
+                    <div class="form-group row hideNewPassword" style="display:none">
+                        <label class="control-label col-md-4">
+                            New Password <span style="color: #FF0000;">*</span>
+                        </label>
+                        <div class="input-group col-md-6">
+                            @Html.TextBoxFor(m => m.NewPassword, new { @maxlength = "12", @minlength = "8", @Type = "password", @class = "form-control password-box", autocomplete = "off", id = "txtNewPassword", required = "required", oncopy = "return false", ondrag = "return false", onpaste = "return false", @onkeypress = "return RestrictSpace(event);" })
+                            <i style="float: right !important;margin-top: 08px !important;margin-right: 25px !important;z-index: 9999 !important;position: absolute;right: 0;" class="fa fa-eye" aria-hidden="true" id="togglePassword2" style="cursor: pointer;"></i>
+                        </div>
+                    </div>
+                    <div class="form-group row hideConfirmPassword" style="display:none">
+                        <label class="control-label col-md-4">
+                            Confirm Password <span style="color: #FF0000;">*</span>
+                        </label>
+                        <div class="input-group col-md-6">
+                            @Html.TextBoxFor(m => m.ConfirmPassword, new { @maxlength = "12", @minlength = "8", @Type = "password", @class = "form-control password-box", autocomplete = "off", id = "txtConfirmPassword", required = "required", oncopy = "return false", ondrag = "return false", onpaste = "return false", @onkeypress = "return RestrictSpace(event);" })
+                        </div>
+                    </div>
+                    <div class="form-group" id="IdPolicy">
+                        <div class="col-md-12">
+                            <div id="popover-password">
+                                <p>Password Strength: <span id="result"> </span></p>
+                                <div class="progress">
+                                    <div id="password-strength" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                    </div>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li class=""><span class="low-upper-case"><i class="fa fa-file-text" aria-hidden="true"></i></span>&nbsp; 1 Lowercase &amp; 1 Uppercase</li>
+                                    <li class=""><span class="one-number"><i class="fa fa-file-text" aria-hidden="true"></i></span> &nbsp;1 Number (0-9)</li>
+                                    <li class=""><span class="one-special-char"><i class="fa fa-file-text" aria-hidden="true"></i></span> &nbsp;1 Special Character (!@@#$%^&*).</li>
+                                    <li class=""><span class="eight-character"><i class="fa fa-file-text" aria-hidden="true"></i></span>&nbsp; Atleast 8 Characters</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mx-auto">
+                    <div class="form-group hideOtpDiv" style="display:none">
+                        <div class="form-input position-relative">
+                            @Html.TextBoxFor(m => m.OTP, new { @class = "form-control", autocomplete = "off", placeholder = "OTP", id = "txtOtp", maxlength = 6, })
+                            <div id="timer" style="color:blue;float:right;"></div>
+                                <a href="../Login/SaveForgetPasword"><span style="color:blue;float:right;display:none" class="clsSendOTP" title="">Resend OTP</span></a>
+                            @Html.ValidationMessageFor(m => m.OTP, "", new { @class = "text-danger", id = "dspOtp" })
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6 mx-auto">
+                    <div class="form-group hideVerifyOtp" style="display:none">
+                        <div class="form-input position-relative">
+                            <input type="button" value="Verify OTP" class="btn btn-success" id="btnVerifyOtp" />
+                            @*<button id="btnUpdate" type="submit" class="btn btn-round btn-success m-b-10" name="btnSave" value="Update">Update </button>*@
+                            <input type="submit" value="Update" class="btn btn-success" id="btnUpdate" />
+                            <input type="button" value="Back" class="btn btn-primary" id="btnBack" />
+                        </div>
+                    </div>
+                    </div>
+                    <div class="text-center hideSubmitButton" style="display:none">
+
+                        <button type="submit" value="" class="btn btn-primary" id="btnSubmit"><i class="fa fa-sign-in" aria-hidden="true"></i> Log in</button>
+                        @*<button type="button" value="" class="btn btn-secondary" id="btnOtp"><i class="fa fa-list-ol" aria-hidden="true"></i> Log in Via OTP</button>*@
+
+
+                    </div>
+
+                    <div class="form-group" style="display:none">
+                        @Html.TextBoxFor(m => m.MobileNo, new { @class = "form-control", autocomplete = "off", placeholder = "MobileNo", id = "txtMobileNo", maxlength = 10, })
+                    </div>
+
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+}
+@if (Model.Status == 1)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
+            swal({
+                title: '',
+                text: "@Model.StatusMessage",
+                type: "success"
+            }).then(function () {
+                window.location.href = "../Login/Login";
+            });
+        });
+    </script>
+}
+@if (Model.Status == -1)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
+            swal({
+                title: '',
+                text: "@Model.StatusMessage",
+                type: "warning"
+
+            }).then(function () {
+                ///window.location.href = "../CreateUser/CreateUsers";
+            });
+        });
+    </script>
+}
+@if (Model.Status == -2)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
+            swal({
+                title: '',
+                text: "@Model.StatusMessage",
+                type: "warning"
+
+            }).then(function () {
+                ///window.location.href = "../CreateUser/CreateUsers";
+            });
+        });
+    </script>
+}
+<script src="\assets\js\jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#IdPolicy').hide();
+        const togglePassword_ = document.querySelector('#togglePassword2');
+        const password_ = document.querySelector('#txtNewPassword');
+        togglePassword_.addEventListener('click', function (e) {
+            // toggle the type attribute
+            const type = password_.getAttribute('type') === 'password' ? 'text' : 'password';
+            password_.setAttribute('type', type);
+            // toggle the eye slash icon
+            this.classList.toggle('fa-eye-slash');
+        });
+        // back button
+        $('#btnBack').click(function () {
+            window.location.href = "../login/login";
+        });
+
+        $("#btnSendOtp").click(function () {
+            var UserName = $('#txtUsername').val();
+            if (UserName == "") {
+                $('#dspUserName').html("Please Enter UserName");
+                return false;
+            }
+            //else if ($.trim($('#txtPhoneNumber').val()).length !== 10) {
+            //    $('#dspPhoneNumber').html("Please Enter Correct Phone Number");
+            //    $('#txtPhoneNumber').focus();
+            //    return false;
+            //}
+            $.ajax({
+                url: "../Login/GenerateOtp?UserName=" + UserName,
+                //data: { UserName: UserName },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    if (data.Status == 1) {
+                        // $('#dspUserName').html('<span style="color:green;"> Otp' + data.OTP + ' Has Been Sent Please Check!</span>');
+
+                        $('#dspUserName').html('<span style="color:green;"> Otp Has Been Sent Please Check!</span>');
+                        $('#txtMobileNo').val(data.MobileNo);
+                    }
+                    else {
+                        swal({
+                            title: '',
+                            text: data.Message,
+                            type: "warning"
+
+                        }).then(function () {
+                            ///window.location.href = "../CreateUser/CreateUsers";
+                        });
+                    }
+
+                    $('.hideOtpDiv').show();
+                    $('.hideVerifyOtp').show();
+                    $('#btnSendOtp').hide();
+                    $('#btnUpdate').hide();
+                    $('#timer').show();
+                    $('#IdPolicy').hide();
+                    timer(60);
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                }
+            });
+
+            $("#btnVerifyOtp").click(function () {
+                debugger;
+                var OTP = $('#txtOtp').val();
+                var MobileNumber = $('#txtMobileNo').val();
+                if (OTP == "") {
+                    $('#dspOtp').html("Please Enter OTP");
+                    $('#txtOtp').focus();
+                    return false;
+                }
+                else if ($.trim($('#txtOtp').val()).length !== 6) {
+                    $('#dspOtp').html("Please Enter Correct OTP");
+                    $('#txtOtp').focus();
+                    return false;
+                }
+                $.ajax({
+                    url: "@Url.Action("ValidateOTP", "Login")",
+                    data: { OTPVal: OTP, MobileNumber: MobileNumber },
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        debugger;
+                        if (data.StatusId == 1) {
+                            $('#btnVerifyOtp').attr("disabled", true);
+                            $('#dspUserName').html('');
+                            // window.location.href = "../login/ForgetPassword";
+                            $('.hideNewPassword').show();
+                            $('.hideConfirmPassword').show();
+                            $('.hideUserName').hide();
+                            $('.hideOtpDiv').hide();
+                            $('#btnVerifyOtp').hide();
+                            $('#btnUpdate').show();
+                            $('#IdPolicy').show();
+                        }
+                        else if (data.StatusId == -1) {
+                            $('#dspOtp').html(data.Statusmessage);
+                            $('.clsSendOTP').show();
+                            $('#dspUserName').html('');
+                        }
+                        else {
+                            $('#dspOtp').html("Entered OTP is Wrong");
+                            $('.clsSendOTP').show();
+                            $('#dspUserName').html('');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Error:", error);
+                    }
+                });
+            });
+            $("#btnUpdate").click(function (e) {
+                debugger;
+                var new_pwd = $('#txtNewPassword').val().trim();
+                var confirm_pwd = $('#txtUserConfirmPassword').val().trim();
+                if (new_pwd == "" || new_pwd == null) {
+                    $('#txtUserPassword').attr('title', 'Please Enter New Password').tooltip('show');
+                    $("#txtUserPassword").focus();
+                    return false;
+                }
+                if (confirm_pwd == "" || confirm_pwd == null) {
+                    $('#txtUserPassword').attr('title', 'Please Enter New Password').tooltip('show');
+                    $("#txtUserPassword").focus();
+                    return false;
+                }
+                if (new_pwd.length < 8) {
+                    $('#txtUserPassword').attr('title', 'New Password Must Contain Atleast 8 Characters').tooltip('show');
+                    $("#txtUserPassword").focus();
+                    return false;
+                }
+                if (confirm_pwd.length < 8) {
+                    $('#txtUserPassword').attr('title', 'New Password Must Contain Atleast 8 Characters').tooltip('show');
+                    $("#txtUserPassword").focus();
+                    return false;
+                }
+                if (new_pwd != confirm_pwd) {
+                    //$('#txtUserPassword').attr('title', 'Password Doesnot Match').tooltip('show');
+                    //swal('Password Doesnot Match');
+                    swal({
+                        title: '',
+                        text: 'Password Doesnot Match',
+                        type: 'warning',
+                        showConfirmButton: true
+                    }, function () {
+                    });
+                    $("#txtNewPassword").focus();
+                    return false;
+                }
+            });
+        });
+
+        var timerOn = true;
+        function timer(remaining) {
+            var m = Math.floor(remaining / 60);
+            var s = remaining % 60;
+            s = s < 10 ? '0' + s : s;
+            document.getElementById('timer').innerHTML = m + ':' + s;
+            remaining -= 1;
+            if (remaining >= 0 && timerOn) {
+                timer_id = setTimeout(function () {
+                    timerOn = true
+                    timer(remaining);
+                }, 1000);
+                return;
+            }
+            else {
+                $('#timer').hide();
+                $('.clsSendOTP').show();
+            }
+            if (!timerOn) {
+                return;
+            }
+        }
+    });
+    $(document).ready(function () {
+        $('#txtNewPassword').keyup(function () {
+            var password = $('#txtNewPassword').val();
+            if (checkStrength(password) == false) {
+                // $('#sign-up').attr('disabled', true);
+            }
+        });
+        $('#txtConfirmPassword').keyup(function () {
+            var password = $('#txtConfirmPassword').val();
+            if (checkStrength(password) == false) {
+                // $('#sign-up').attr('disabled', true);
+            }
+        });
+        function checkStrength(password) {
+            var strength = 0;
+            //If password contains both lower and uppercase characters, increase strength value.
+            if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) {
+                strength += 1;
+                $('.low-upper-case').addClass('text-success');
+                $('.low-upper-case i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+            } else {
+                $('.low-upper-case').removeClass('text-success');
+                $('.low-upper-case i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+
+            //If it has numbers and characters, increase strength value.
+            if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) {
+                strength += 1;
+                $('.one-number').addClass('text-success');
+                $('.one-number i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+
+            } else {
+                $('.one-number').removeClass('text-success');
+                $('.one-number i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+
+            //If it has one special character, increase strength value.
+            if (password.match(/([!,%,&,@@,#,$,^,*,?,_,~])/)) {
+                strength += 1;
+                $('.one-special-char').addClass('text-success');
+                $('.one-special-char i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+
+            } else {
+                $('.one-special-char').removeClass('text-success');
+                $('.one-special-char i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+
+            if (password.length > 7) {
+                strength += 1;
+                $('.eight-character').addClass('text-success');
+                $('.eight-character i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+
+            } else {
+                $('.eight-character').removeClass('text-success');
+                $('.eight-character i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+            // If value is less than 2
+            if (strength < 2) {
+                $('#result').removeClass()
+                $('#password-strength').addClass('progress-bar-danger');
+
+                $('#result').addClass('text-danger').text('Very Weak');
+                $('#password-strength').css('width', '10%');
+            } else if (strength == 2) {
+                $('#result').addClass('good');
+                $('#password-strength').removeClass('progress-bar-danger');
+                $('#password-strength').addClass('progress-bar-warning');
+                $('#result').addClass('text-warning').text('Weak')
+                $('#password-strength').css('width', '60%');
+                return 'Week'
+            } else if (strength == 4) {
+                $('#result').removeClass()
+                $('#result').addClass('strong');
+                $('#password-strength').removeClass('progress-bar-warning');
+                $('#password-strength').addClass('progress-bar-success');
+                $('#result').addClass('text-success').text('Strong');
+                $('#password-strength').css('width', '100%');
+                return 'Strong';
+            }
+        }
+    });
+    $(document).ready(function () {
+        $('#txtNewPassword').keyup(function () {
+            var password = $('#txtNewPassword').val();
+            if (checkStrength(password) == false) {
+                // $('#sign-up').attr('disabled', true);
+            }
+        });
+        $('#txtConfirmPassword').keyup(function () {
+            var password = $('#txtConfirmPassword').val();
+            if (checkStrength(password) == false) {
+                // $('#sign-up').attr('disabled', true);
+            }
+        });
+        function checkStrength(password) {
+            var strength = 0;
+            //If password contains both lower and uppercase characters, increase strength value.
+            if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) {
+                strength += 1;
+                $('.low-upper-case').addClass('text-success');
+                $('.low-upper-case i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+            } else {
+                $('.low-upper-case').removeClass('text-success');
+                $('.low-upper-case i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+
+            //If it has numbers and characters, increase strength value.
+            if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) {
+                strength += 1;
+                $('.one-number').addClass('text-success');
+                $('.one-number i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+
+            } else {
+                $('.one-number').removeClass('text-success');
+                $('.one-number i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+
+            //If it has one special character, increase strength value.
+            if (password.match(/([!,%,&,@@,#,$,^,*,?,_,~])/)) {
+                strength += 1;
+                $('.one-special-char').addClass('text-success');
+                $('.one-special-char i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+
+            } else {
+                $('.one-special-char').removeClass('text-success');
+                $('.one-special-char i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+
+            if (password.length > 7) {
+                strength += 1;
+                $('.eight-character').addClass('text-success');
+                $('.eight-character i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+
+            } else {
+                $('.eight-character').removeClass('text-success');
+                $('.eight-character i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+            // If value is less than 2
+            if (strength < 2) {
+                $('#result').removeClass()
+                $('#password-strength').addClass('progress-bar-danger');
+
+                $('#result').addClass('text-danger').text('Very Weak');
+                $('#password-strength').css('width', '10%');
+            } else if (strength == 2) {
+                $('#result').addClass('good');
+                $('#password-strength').removeClass('progress-bar-danger');
+                $('#password-strength').addClass('progress-bar-warning');
+                $('#result').addClass('text-warning').text('Weak')
+                $('#password-strength').css('width', '60%');
+                return 'Week'
+            } else if (strength == 4) {
+                $('#result').removeClass()
+                $('#result').addClass('strong');
+                $('#password-strength').removeClass('progress-bar-warning');
+                $('#password-strength').addClass('progress-bar-success');
+                $('#result').addClass('text-success').text('Strong');
+                $('#password-strength').css('width', '100%');
+                return 'Strong';
+            }
+        }
+    });
+    function RestrictSpace(evt) {
+        if (evt.which == 32) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+</script>
+<script src="~/assets/js/bootstrap/popper.min.js"></script>
+
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<!-- feather icon js-->
+<script src="~/assets/js/icons/feather-icon/feather.min.js"></script>
+<script src="~/assets/js/icons/feather-icon/feather-icon.js"></script>
+<script src="~/assets/js/scrollbar/simplebar.js"></script>
+<script src="~/assets/js/scrollbar/custom.js"></script>
+<!-- Sidebar jquery-->
+<script src="~/assets/js/config.js"></script>
+<script src="~/assets/js/sidebar-menu.js"></script>
+<script src="~/assets/js/form-validation-custom.js"></script>
+@*<script src="~/assets/js/select2/select2.full.min.js"></script>
+    <script src="~/assets/js/select2/select2-custom.js"></script>*@
+<script src="~/assets/js/tooltip-init.js"></script>
+<!-- Theme js-->
+<script src="~/assets/js/script.js"></script>
+<script src="~/assets/js/theme-customizer/customizer.js"></script>
+<script type="text/javascript" src="~/assets/js/Validation.js"></script>

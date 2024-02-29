@@ -1,0 +1,284 @@
+﻿@model IEMS_WEB.Models.PublicServices.Response.ListPublicServiceResponseModel
+@{
+    ViewData["Title"] = "PublicService";
+    Layout = "~/Views/Shared/_LayoutWithoutMenu.cshtml";
+}
+
+<style>
+    .page-wrapper.compact-wrapper .page-header {
+        margin-left: 0px !important;
+        width: calc(100% - 0px) !important;
+    }
+
+    .footer {
+        margin-left: 0px !important;
+    }
+
+    .nav-right.col-2.pull-left.right-header.p-0.mobile.session {
+        display: none !important;
+    }
+
+    li#language-selector {
+        display: none;
+    }
+
+    .toggle-sidebar {
+        display: none !important;
+    }
+
+    .radius-10 {
+        border-radius: 10px !important;
+    }
+
+    .border-info {
+        border-left: 5px solid #0dcaf0 !important;
+    }
+
+    .border-danger {
+        border-left: 5px solid #fd3550 !important;
+    }
+
+    .border-success {
+        border-left: 5px solid #15ca20 !important;
+    }
+
+    .border-warning {
+        border-left: 5px solid #ffc107 !important;
+    }
+
+
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0px solid rgba(0, 0, 0, 0);
+        border-radius: .25rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
+        outline: 2px solid #d4d4d3;
+    }
+
+    .bg-gradient-scooter {
+        background: #17ead9;
+        background: -webkit-linear-gradient( 45deg, #17ead9, #6078ea) !important;
+        background: linear-gradient( 45deg, #17ead9, #6078ea) !important;
+    }
+
+    .widgets-icons-2 {
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ededed;
+        font-size: 27px;
+        border-radius: 10px;
+    }
+
+    .rounded-circle {
+        border-radius: 50% !important;
+    }
+
+    .text-white {
+        color: #fff !important;
+    }
+
+    .ms-auto {
+        margin-left: auto !important;
+    }
+
+    .bg-gradient-bloody {
+        background: #f54ea2;
+        background: -webkit-linear-gradient( 45deg, #f54ea2, #ff7676) !important;
+        background: linear-gradient( 45deg, #f54ea2, #ff7676) !important;
+    }
+
+    .bg-gradient-ohhappiness {
+        background: #00b09b;
+        background: -webkit-linear-gradient( 45deg, #00b09b, #96c93d) !important;
+        background: linear-gradient( 45deg, #00b09b, #96c93d) !important;
+    }
+
+    .bg-gradient-blooker {
+        background: #ffdf40;
+        background: -webkit-linear-gradient( 45deg, #ffdf40, #ff8359) !important;
+        background: linear-gradient( 45deg, #ffdf40, #ff8359) !important;
+    }
+
+    .blink_text {
+        color: blue !important
+    }
+</style>
+
+@Html.Raw(TempData["Alert"])
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3">
+        <div class="col">
+            <div class="card radius-10 border-start border-0 border-3 border-info" id="btnDepartmentDiv">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h3 class="my-1 text-info">Department</h3>
+
+                        </div>
+                        <div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto">
+                            <i class="fa fa-building-o"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card radius-10 border-start border-0 border-3 border-danger" id="btnPublicService">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h3 class="my-1 text-danger">Public Service</h3>
+                        </div>
+                        <div class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto">
+                            <i class="fa fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    <div class="btn-group" style="display:none">
+        <input type="hidden" name="SSOID" value="@Model.ssoName.sAMAccountName" />
+        <input type="hidden" name="Dept" value="Dept" />
+        <input type="hidden" name="SSOUrl" id="SSOUrl" value="@Model.ssoModel.SSSOURL">
+        <input type="hidden" name="Token" id="Token" value="@Model.token">
+        <input type="hidden" name="SSoName" id="SSoName" value="@Model.ssoModel.SSoName">
+        <input type="hidden" name="SSoPassword" id="SSoPassword" value="@Model.ssoModel.SSoPassword">
+        <button type="submit" style="display:none" class="btn btn-success" data-translate="" id="btnDepartment">Department</button>
+    </div>
+}
+@using (Html.BeginForm("PublicServices", "LoginConfermation", FormMethod.Post))
+{
+    <input type="hidden" name="ServiceId" id="ServiceId">
+    <input type="hidden" name="ServiceUrl" id="ServiceUrl">
+    <input type="hidden" name="ServiceName" id="ServiceName">
+    <input type="hidden" name="RoleID" id="RoleID">
+    <input type="hidden" name="LinkName" id="LinkName">
+    <input type="hidden" name="Dept" value="Citizen" />
+    <input type="hidden" name="SSOUrl" id="SSOUrl" value="@Model.ssoModel.SSSOURL">
+    <input type="hidden" name="Token" id="Token" value="@Model.token">
+    <input type="hidden" name="SSoName" id="SSoName" value="@Model.ssoModel.SSoName">
+    <input type="hidden" name="SSoPassword" id="SSoPassword" value="@Model.ssoModel.SSoPassword">
+    <input type="submit" style="display:none" id="submit" />
+
+    <div class="row g-3 align-items-center" id="table1">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12">
+
+                    <h3> <span data-translate="Create Users">Public Service List</span></h3>
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="container-fluid">
+
+                <div class="row">
+
+                    @{
+                        int i = 0;
+                    }
+                    @if (Model != null && Model.List.Count() > 0)
+                    {
+
+                        foreach (var itm in Model.List)
+
+                        {
+                            i = i + 1;
+                            var cardClass = (i % 2) == 0 ? "border-success" : "border-warning";
+                            <div class="col-md-3">
+                                <div class="card radius-10 border-start border-0 border-3 @cardClass">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <h3 class="my-1 text-info">@itm.ServiceName</h3>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <p class="blink_text"> <i class="fa fa-hand-o-down"></i> Click the below link to Redirect</p>
+                                        <a href="#" style="font-size: 14px !important;
+        width: 260px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        position: relative !important;
+        display: inline-block !important;
+        margin: 0 5px 0 5px !important;
+        text-align: left !important;
+        text-decoration: none !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        color: blue !important;" onclick="CallMethod(@itm.ServiceId,'@itm.ServiceName','@itm.ServiceUrl','@itm.LinkName','@itm.RoleID')">@itm.LinkName</a>
+
+                                        @* <i class="fa fa-building-o"></i> *@
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        }
+
+                    }
+                    @*     </tbody>
+                </table> *@
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+<script>
+    function CallMethod(ServiceId, ServiceName, ServiceUrl, LinkName, RoleID) {
+        $("#ServiceId").val(ServiceId);
+        $("#ServiceName").val(ServiceName);
+        $("#ServiceUrl").val(ServiceUrl);
+        $("#LinkName").val(LinkName);
+        $("#RoleID").val(RoleID);
+        $("#submit").click();
+    }
+
+
+    $(document).ready(function () {
+        $("#grdWorkFlowView").dataTable();
+        $(".sidebar-wrapper").css("display", "none");
+        $(".page-header").css("display", "block");
+        $(".page-body").css({ marginLeft: '0' });
+
+        $("#table1").css("visibility", "hidden");
+    })
+
+    $("#btnPublicService").click(function () {
+        $("#table1").css("visibility", "visible");
+    })
+
+    $("#btnDepartmentDiv").click(function () {
+        $("#btnDepartment").click();
+    })
+</script>

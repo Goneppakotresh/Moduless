@@ -1,0 +1,795 @@
+﻿@model IEMS_WEB.Models.CreateUserResponseModel
+@{
+    ViewBag.Title = "CreateUsers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/assets/js/translator/createusers.js"></script>
+<style>
+    .modal-backdrop.in {
+        opacity: 0.5 !important;
+    }
+
+    /*.modal {
+            width: 80% !important;
+        }*/
+
+    .modal-backdrop {
+        position: relative !important
+    }
+
+    .modal {
+        z-index: 99 !important
+    }
+</style>
+<div class="page-title">
+    <div class="row">
+        <div class="col-12">
+
+            <h3> <span data-translate="Create Users">Create Users</span> <button type="button" class="btn btn-primary pull-right" id="btnBack" data-translate="Back"> Back</button></h3>
+
+
+            
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm())
+{
+    //hidden params
+    @Html.HiddenFor(m => m.model.UserId, new { @class = "form-control", id = "hdnUserId" })
+   // <input style="display:none" id="EditViewVal" />
+    <input style="display:none" id="hdnIsSSOReq" />
+    <input style="display:none" id="hdnIsDeptReq" />
+    <input style="display:none" id="hdnUserTypeCode" />
+    @Html.HiddenFor(model => model.model.EditViewKey, new { @id = "EditViewVal" })
+    @Html.HiddenFor(model => model.model.UserId, new { @id = "hdnUserId" })
+
+
+    <div id="modal_verify_otp" class="hide">
+
+
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label data-translate="First Name">First Name<span style="color:red">*</span></label>
+                @Html.TextBoxFor(m => m.model.FirstName, new { @class = "form-control alphabet", maxlength = 30, autocomplete = "off", id = "txtFirstName" })
+                @Html.ValidationMessageFor(m => m.model.FirstName, "", new { @class = "text-danger", id = "dspFirstName" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label data-translate="Last Name">Last Name<span style="color:red">*</span></label>
+                @Html.TextBoxFor(m => m.model.LastName, new { @class = "form-control alphabet", maxlength = 30, autocomplete = "off", id = "txtLastName" })
+                @Html.ValidationMessageFor(m => m.model.LastName, "", new { @class = "text-danger", id = "dspLastName" })
+            </div>
+        </div>
+        <div class="col-md-4" style="display:none">
+            <div class="form-group">
+                <label data-translate="User Name">User Name<span style="color:red">*</span></label>
+                @Html.TextBoxFor(m => m.model.UserName, new { @class = "form-control", autocomplete = "off", id = "txtUserName" })
+                @Html.ValidationMessageFor(m => m.model.UserName, "", new { @class = "text-danger", id = "dspUserName" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label data-translate="Email">Email<span style="color:red">*</span></label>
+                @Html.TextBoxFor(m => m.model.Email, new { @class = "form-control email-input", maxlength = 30, autocomplete = "off", id = "txtEmail", type = "email" })
+                @Html.ValidationMessageFor(m => m.model.Email, "", new { @class = "text-danger", id = "dspEmail" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label data-translate="Mobile Number">
+                    Mobile Number<span style="color:red">*</span><span id="Verified" value="0" style="display:none">&#9989;</span>
+                </label>
+                @Html.TextBoxFor(m => m.model.MobileNo, new { @class = "form-control mobile-input", autocomplete = "off", id = "txtMobileNo", maxlength = 10, onchange = "CheckIfDataExists(this.value,'MOBILE')" })
+
+                @Html.ValidationMessageFor(m => m.model.MobileNo, "", new { @class = "text-danger validation-message", id = "dspMobileNo" })
+            </div>
+            <label data-translate="" style="font-size: 14px;color: red;text-decoration:underline!important;font-weight:bold!important;cursor: pointer;" class="NewRegister" id="VerifyOTP" onclick="VerifyOTP()"><u>Verify</u></label>
+            <label data-translate="" style="font-size: 14px; color: green; text-decoration: underline !important; font-weight: bold !important; cursor: pointer; display: none" class="NewRegister" id="ChangeNumber"><u>Change Mobile Number</u></label>
+
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label data-translate="User Type">User Type<span style="color:red">*</span></label>
+                @Html.DropDownListFor(m => m.model.UserType, Model.model.lstUserType, new { @class = "form-control chosen-select", id = "ddlUserType", onchange = "ChangeFieldsOnType(this.value)" })
+                @Html.ValidationMessageFor(m => m.model.UserType, "", new { @class = "text-danger", id = "dspUserType" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label data-translate="Role">Role<span style="color:red">*</span></label>
+                @Html.DropDownListFor(m => m.model.RoleId, Model.model.lstRole, new { @class = "form-control chosen-select", id = "ddlRole" })
+                @Html.ValidationMessageFor(m => m.model.RoleId, "", new { @class = "text-danger", id = "dspRole" })
+            </div>
+        </div>
+        <div class="col-md-4 LocationReq" style="display:none">
+            <div class="form-group">
+                <label data-translate="Location Type">Location Type<span style="color:red">*</span></label>
+                @Html.DropDownListFor(m => m.model.LocationType, Model.model.lstLocationType, new { @class = "form-control chosen-select", id = "ddlLocationType", onchange = "ChangeLocationDropDown(this.value)" })
+                @Html.ValidationMessageFor(m => m.model.UserType, "", new { @class = "text-danger", id = "dspLocationType" })
+            </div>
+        </div>
+        <div class="col-md-4 LocationReq" style="display:none">
+            <div class="form-group">
+                <label data-translate="Location">Location<span style="color:red">*</span> </label>
+                @Html.DropDownListFor(m => m.model.LocationCode, Model.model.lstLocation, new { @class = "form-control chosen-select", id = "ddlLocation" })
+                @Html.ValidationMessageFor(m => m.model.LocationCode, "", new { @class = "text-danger", id = "dspLocation" })
+            </div>
+        </div>
+        <div class="col-md-4" style="display:none" id="OtherDeptReq">
+            <div class="form-group">
+                <label data-translate="Licensee" id="OtherDeptLabel">Licensee<span style="color:red">*</span> </label>
+                @Html.DropDownListFor(m => m.model.OtherDepartment, Model.model.lstOtherDept, new { @class = "form-control chosen-select", id = "ddlOtherDepartment" })
+                @Html.ValidationMessageFor(m => m.model.OtherDepartment, "", new { @class = "text-danger", id = "dspOtherDepartment" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label data-translate="Address">Address<span style="color:red">*</span> </label>
+                @Html.TextAreaFor(m => m.model.Address, new { @class = "form-control address-input", maxlength = 50, autocomplete = "off", id = "txtAddress" })
+                @Html.ValidationMessageFor(m => m.model.Address, "", new { @class = "text-danger", id = "dspAddress" })
+            </div>
+        </div>
+        <div class="col-md-4" style="display:none" id="SSOReq">
+            <div class="form-group">
+                <label data-translate="SSO ID">SSO ID<span style="color:red">*</span></label>
+                @Html.TextBoxFor(m => m.model.SSOId, new { @class = "form-control", maxlength = 50, autocomplete = "off", id = "txtSSOId", onchange = "CheckIfDataExists(this.value,'SSO')" })
+                @Html.ValidationMessageFor(m => m.model.SSOId, "", new { @class = "text-danger", id = "dspSSOId" })
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <button type="submit" id="btnSubmit" value="Save" data-translate="Save" class="btn btn-success">Save</button>
+        <button type="reset" id="btnReset" value="Reset" data-translate="Reset" style="display:none" class="btn btn-danger">Reset</button>
+    </div>
+
+    @* <div class="row">
+        <table id="grdUser" cellpadding="0" cellspacing="0" style="width:100%!important" class="table display table-boardered">
+            <thead>
+                <tr style="text-align: center;">
+                    <th style="text-align: center;">User Name</th>
+                    <th style="text-align: center;">Fist Name</th>
+                    <th style="text-align: center;">Last Name</th>
+                    <th style="text-align: center;">Full Name</th>
+                    <th style="text-align: center;">Email</th>
+                    <th style="text-align: center;">Mobile No</th>
+                    <th style="text-align: center;">LocationName</th>
+                    <th style="text-align: center;">Address</th>
+                    <th style="text-align: center;">Role</th>
+                    <th style="text-align: center;">SSO Id</th>
+                    <th style="text-align: center;">Location Code</th>
+                    <th style="text-align: center;">Edit</th>
+                    <th style="text-align: center;">View</th>
+                </tr>
+            </thead>
+        </table>
+    </div> *@
+}
+@if (Model.ResponseModel.Status == 1)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            swal({
+                title: '',
+                text: "User created successfully. You can log in with mobile number.",
+                type: "success"
+            }).then(function () {
+                window.location.href = "../CreateUser/CreateUsersView";
+            });
+        });
+    </script>
+}
+@if (Model.ResponseModel.Status == 2)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            swal({
+                title: '',
+                text: "User Updated Successfully",
+                type: "success"
+
+            }).then(function () {
+                window.location.href = "../CreateUser/CreateUsersView";
+            });
+        });
+    </script>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnBack').click(function () {
+            window.location.href = "../CreateUser/CreateUsersView";
+
+        })
+
+
+        if ($('#EditViewVal').val() != "" && $('#hdnUserId').val() != "") {
+            EditorViewDetails($('#hdnUserId').val(), $('#EditViewVal').val());
+        }
+
+
+
+       // $("#Verified").val('1');
+        // $("#EditViewVal").val('');
+        $("#hdnUserTypeCode").val('');
+        $("#hdnIsDeptReq").val('');
+        $("#hdnIsSSOReq").val('');
+
+        $("#ChangeNumber").click(function () {
+            $("#txtMobileNo").val("").attr("disabled", false);
+            $("#VerifyOTP").show();
+            $("#ChangeNumber").hide();
+            $("#Verified").hide();
+            $("#Verified").val('0');
+
+        });
+
+        $("#myModal").modal("hide");
+
+        // $("#grdUser").DataTable({
+        //     ajax: {
+        //         url: "../CreateUser/GetUserDetails",
+        //         type: "POST",
+        //         datatype: "json"
+        //     },
+        //     columns: [
+        //         { data: "UserName", autoWidth: true, visible: false },
+        //         { data: "FirstName", autoWidth: true, visible: false },
+        //         { data: "LastName", autoWidth: true, visible: false },
+        //         { data: "FullName", autoWidth: true },
+        //         { data: "Email", autoWidth: true },
+        //         { data: "MobileNo", autoWidth: true },
+        //         { data: "LocationName", autoWidth: true },
+        //         { data: "Address", autoWidth: true },
+        //         { data: "Role", autoWidth: true },
+        //         { data: "SSOId", autoWidth: true },
+        //         { data: "LocationCode", autoWidth: true, visible: false },
+        //         {
+        //             data: "UserId",
+        //             autoWidth: true,
+        //             sortable: false,
+        //             render: function (t, a, e) {
+        //                 return '<a title="Click here to Edit" href="javascript:EditorViewDetails(\'' + e.UserId + '\',\'Edit\')"><i class="fa fa-edit" style="font-size: 16px"></i></a>';
+        //             }
+        //         },
+        //         {
+        //             data: "UserId",
+        //             autoWidth: true,
+        //             sortable: false,
+        //             render: function (t, a, e) {
+        //                 return '<a title="Click here to Edit" href="javascript:EditorViewDetails(\'' + e.UserId + '\',\'View\')"><i class="fa fa-eye" style="font-size: 16px"></i></a>';
+        //             }
+        //         }
+        //     ],
+        //     columnDefs: [{ targets: [0, 1, 2, 9], visible: false }]
+        // });
+
+        $(".close").click(function () {
+            $("#myModal").modal("hide");
+        });
+
+        $("#btnReset").click(function () {
+            $("#txtUserName").val("");
+            $("#txtFirstName").val("");
+            $("#txtLastName").val("");
+            $("#txtEmail").val("");
+            $("#txtMobileNo").val("");
+            $("#txtAddress").val("");
+            $("#txtSSOId").val("");
+            $("#ddlRole").val(0).trigger('chosen:updated').attr("disabled", false);
+            $("#ddlLocation").val(0).trigger('chosen:updated').attr("disabled", false);
+            $('#ddlUserType').val(0).trigger('chosen:updated').attr("disabled", false);
+            $('#ddlLocationType').val(0).trigger('chosen:updated').attr("disabled", false);
+            $('#ddlOtherDepartment').val(0).trigger('chosen:updated').attr("disabled", false);
+            $("#dspFirstName").html("");
+            $("#dspLastName").html("");
+            $("#dspUserName").html("");
+            $("#dspEmail").html("");
+            $("#dspMobileNo").html("");
+            $("#dspAddress").html("");
+            $("#dspSSOId").html("");
+            $("#dspUserType").html("");
+            $("#dspLocationType").html("");
+            $("#dspOtherDepartment").html("");
+            $("#EditViewVal").val('');
+            $("#txtMobileNo").val("").attr("disabled", false);
+            $("#VerifyOTP").show();
+            $("#ChangeNumber").hide();
+            $("#Verified").hide();
+            $("#Verified").val('0');
+
+        });
+
+
+        $("#btnCreate").click(function () {
+            $("#btnReset").show();
+            $("#myModal").modal("show");
+            $("#btnSubmit").val("Save").show();
+            $("#ddlRole").val(0).prop('disabled', false).trigger('chosen:updated');
+            $("#ddlLocation").val(0).prop('disabled', false).trigger('chosen:updated');
+            $('#ddlUserType').val(0).prop('disabled', false).trigger('chosen:updated');
+            $('#ddlLocationType').prop('disabled', false).val(0).trigger('chosen:updated');
+            $('#ddlOtherDepartment').prop('disabled', false).val(0).trigger('chosen:updated');
+            $("#SSOReq").hide();
+            $(".LocationReq").hide();
+
+            $("#hdnUserId").val("");
+            $("#txtUserName").val("").attr("disabled", false);
+            $("#txtFirstName").val("").attr("disabled", false);
+            $("#txtLastName").val("").attr("disabled", false);
+            $("#txtEmail").val("").attr("disabled", false);
+            $("#txtMobileNo").val("").attr("disabled", false);
+            $("#txtAddress").val("").attr("disabled", false);
+            $("#txtSSOId").val("").attr("disabled", false);
+            $("#dspFirstName").html("");
+            $("#dspLastName").html("");
+            $("#dspUserName").html("");
+            $("#dspEmail").html("");
+            $("#dspMobileNo").html("");
+            $("#dspAddress").html("");
+            $("#dspSSOId").html("");
+            $("#dspUserType").html("");
+            $("#dspLocationType").html("");
+            $("#dspOtherDepartment").html("");
+            $("#EditViewVal").val('');
+            $("#VerifyOTP").show();
+            $("#ChangeNumber").hide();
+            $("#Verified").hide();
+            $("#Verified").val('0');
+        });
+
+        $("#btnSubmit").click(function () {
+            $("#txtUserName").val($("#txtMobileNo").val());
+            $("#dspFirstName").html("");
+            $("#dspLastName").html("");
+            $("#dspUserName").html("");
+            $("#dspEmail").html("");
+            $("#dspMobileNo").html("");
+            $("#dspAddress").html("");
+            $("#dspSSOId").html("");
+            $("#dspUserType").html("");
+            $("#dspLocationType").html("");
+            $("#dspOtherDepartment").html("");
+            var FirstName = $("#txtFirstName").val();
+            var LastName = $("#txtLastName").val();
+            var EmailId = $("#txtEmail").val();
+            var MobileNo = $("#txtMobileNo").val();
+            var UserType = $("#ddlUserType").val();
+            var RoleId = $("#ddlRole").val();
+            var LocationType = $("#ddlLocationType").val();
+            var Location = $("#ddlLocation").val();
+            var OtherDept = $("#ddlOtherDepartment").val();
+            var Address = $("#txtAddress").val();
+            var SSOId = $("#txtSSOId").val();
+            var DeptReq = $("#hdnIsDeptReq").val();
+            var SSOReq = $("#hdnIsSSOReq").val();
+
+            if (FirstName === "") {
+                $("#dspFirstName").html("Please Enter First Name");
+                $("#txtFirstName").focus();
+                return false;
+            }
+            else if (LastName === "") {
+                $("#dspLastName").html("Please Enter Last Name");
+                $("#txtLastName").focus();
+                return false;
+            }
+            else if (EmailId === "") {
+                $("#dspEmail").html("Please Enter Email");
+                $("#txtEmail").focus();
+                return false;
+            }
+            else if (MobileNo === "") {
+                $("#dspMobileNo").html("Please Enter Mobile Number");
+                $("#txtMobileNo").focus();
+                return false;
+            }
+
+            else if ($.trim(MobileNo).length !== 10) {
+                $("#dspMobileNo").html("Please Enter 10 Digit Mobile Number");
+                $("#txtMobileNo").focus();
+                return false;
+            }
+            else if (parseInt(MobileNo) === 0) {
+                $("#dspMobileNo").html("Please Enter Proper Mobile Number");
+                $("#txtMobileNo").focus();
+                return false;
+            }
+            else if ($("#Verified").val() == '0' || $("#Verified").val() == '') {
+                $("#dspMobileNo").html("Please Verify Mobile Number");
+                $("#txtMobileNo").focus();
+                return false;
+            }
+            else if (UserType == "0") {
+                $("#dspUserType").html("Please Select User Type");
+                $("#ddlUserType").focus();
+                return false;
+            }
+            else if (RoleId == "0" || RoleId == "") {
+                $("#dspRole").html("Please Select Role");
+                $("#ddlRole").focus();
+                return false;
+            }
+
+            else if (DeptReq == "true" && (LocationType == "" || LocationType == "0")) {
+                $("#dspLocationType").html("Please Select Location Type");
+                $("#ddlLocationType").focus();
+                return false;
+            }
+            else if (DeptReq == "true" && (Location == "0" || Location == "")) {
+                $("#dspLocation").html("Please Select Location");
+                $("#ddlLocation").focus();
+                return false;
+            }
+            else if (DeptReq == "false" && (OtherDept == "0" || OtherDept == "0")) {
+                $("#dspOtherDepartment").html("Please Select Licensee");
+                $("#ddlOtherDepartment").focus();
+                return false;
+            }
+            else if (Address === "") {
+                $("#dspAddress").html("Please Enter Address");
+                $("#txtAddress").focus();
+                return false;
+            }
+            else if (SSOReq == "true" && (SSOId === "" || SSOId === 0)) {
+                $("#dspSSOId").html("Please Enter SSO ID");
+                $("#txtSSOId").focus();
+                return false;
+            }
+            $("#txtMobileNo").attr("disabled", false);
+
+        });
+
+
+
+    });
+    function EditorViewDetails(UserId, EditOrView) {
+        debugger;
+        $("#EditViewVal").val(EditOrView);
+        $("#VerifyOTP").hide();
+        $("#Verified").show();
+        var url = '@Url.Action("EditOrViewUserDetails", "CreateUser")';
+        $.post(url, { UserId: UserId },
+            function (data) {
+                debugger;
+                $("#ddlLocation").html("");
+                var t = '';
+                var len = data.data.model.lstLocation.length;
+                for (var i = 0; i < len; i++) {
+                    t += "<option value='" + data.data.model.lstLocation[i]["Value"] + "'>" + data.data.model.lstLocation[i]["Text"] + "</option>";
+                }
+
+
+                debugger;
+                $("#ddlLocation").html(t);
+                $("#ddlLocation").html(t).trigger('chosen:updated');
+
+
+                $("#ddlOtherDepartment").html("");
+                t = '';
+                len = data.data.model.lstOtherDept.length;
+                for (var i = 0; i < len; i++) {
+                    t += "<option value='" + data.data.model.lstOtherDept[i]["Value"] + "'>" + data.data.model.lstOtherDept[i]["Text"] + "</option>";
+                }
+                $("#ddlOtherDepartment").html(t);
+                $("#ddlOtherDepartment").html(t);
+
+
+                $("#hdnUserId").val(UserId);
+
+                $("#txtUserName").val(data.data.model.UserName);
+                $("#txtUserName").val(data.data.model.MobileNo);
+                $("#txtFirstName").val(data.data.model.FirstName);
+                $("#txtLastName").val(data.data.model.LastName);
+                $("#txtEmail").val(data.data.model.Email);
+                $("#txtMobileNo").val(data.data.model.MobileNo);
+                $("#txtAddress").val(data.data.model.Address);
+                $('#ddlRole').val(data.data.model.RoleId).trigger('chosen:updated');
+                $('#ddlUserType').val(data.data.model.UserType).trigger('chosen:updated');
+                $('#ddlLocationType').val(data.data.model.LocationType).trigger('chosen:updated');
+                $('#ddlLocation').val(data.data.model.LocationCode).trigger('chosen:updated');
+                $('#ddlRole').val(data.data.model.RoleId).trigger('chosen:updated');
+
+
+                $('#ddlOtherDepartment').val(data.data.model.OtherDepartment).trigger('chosen:updated');
+
+                $("#txtSSOId").val(data.data.model.SSOId);
+                var url = '@Url.Action("CheckFieldsRequired", "CreateUser")';
+                $.post(url, { UserType: data.data.model.UserType },
+                    function (data) {
+                        $("#hdnIsDeptReq").val(data.data.IsDeptReq);
+                        $("#hdnIsSSOReq").val(data.data.IsSSOReq);
+                        $("#hdnUserTypeCode").val(data.data.UserTypeCode);
+
+                        if (data.data.IsSSOReq == true) {
+                            $("#SSOReq").show();
+                        }
+                        else {
+                            $("#SSOReq").hide();
+                        }
+
+                        if (data.data.IsDeptReq == true) {
+                            $("#OtherDeptReq").hide();
+                            $(".LocationReq").show();
+                        }
+                        else {
+                            $("#OtherDeptReq").show();
+                            $(".LocationReq").hide();
+                        }
+                    });
+
+            });
+        $("#myModal").modal("show");
+        $("#btnReset").hide();
+        debugger;
+
+        if (EditOrView === "Edit") {
+            $("#ChangeNumber").show();
+            //$("#txtUserName").attr("disabled", true);
+            $("#txtFirstName").attr("disabled", false);
+            $("#txtLastName").attr("disabled", false);
+            $("#txtEmail").attr("disabled", false);
+            $("#txtMobileNo").attr("disabled", true);
+            $("#txtAddress").attr("disabled", false);
+            $('#ddlRole').attr("disabled", false);
+            $('#ddlLocation').attr("disabled", false);
+
+            $('#ddlUserType').attr("disabled", false);
+            $('#ddlLocationType').attr("disabled", false);
+            $('#ddlOtherDepartment').attr("disabled", false);
+            $("#txtSSOId").attr("disabled", false);
+            $("#btnSubmit").val("Update").show();
+        } else if (EditOrView === "View") {
+            $("#ChangeNumber").hide();
+            $("#txtUserName").attr("disabled", true);
+            $("#txtFirstName").attr("disabled", true);
+            $("#txtLastName").attr("disabled", true);
+            $("#txtEmail").attr("disabled", true);
+            $("#txtMobileNo").attr("disabled", true);
+            $("#txtAddress").attr("disabled", true);
+            $('#ddlRole').attr("disabled", true);
+            $('#ddlLocation').attr("disabled", true);
+            $('#ddlUserType').attr("disabled", true);
+            $('#ddlLocationType').attr("disabled", true);
+            $('#ddlOtherDepartment').attr("disabled", true);
+
+            $("#txtSSOId").attr("disabled", true);
+            $("#btnSubmit").hide();
+        }
+        $("#Verified").val('1');
+
+
+    }
+
+
+    function CheckIfDataExists(Value, Code) {
+        debugger;
+        if (Code == 'MOBILE') {
+            $("#Verified").val('0');
+            $("#VerifyOTP").show();
+            $("#Verified").hide();
+        }
+        var UserId = $("#hdnUserId").val();
+        if (UserId == "") {
+            UserId = 0;
+        }
+        var url = '@Url.Action("CheckIfDataUsed", "CreateUser")';
+        $.post(url, { Value: Value, UserId: UserId, Code: Code },
+            function (data) {
+                debugger;
+                if (data.data == true) {
+                    debugger;
+                    var Message = "";
+                    if (Code == 'MOBILE') {
+                        Message = '(' + Value + ')Mobile Number Already Exits';
+                    }
+                    else if (Code == 'SSO') {
+                        Message = '(' + Value + ')SSO ID Number Already Exits';
+                    }
+                    Swal.fire({
+                        text: Message,
+                        type: "success",
+                        confirmButtonText: "Yes"
+                    }).then(function (isConfirmed) {
+                        if (isConfirmed) {
+                            if (Code == 'MOBILE') {
+                                $("#txtMobileNo").val('');
+                            }
+                            else if (Code == 'SSO') {
+                                $("#txtSSOId").val('');
+                            }
+                        }
+                    });
+                }
+            });
+    }
+
+    function ChangeFieldsOnType(UserType) {
+        if (UserType == 0) {
+            $("#ddlOtherDepartment").val('0');
+            $("#ddlLocationType").val('0');
+            $("#ddlLocation").val('0');
+            $("#txtSSOId").val('');
+            $("#SSOReq").hide();
+            $("#OtherDeptReq").hide();
+            $(".LocationReq").hide();
+        }
+        else {
+            var url = '@Url.Action("CheckFieldsRequired", "CreateUser")';
+            $.post(url, { UserType: UserType },
+                function (data) {
+                    debugger;
+
+                    $("#ddlOtherDepartment").val('0');
+                    $("#ddlLocationType").val('0');
+                    $("#ddlLocation").val('0');
+                    $("#txtSSOId").val('');
+
+                    $("#hdnIsDeptReq").val(data.data.IsDeptReq);
+                    $("#hdnIsSSOReq").val(data.data.IsSSOReq);
+                    $("#hdnUserTypeCode").val(data.data.UserTypeCode);
+
+                    if (data.data.IsSSOReq == true) {
+                        $("#SSOReq").show();
+                    }
+                    else {
+                        $("#SSOReq").hide();
+                    }
+
+                    if (data.data.IsDeptReq == true) {
+                        $("#OtherDeptReq").hide();
+                        $(".LocationReq").show();
+                    }
+                    else {
+                        $("#OtherDeptReq").show();
+                        $(".LocationReq").hide();
+
+                        var url = '@Url.Action("GetCreateUserDropDown", "CreateUser")';
+                        $.post(url, { UserTypeCode: $("#hdnUserTypeCode").val() },
+                            function (data) {
+                                debugger;
+
+
+                                $("#ddlOtherDepartment").html("");
+                                var t = '';
+                                var len = data.length;
+                                for (var i = 0; i < len; i++) {
+                                    t += "<option value='" + data[i]["Value"] + "'>" + data[i]["Text"] + "</option>";
+                                }
+                                $("#ddlOtherDepartment").html(t).trigger("chosen:updated");;
+
+
+                            });
+                    }
+                });
+            GetUserRole();
+        }
+    }
+
+    function ChangeLocationDropDown(LocationType) {
+        if (LocationType == 0) {
+            $("#ddlLocation").html("<option value='" + 0 + "'>" + '-Select-' + "</option>");
+        }
+        else {
+            var url = '@Url.Action("ChangeLocationDropDown", "CreateUser")';
+            $.post(url, { LocationTypeId: LocationType },
+                function (data) {
+                    debugger;
+
+
+                    $("#ddlLocation").html("");
+                    var t = '';
+                    var len = data.length;
+                    for (var i = 0; i < len; i++) {
+                        t += "<option value='" + data[i]["Value"] + "'>" + data[i]["Text"] + "</option>";
+                    }
+                    $("#ddlLocation").html(t).trigger("chosen:updated");;
+
+                });
+        }
+    }
+
+    function VerifyOTP() {
+        let MobileNo = $('#txtMobileNo').val();
+
+        let OTPType = "";
+        let zeros = /^0+$/;
+        if (MobileNo == "" || MobileNo == null || MobileNo == undefined) {
+            $("#dspMobileNo").html("Please Enter Mobile Number");
+            $("#txtMobileNo").focus();
+            return false;
+        }
+        if (MobileNo.match(zeros)) {
+            $("#dspMobileNo").html("Please Enter Valid Mobile Number");
+            $("#txtMobileNo").focus();
+            return false;
+        }
+        if (MobileNo.charAt(0) == '0' || MobileNo.charAt(0) == '1' || MobileNo.charAt(0) == '2' || MobileNo.charAt(0) == '3' || MobileNo.charAt(0) == '4' || MobileNo.charAt(0) == '5' || (!MobileNo.match(/(^[0-9]{10}$)/))) {
+            $("#dspMobileNo").html("Please Enter Valid Mobile Number");
+            $("#txtMobileNo").focus();
+            return false;
+        }
+        else {
+            $("#dspMobileNo").html("");
+
+            $.ajax({
+                url: "@Url.Action("GenerateOtp", "CreateUser")",
+                data: { MobileNo: MobileNo },
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    if (data == "") {
+                        swal({
+                            title: response.ResponseMessage,
+                            type: "warning",
+                            showConfirmButton: true
+                        });
+                    }
+                    else {
+                        var dialog = $("#modal_verify_otp").removeClass('hide').dialog({
+                            width: 800,
+                            height: 400,
+                            modal: true,
+                            closeOnEscape: false,
+                            draggable: false,
+                            title_html: true,
+                            title: 'Verify Mobile Number',
+                            open: function (type, data) {
+                                $.ajax({
+                                    type: "GET",
+                                    url: "../CreateUser/ViewOTPScreen",
+                                    dataType: "json",
+                                    data: {
+                                        MobileNo: MobileNo,
+                                        //PatientID: $("#hdnPatientPkid").val(),
+                                        //WebApiURL : $("#hdnWebApiURL").val()
+                                    },
+                                    dataType: "html",
+                                    success: function (response) {
+                                        $('#modal_verify_otp').html(response);
+                                        $("#hdnVerifiedShow").val('VerifyOTP');
+                                        $("#hdnVerifiedKey").val('Verified');
+                                        $("#hdnDisableIds").val('txtMobileNo');
+                                    },
+                                    failure: function (response) {
+                                    },
+                                    error: function (response) {
+                                    }
+                                });
+                            },
+                        });
+                    }
+                },
+            });
+        }
+    }
+
+    function GetUserRole() {
+        var id = $("#ddlUserType option:selected").val();
+        var type = "USER_ROLE";
+        var url = '@Url.Action("GetUserRole", "CreateUser")';
+        $.post(url, { Key: id, Type: type },
+            function (data) {
+                $("#ddlRole").html(""); // clear before appending new list
+                var s = '';
+                len = data.data.length;
+                //s = "<option value='0'>Select </option>";
+                for (var i = 0; i < len; i++) {
+                    s += "<option value='" + data.data[i]["Value"] + "'>" + data.data[i]["Text"] + "</option>";
+                }
+                $('#ddlRole').html(s);
+                $('#ddlRole').trigger("chosen:updated");
+            });
+    }
+
+</script>
+
+<style>
+    .modal-lg {
+        max-width: 1250px !important;
+    }
+</style>

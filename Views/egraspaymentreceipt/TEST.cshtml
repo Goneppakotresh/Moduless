@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "TEST";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>TEST</h2>
+
+
+@using (Html.BeginForm("Index", "egraspaymentreceipt"))
+{
+
+    <input type="hidden" id="encdata" name="encdata" value="3BIq1IujkSL2Y5+WlyBfD20SpcTy2ydVcPskpe9XIyNB6pejQ6p743bhhrKOA763k0vzFyI04byospS4wH1U6N6JfO8jwaNzm1PzS8zd2iLY0LDXiHuYcs9kohvntUuNlji//SlEnuOWB2Fmzkj17bCFIO9yTgw8EbLKWraf8XdSmMazY28psre5EpAfQGBtX9lwGxJZbIzWEIQ1dCMBktEq3Jctu+Jq3K9+Zi7z73bmlxmWjnkTANhSkHWBrU6T" />
+    <input type="submit" id="btnSave" value="Save" class="btn btn-success" />
+
+   
+}

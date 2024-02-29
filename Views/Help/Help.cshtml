@@ -1,0 +1,161 @@
+﻿@model IEMS_WEB.Models.HelpModelRequest
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.Status > 0)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            Swal.fire({
+                title: '',
+                text: "@Model.Message",
+                type: "success",
+                closeOnClickOutside: false,
+                allowOutsideClick: false
+            }).then(function () {
+                window.location.href = "/Help/HelpView";
+            });
+        });
+
+    </script>
+}
+else if (Model.Status < 0)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            swal({
+                title: '',
+                text: "@Model.Message",
+                type: "warning"
+            }).then(function () {
+                window.location.href = "/Help/Help";
+            });
+        });
+
+    </script>
+}
+<script src="~/assets/js/translator/help.js"></script>
+
+
+@using (Html.BeginForm("Help", "Help", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(Model => Model.RoleName, new {@id = "hdnRoleName"})
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12">
+                <h3><span data-translate="Help Details">Help Details</span><button type="button" class="btn btn-primary pull-right" id="btnBack" data-translate="Back"> Back</button></h3>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label data-translate="Document Type">Document Type<span style="color:red">*</span> </label>
+                @Html.DropDownListFor(Model => Model.DocumentType, Model.listDocumentType, new { @class = "form-control js-example-basic-single", @required = "", id = "ddlDocumentType"})
+                <span class="text-danger" id="dspDocumentTypeId"></span>
+
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label data-translate="Version">Version<span style="color:red">*</span> </label>
+                @Html.TextBoxFor(m => m.VersionNo, new
+            {
+            @class = "form-control allowVersionNumber",
+            @required = "",
+            @autocomplete = "off",
+            id = "txtVersion",
+            @maxlength=8
+            })
+                <span class="text-danger" id="dspVersion"></span>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="mandatory" data-translate="Upload File">
+                    Upload File
+                </label>
+                <input type="file" class="form-control  col-xs-12" onchange='CheckSize(this)'  id="HelpfileUpload" accept="application/jpg,application/jpeg" name="file">
+                <span class="text-danger" id="dspUploadFile"></span>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <button type="submit" id="btnSave" value="Submit" class="btn btn-success" data-translate="Submit"> Submit</button>
+    </div>
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.allowVersionNumber').on('input', function (e) {
+            // Get the current input value
+            var value = this.value;
+            // Remove any non-numeric and non-decimal characters
+            value = value.replace(/[^0-9.]/g, '');
+            // Update the input field value
+            this.value = value;
+            // Prevent the input of alphabetic characters
+            if (e.key.match(/[^0-9.]/)) {
+                e.preventDefault();
+            }
+        });
+
+        if ($('#hdnRoleName').val() != '1') {
+            $('#btnSave').hide();
+        }
+
+        $('#btnBack').click(function () {
+            window.location.href = "/Help/HelpView";
+        });
+
+        $('#btnSave').click(function () {
+            $('#dspDocumentTypeId').html('');
+            $('#dspVersion').html('');
+            $('#dspUploadFile').html('');
+        
+            if ($("#ddlDocumentType").val() == "0") {
+
+                $('#dspDocumentTypeId').html('Please Select Document Type.');
+                $('#ddlDocumentType').focus().trigger('chosen:activate');
+                return false;
+            }
+            else if ($("#txtVersion").val() == "") {
+
+                $('#dspVersion').html('Please Enter  Version.');
+                $('#txtVersion').focus();
+                return false;
+            }
+            else if ($("#HelpfileUpload").val() == "") {
+
+                $('#dspUploadFile').html('Please Select File.');
+                $('#HelpfileUpload').focus();
+                return false;
+            }
+            return true;
+        });
+    });
+    function CheckSize(e) {
+        if ((($(e).get(0).files[0].size / 20480) / 20480) > 1) {
+            alert('Maximum allowed file size is 20Mb.');
+            $(e).val('');
+            return false;
+        }
+        var filePath = $(e).val();
+        // Allowing file type
+        var allowedExtensions =
+            /(\.(pdf|pdf))$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Allowed file type is pdf only');
+            $(e).val('');
+            return false;
+        }
+
+    }
+ 
+</script>

@@ -1,0 +1,537 @@
+﻿@using IEMS_WEB.Models.ResponseModel;
+@using Newtonsoft.Json;
+@using System.Text;
+@inject IHttpContextAccessor Accessor
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="frame-src 'self' *.YourProjectURL.com;">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Koho admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities." />
+    <meta name="keywords" content="admin template, Koho admin template, dashboard template, flat admin template, responsive admin template, web app" />
+    <meta name="author" content="pixelstrap" />
+    <link rel="shortcut icon" type="~/assets/images/logo/logo.png" href="images/titleimg.png" />
+    <title>
+        Excise Department, GoR
+    </title>
+    <!-- Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet" />
+    @*<link rel="stylesheet" type="text/css" href="~/assets/css/vendors/font-awesome.css" />*@
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="https://fontawesome.com/v3/assets/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/themify.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/flag-icon.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/feather-icon.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/scrollbar.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/select2.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css" />
+    <link id="color" rel="stylesheet" href="~/assets/css/color-1.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/responsive.css" />
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">*@
+    @*<link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">*@
+    @*<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">*@
+
+    <link href="~/assets/css/Jquery_ui.css" rel="stylesheet" />
+    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">*@
+    @*<link href="~/assets/css/Jquery_dataable.css" rel="stylesheet" />*@
+    <link rel="stylesheet" type="text/css" href="~/assets/css/vendors/datatables.css">
+    <script src="~/assets/js/jquery-3.6.0.min.js"></script>
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css" />*@
+    <script src="~/assets/js/Chosen.js"></script>
+    <link href="~/assets/css/Chosen.css" rel="stylesheet" />
+
+    @*
+    <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.3.min.js">
+    </script> *@
+    @*<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js">
+    </script>*@
+    <script src="~/assets/js/Jquery_Datatable_min.js"></script>
+
+    @*<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.jqueryui.min.js">
+    </script>*@
+    <script src="~/assets/js/Jquery_datatable_ui.js"></script>
+
+    @*<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>*@
+    <script src="~/assets/js/Jquery_ui.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link href="~/assets/css/Chose_Action.css" rel="stylesheet" />
+    <!-- Moment.js -->
+    <!-- Add this script reference for DataTables date sorting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link href="~/assets/css/customhologram.css" rel="stylesheet" />
+    <script>
+
+        $(document).ready(function () {
+
+            $('.dataTables_filter input').attr('placeholder', 'Search...');
+            // Function to handle radio button clicks
+            $('input[name="language"]').on('click', function () {
+                localStorage.setItem('lastCheckedLanguage', $(this).val());
+            });
+
+            // Set the last clicked radio button on page load
+            var lastCheckedLanguage = localStorage.getItem('lastCheckedLanguage');
+            if (lastCheckedLanguage) {
+                $('input[name="language"][value="' + lastCheckedLanguage + '"]').prop('checked', true);
+            }
+        });
+    </script>
+
+    <script>
+        function formatDateTime(data, type) {
+            if (type === 'sort') {
+                return moment(data).format('YYYY-MM-DD');
+            } else {
+                return moment(data).format('D-MMM-YYYY');
+            }
+        }
+        $(document).ready(function () {
+
+
+            $('.modal').modal({
+                backdrop: 'static',
+                keyboard: true,
+                show: false
+            });
+
+
+
+
+
+
+            var RoleName = '@Accessor.HttpContext.Session.GetString("RoleName")';
+            var LoginName = '@Accessor.HttpContext.Session.GetString("LoginName")';
+            var LoginNameSSO = '@Accessor.HttpContext.Session.GetString("UserNameSSO")';
+
+            //alert(RoleName);
+            $(".chosen-select").chosen();
+            $(".js-example-basic-single").chosen();
+            var savedUsername = localStorage.getItem("Username");
+            $("#loginName").text(savedUsername);
+            $("#loginName").css("color", "#fff");
+            $("#loginName1").css("color", "#fff");
+            //var IsSSoLogin = 'Session["IsSSOLogin"]';
+            var IsSSoLogin = '@Accessor.HttpContext.Session.GetString("IsSSOLogin")';
+
+            //alert(IsSSoLogin);
+            //$('#btnBacktoHome').hide();
+            if (IsSSoLogin == "1") {
+                //  alert();
+                $('#btnBacktoHome').css("display", "block");
+            }
+            else {
+                $('#btnBacktoHome').css("display", "none");
+            }
+            $("#btnBacktoHome").click(function () {
+                debugger;
+                var Token = '@Accessor.HttpContext.Session.GetString("SSOToken")';
+                var SSO_Back_URL = "https://ssotest.rajasthan.gov.in/sso?userdetails=";
+                window.location.href = SSO_Back_URL + Token;
+            });
+        });
+
+
+    </script>
+    <script>
+
+        var IdealTimeOut = 901;
+        var idleSecondsTimer;
+        var idleSecondsCounter = 0;
+        document.onclick = function () { idleSecondsCounter = 0; };
+        document.onmousemove = function () { idleSecondsCounter = 0; };
+        document.onkeypress = function () { idleSecondsCounter = 0; };
+        idleSecondsTimer = window.setInterval(function CheckIdleTime() {
+
+            idleSecondsCounter++;
+            var oPanel = document.getElementById("timeOut");
+            //console.log("idleSecondsTimer")
+            if (oPanel) {
+                oPanel.innerHTML = (IdealTimeOut - idleSecondsCounter);
+            }
+            if (idleSecondsCounter >= IdealTimeOut) {
+                window.clearInterval(idleSecondsTimer);
+                alert("Your Session has expired. Please login again.");
+                window.location = "../../Login/Login";
+            }
+        }, 901);
+    </script>
+
+    <style>
+        .right-align-class {
+            text-align: right !important
+        }
+
+        .left-align-class {
+            text-align: left !important
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 15px;
+            overflow: hidden;
+            width: 500px !important;
+            position: absolute !important;
+            z-index: 9999999 !important;
+            top: -30px !important;
+            right: -41px !important;
+        }
+
+
+
+        .customizer-links {
+            display: none !important
+        }
+
+        iframe#\:2\.container {
+            display: none !important;
+        }
+
+        .progress-bar {
+            background-color: green !important
+        }
+
+        .progress {
+            height: 7px !important
+        }
+
+        .goog-te-gadget-simple {
+            font-size: 7pt !important;
+        }
+
+        .goog-te-gadget img {
+            display: none !important
+        }
+
+        .modal-backdrop.in {
+            opacity: 0.5 !important;
+        }
+
+        #loader {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            opacity: 0.9;
+            background: url('https://cescom.trm.ieasybill.com/Images/loader-1.gif')no-repeat center center #fff;
+        }
+    </style>
+
+    <script>
+
+        $(function () {
+            $("#loader").hide();
+            $(window).bind('beforeunload', function () {
+                $("#loader").show();
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="loader"></div>
+
+    <div class="tap-top"><i data-feather="chevrons-up"></i></div>
+    @*  <div class="loader-wrapper">
+    <div class="loader"></div>
+    </div> *@
+
+    <div class="page-wrapper compact-wrapper" id="pageWrapper">
+       @*  <div class="page-header">
+            <div  class="header-wrapper row m-0">
+
+                <div class="header-logo-wrapper col-auto p-0">
+
+
+                    <div class="toggle-sidebar"><i class="fa fa-align-left" aria-hidden="true"></i></div>
+                </div>
+                <div style="display:flex" class="left-header col horizontal-wrapper ps-0 project_logo">
+                    <img class="responsive" style="width:219px!important; margin-left: 23px;" src="~/assets/images/IEMSLogo-B.png" />
+                </div>
+                <div style="margin-right: 29px !important;" class="nav-right col-2 pull-left right-header p-0">
+                    <label style="display: block; padding: 10px 0px 0px 0px!important; margin-right: 12px!important; white-space: nowrap!important; width:180px!important; overflow: hidden!important; text-overflow: ellipsis!important; margin-bottom:0rem!important" id="RoleName" for="radio1"></label>
+
+                </div>
+
+
+
+                <div style="display:inline-table!important" class="nav-right col-1 pull-right right-header p-0 conversion">
+                    <ul>
+                        <li id="language-selector" style="background-color: transparent!important;">
+                            <div style="display:flex!important;margin-right:12px!important" class="wrapper-class">
+                                <input type="radio" name="language" value="en" checked>
+                                <label style="padding:0px 0px 0px 0px!important;margin-bottom:0rem!important" for="radio1">English</label>
+                            </div>
+                            <div style="display: flex !important; margin-right: 12px !important" class="wrapper-class">
+                                <input type="radio" name="language" value="hi">
+                                <label style="padding:0px 0px 0px 0px!important;margin-bottom:0rem!important" for="radio1">Hindi</label>
+                            </div>
+
+
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div style="display:flex;" class="nav-right col-2 pull-left right-header p-0 mobile session">
+                    <ul>
+                        <li style="padding: 8px 7px 8px 29px;" class="nav-item d-none d-sm-inline-block">
+                            <a style="color:#fff!important" href="javascropt:void(0)">
+                                SESSION
+                            </a>
+                            <a style="color:#fff!important" href="javascropt:void(0)">
+                                <i style="padding-right:10px!important;color:#fff!important" class="fa fa-hourglass"></i> <span id="timeOut"></span> Sec
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+               
+
+
+
+            </div>
+        </div *@
+
+        <!-- Page Header Ends                              -->
+        <!-- Page Body Start-->
+        <div class="page-body-wrapper">
+            <!-- Page Sidebar Start-->
+         @*    <div class="sidebar-wrapper">
+
+                <div class="logo-wrapper">
+                    <h1 class="logo-header">
+                        <a href="/Login/DashBoard">
+                            <img style="width: 157px!important;" src="~/assets/images/ED-GOR-A.png" />
+                        </a>
+         
+                    </h1>
+                   
+                </div>
+                <div class="logo-icon-wrapper"><a href="index.html"><img class="img-fluid for-light" src="~/assets/images/logo/logo-icon.png" alt=""><img class="img-fluid for-dark" src="~/assets/images/logo/logo-icon-dark.png" alt=""></a></div>
+
+
+            </div> *@
+            <!-- Page Sidebar Ends-->
+            <div style="margin-left:0px;margin-top:0px" class="page-body">
+                <br />
+                @*COPY THIS LINE FOR HEADER*@
+
+                @*<div class="container-fluid">
+                <div class="page-title">
+                <div class="row">
+                <div class="col-6">
+                <h3>Validation Forms</h3>
+                </div>
+                <div class="col-6">
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">                                       <i data-feather="home"></i></a></li>
+                <li class="breadcrumb-item"> Form Controls</li>
+                <li class="breadcrumb-item active"> Validation Forms</li>
+                </ol>
+                </div>
+                </div>
+                </div>
+                </div>*@
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    @RenderBody()
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- footer start-->
+            <footer style="margin-left:0px!important"class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-10 p-0 footer-left">
+
+                            <p>© IDEA INFINITY IT SOLUTIONS <a id="year" href="#">2023</a> </p>
+                        </div>
+                        <div class="col-2 p-0 footer-right">                  </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <style>
+
+        /* Add your custom class styles here */
+        .custom-class {
+            background-color: #eaeaea;
+        }
+
+        ul.sidebar-submenu.roshan {
+            display: block !important;
+        }
+    </style>
+    @*<script>
+    $(document).ready(function () {
+    // Check if the "roshan" class should be added
+    const selectedSubmenuIndex = localStorage.getItem('submenuIndex');
+
+    if (selectedSubmenuIndex !== null) {
+    const selectedSubmenu = $('.sidebar-submenu').eq(selectedSubmenuIndex);
+    selectedSubmenu.addClass('roshan');
+    }
+
+    // Add click event listener to the <a> tags inside <ul><li>
+    $('.sidebar-submenu li a').click(function () {
+    const closestSubmenu = $(this).closest('.sidebar-submenu');
+    const selectedSubmenuIndex = $('.sidebar-submenu').index(closestSubmenu);
+
+    // Remove the "roshan" class from all .sidebar-submenu elements
+    $('.sidebar-submenu').removeClass('roshan');
+
+    // Toggle the visibility of all .sidebar-submenu elements
+    $('.sidebar-submenu').toggle();
+
+    // Add the "roshan" class to the closest .sidebar-submenu
+    closestSubmenu.addClass('roshan');
+
+    // Store the selected index in local storage
+    localStorage.setItem('submenuIndex', selectedSubmenuIndex);
+
+    // Remove any previously added 'clicked' class from anchor tags
+    $('.sidebar-submenu li a').removeClass('clicked');
+
+    // Add the 'clicked' class to the clicked anchor tag
+    $(this).addClass('clicked');
+
+    // Change the color of all anchor tags to the default color
+    $('.sidebar-submenu li a').css('color', '');
+
+    // Change the color of the clicked anchor tag (customize the color)
+    $(this).css('color', 'red'); // Change to the desired color
+    });
+    });
+
+
+    </script>*@
+    @*<script type="text/javascript">
+    function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+    {
+    pageLanguage: 'en',
+    includedLanguages: 'en,hi', // Include English and Hindi
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+    autoDisplay: false // Prevent auto-display of the widget
+    },
+    'google_translate_element'
+    );
+
+    // Add a change event listener to the translation dropdown
+    const translateDropdown = document.querySelector('.goog-te-combo');
+    translateDropdown.addEventListener('change', function () {
+    const selectedLanguage = this.value;
+    const contentDiv = document.getElementById('content');
+    if (selectedLanguage === 'hi') {
+    // Show Hindi content
+    contentDiv.querySelectorAll('p').forEach(function (element) {
+    element.style.display = 'block';
+    });
+    } else {
+    // Show English content
+    contentDiv.querySelectorAll('p').forEach(function (element, index) {
+    if (index < 2) {
+    element.style.display = 'block';
+    } else {
+    element.style.display = 'none';
+    }
+    });
+    }
+    });
+    }
+    </script>*@
+
+    @*<script type="text/javascript"
+    src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>*@
+    <script type="text/javascript">
+        function LogUserModuleData(ControllerName, ActionName, ModuleName) {
+            // Session["MenuList"]
+            // var savedUsername = localStorage.getItem("Username");
+        @{
+
+        }
+
+
+
+                                                                            if (ActionName == "Addlicenseeprofile") {
+                window.location.href = "/" + ControllerName + "/" + ActionName + "?Reg=" + '@Accessor.HttpContext.Session.GetString("RegistrationNo")';
+            }
+            else
+                window.location.href = "/" + ControllerName + "/" + ActionName + "";
+        }
+    </script>
+    <!-- latest jquery-->
+    <script>
+        var IdealTimeOut = 901;
+        var idleSecondsTimer;
+        var idleSecondsCounter = 0;
+        document.onclick = function () { idleSecondsCounter = 0; };
+        document.onmousemove = function () { idleSecondsCounter = 0; };
+        document.onkeypress = function () { idleSecondsCounter = 0; };
+        idleSecondsTimer = window.setInterval(function CheckIdleTime() {
+
+            idleSecondsCounter++;
+            var oPanel = document.getElementById("timeOut");
+            //console.log("idleSecondsTimer")
+            if (oPanel) {
+                oPanel.innerHTML = (IdealTimeOut - idleSecondsCounter);
+            }
+            if (idleSecondsCounter >= IdealTimeOut) {
+                window.clearInterval(idleSecondsTimer);
+                alert("Your Session has expired. Please login again.");
+                window.location = "../../Login/Login";
+            }
+        }, 901);
+    </script>
+    <script src="~/assets/js/bootstrap/popper.min.js"></script>
+    @*<script src="~/assets/js/bootstrap/bootstrap.bundle.min.js"></script>*@
+    @*<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>*@
+
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>*@
+    <!-- feather icon js-->
+    <script src="~/assets/js/icons/feather-icon/feather.min.js"></script>
+    <script src="~/assets/js/icons/feather-icon/feather-icon.js"></script>
+    <script src="~/assets/js/scrollbar/simplebar.js"></script>
+    <script src="~/assets/js/scrollbar/custom.js"></script>
+    <!-- Sidebar jquery-->
+    <script src="~/assets/js/config.js"></script>
+    <script src="~/assets/js/sidebar-menu.js"></script>
+    <script src="~/assets/js/form-validation-custom.js"></script>
+    @*<script src="~/assets/js/select2/select2.full.min.js"></script>
+    <script src="~/assets/js/select2/select2-custom.js"></script>*@
+    <script src="~/assets/js/tooltip-init.js"></script>
+    <!-- Theme js-->
+    <script src="~/assets/js/script.js"></script>
+    <script src="~/assets/js/theme-customizer/customizer.js"></script>
+    <script type="text/javascript" src="~/assets/js/Validation.js"></script>
+
+</body>
+<!-- Mirrored from admin.pixelstrap.com/koho/template/form-validation.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 09 Aug 2023 07:11:01 GMT -->
+</html>

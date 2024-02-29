@@ -1,0 +1,451 @@
+﻿<script src="~/assets/js/translator/fileupload.js"></script>
+
+<style>
+    .invisible {
+        display: none;
+    }
+
+	.note-text {
+        color: red;
+        display: block;
+        position: absolute;
+    }
+
+    table#grdFiles thead tr th:nth-child(6) {
+        min-width: 100px !important
+    }
+
+    table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+        top: 7px !important;
+    }
+
+ 
+</style>
+<div class="container-fluid"> 
+
+    <span class="note-text" data-translate="">
+        **Max allowed file size is 1Mb.
+        <br />
+        **Allowed file type is .pdf
+    </span>
+
+
+    <div class="row">
+        <table id="grdFiles" class="table display table-bordered dataTable no-footer dtr-inline">
+            <thead>
+                <tr style="text-align: center;">
+                    <th style="text-align: center" data-translate="FileId">FileId</th>
+                    <th style="text-align: center" data-translate="IsMandatory">IsMandatory</th>
+                    <th style="text-align: center" data-translate="IsTextboxRequired">IsTextboxRequired</th>
+                    <th style="text-align: center" data-translate="IsDocumentNoRequired">IsDocumentNoRequired</th>
+                    <th style="text-align: center" data-translate="IsDocumnetDateRequired">IsDocumnetDateRequired</th>
+                    <th style="text-align: center" data-translate="Serial No.">Serial No.</th>
+                    <th style="text-align: center" data-translate="File Name">File Name</th>
+                    <th style="text-align: center" data-translate="Upload File">Upload File</th>
+
+                    <th style="text-align: center" data-translate="Upload no">Document no</th>
+                    <th style="text-align: center" data-translate="Document Expiry date">Document Expiry date</th>
+                    <th style="text-align: center" data-translate="Description">Description</th>
+
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div class="modal" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pdfModalLabel">PDF Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="pdfPreview" width="100%" height="500px"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+        var table = $('#grdFiles').DataTable({
+            "ajax": {
+                "url": "/FileUpload/GetFiles",
+                "type": "GET",
+                "datatype": "json",
+            },
+            "paging": false,
+
+            "columns": [
+                {
+                    "data": "FileId", "autoWidth": true, "class": "invisible",
+                    render: function (data, type, row) {
+                        return ' <input  id="FileId' + row.FileId + '"  class="form-control FileId" value="' + row.FileId + '" >';
+                    }
+                },
+                {
+                    "data": "IsMandatory", "autoWidth": true, "class": "invisible",
+                    render: function (data, type, row) {
+                        return ' <input  id="IsMandatory' + row.FileId + '"  class="form-control IsMandatory" value="' + row.IsMandatory + '" >';
+                    }
+                },
+                {
+                    "data": "IsTextBoxRequired", "autoWidth": true, "class": "invisible",
+                    render: function (data, type, row) {
+                        return ' <input  id="IsTextBoxRequired' + row.FileId + '"  class="form-control IsTextBoxRequired" value="' + row.IsTextBoxRequired + '" >';
+                    }
+                },
+                {
+                    "data": "IsDocumentNoRequired", "autoWidth": true, "class": "invisible",
+                    render: function (data, type, row) {
+                        return ' <input  id="IsDocumentNoRequired' + row.FileId + '"  class="form-control IsTextBoxRequired" value="' + row.IsDocumentNoRequired + '" >';
+                    }
+                },
+                {
+                    "data": "IsDocumnetDateRequired", "autoWidth": true, "class": "invisible",
+                    render: function (data, type, row) {
+                        return ' <input  id="IsDocumnetDateRequired' + row.FileId + '"  class="form-control IsTextBoxRequired" value="' + row.IsDocumnetDateRequired + '" >';
+                    }
+                },
+
+                { "data": "SerialNo", "autoWidth": true },
+                { "data": "FileName", "autoWidth": true, "class": "FileName", "render": function (data, type, row) 
+                    {
+                        if (row.IsMandatory=="1") {
+                            return row.FileName + '<span style="color: #FF0000;">*</span>';
+                        }
+                        else {
+                            return row.FileName ;
+                        }
+                    }
+                },
+                {
+                    "data": "FileId", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                        var content="";
+                        if (row.FilePath != "") {
+                            content = '<a  href="javascript:DownloadFile(\'' + row.FilePath + '\')"  class="fa fa-download" title="Download"></a>';
+
+                        }
+                        else {
+                            content = "<input style='height: 50px' type='file' id='file" + row.FileId + "' class='txtFileName' accept='.pdf' onchange='CheckSize(this)' name='file' single>";
+                          
+                        }
+
+                        return content;
+                    }
+                },
+                {
+                    "data": "FileId", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                        var content = "";
+                        if (row.FilePath != "") {
+                            if (row.IsDocumentNoRequired == "1") {
+                                content = '<input style="height: 40px" type="text" class="fileTextDocumentNoval" maxlength=100 Value="' + row.DocumentNo + '" disabled="disabled" />';
+                            }
+                            else {
+                                $('#grdFiles').DataTable().column(8).visible(false);
+
+                            }
+                        }
+                        else {
+                            if (row.IsDocumentNoRequired == "1") {
+                                content = '<input style="height: 40px" type="text" class="fileTextDocumentNoval" maxlength=100 Value="' + row.DocumentNo + '" />';
+                            }
+                            //content = "<input style='height: 50px' type='file' id='file" + row.FileId + "' class='txtFileName' accept='application / pdf' onchange='CheckSize(this)' name='file' single>";
+                             else {
+                                $('#grdFiles').DataTable().column(8).visible(false);
+
+                            }
+                        }
+                        return content;
+                    }
+                },
+                {
+                    "data": "FileId",
+                    "autoWidth": true,
+                    "sortable": false,
+                    "render": function (data, type, row) {
+                        var content = "";
+
+                        if (row.FilePath != "") {
+                            if (row.IsDocumnetDateRequired == "1") {
+                                content = '<input style="height: 40px" type="text" class="fileTextDocumentExpDateval" value="' + row.DocumentExpDate + '" disabled="disabled" />';
+                            }
+                            else {
+                                $('#grdFiles').DataTable().column(9).visible(false);
+                            }
+                        } else {
+                            if (row.IsDocumnetDateRequired == "1") {
+                                content = '<input style="height: 40px" type="text" class="fileTextDocumentExpDateval datepicker" maxlength=100 value="' + row.DocumentExpDate + '" />';
+                            } else {
+                                $('#grdFiles').DataTable().column(9).visible(false);
+                            }
+                        }
+                        return content;
+                    }
+                }, 
+                {
+                    "data": "FileId", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+                        var content = "";
+                        if (row.FilePath != "") {
+                            content = '<input style="height: 40px" type="text" class="fileTextval" Value="' + row.TextValue + '" disabled="disabled" />';
+
+                        }
+                        else {
+                            if (row.IsTextBoxRequired == "1") {
+                                content = '<input style="height: 40px" type="text" class="fileTextval"  maxlength=100 Value="' + row.TextValue + '" />';
+                            }
+                        }
+
+                        return content;
+                    }
+                }
+
+            ],
+
+        
+            "initComplete": function () {
+                $('.datepicker').datepicker({
+                });
+            },
+            "drawCallback": function () {
+                $('.datepicker').datepicker({
+                });
+            },
+            responsive: true
+        });
+    });
+
+
+
+    //$(document).ready(function () {
+    //    $('input#txtDate').datepicker();
+
+    //    $('#grdFiles').DataTable({
+    //        "ajax": {
+    //            "url": "/FileUpload/GetFiles",
+    //            "type": "GET",
+    //            "datatype": "json",
+    //        },
+    //        "paging": false,
+    //        "columns": [
+    //            { "data": "FileId", "autoWidth": true, "class": "invisible",
+    //                render: function (data, type, row) {
+    //                    return ' <input  id="FileId' + row.FileId + '"  class="form-control FileId" value="' + row.FileId + '" >';
+    //                }
+    //            },
+    //            {
+    //                "data": "IsMandatory", "autoWidth": true, "class": "invisible",
+    //                render: function (data, type, row) {
+    //                    return ' <input  id="IsMandatory' + row.FileId + '"  class="form-control IsMandatory" value="' + row.IsMandatory + '" >';
+    //                }
+    //            },
+    //            {
+    //                "data": "IsTextBoxRequired", "autoWidth": true, "class": "invisible",
+    //                render: function (data, type, row) {
+    //                    return ' <input  id="IsTextBoxRequired' + row.FileId + '"  class="form-control IsTextBoxRequired" value="' + row.IsTextBoxRequired + '" >';
+    //                }
+    //            },
+    //            {
+    //                "data": "IsDocumentNoRequired", "autoWidth": true, "class": "invisible",
+    //                render: function (data, type, row) {
+    //                    return ' <input  id="IsDocumentNoRequired' + row.FileId + '"  class="form-control IsTextBoxRequired" value="' + row.IsDocumentNoRequired + '" >';
+    //                }
+    //            },
+    //            {
+    //                "data": "IsDocumnetDateRequired", "autoWidth": true, "class": "invisible",
+    //                render: function (data, type, row) {
+    //                    return ' <input  id="IsDocumnetDateRequired' + row.FileId + '"  class="form-control IsTextBoxRequired" value="' + row.IsDocumnetDateRequired + '" >';
+    //                }
+    //            },
+
+    //            { "data": "SerialNo", "autoWidth": true },
+    //            { "data": "FileName", "autoWidth": true, "class":"FileName " },
+    //            {
+    //                "data": "FileId", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+    //                    var content;
+    //                    if (row.FilePath != "") {
+    //                        content = '<a  href="javascript:DownloadFile(\'' + row.FilePath + '\')"  class="fa fa-download" title="Download"></a>'
+    //                        content += '<input style="height: 40px" type="text" class="fileTextval" Value="' + row.TextValue + '" disabled="disabled" />';
+
+    //                    }
+    //                    else {
+    //                        content = "<input style='height: 50px' type='file' id='file" + row.FileId + "' class='txtFileName' accept='application / pdf' onchange='CheckSize(this)' name='file' single>";
+    //                        if (row.IsTextBoxRequired == "1") {
+    //                            content += '<input style="height: 40px" type="text" class="fileTextval" maxlength=100 Value="' + row.TextValue +'" />';
+    //                        }
+    //                    }
+
+    //                    return content;
+    //                }
+    //            },
+    //            {
+    //            "data": "FileId", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+    //                var content="";
+    //                if (row.FilePath != "") {
+    //                    //content = '<a  href="javascript:DownloadFile(\'' + row.FilePath + '\')"  class="fa fa-download" title="Download"></a>'
+    //                    content = '<input style="height: 40px" type="text" class="fileTextDocumentNoval" Value="' + row.DocumentNo + '" disabled="disabled" />';
+
+    //                }
+    //                else {
+    //                    //content = "<input style='height: 50px' type='file' id='file" + row.FileId + "' class='txtFileName' accept='application / pdf' onchange='CheckSize(this)' name='file' single>";
+    //                    if (row.IsDocumentNoRequired == "1") {
+    //                        content = '<input style="height: 40px" type="text" class="fileTextDocumentNoval" maxlength=100 Value="' + row.DocumentNo + '" />';
+    //                    } else {
+    //                        $('#grdFiles').DataTable().column(8).visible(false);
+
+    //                    }
+    //                }
+    //                return content;
+    //            }
+    //        },
+    //        {
+    //            "data": "FileId", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+    //                var content = "";
+    //                if (row.FilePath != "") {
+    //                    //content = '<a  href="javascript:DownloadFile(\'' + row.FilePath + '\')"  class="fa fa-download" title="Download"></a>'
+    //                    content = '<input style="height: 40px" type="text" id="txtDate" class="fileTextDocumentExpDateval txtFromDate datepicker" Value="' + row.DocumentExpDate + '" disabled="disabled" />';
+
+    //                }
+    //                else {
+    //                    //content = "<input style='height: 50px' type='file' id='file" + row.FileId + "' class='txtFileName' accept='application / pdf' onchange='CheckSize(this)' name='file' single>";
+    //                    if (row.IsDocumnetDateRequired == "1") {
+    //                        content = '<input style="height: 40px" id="txtDate" type="text" class="fileTextDocumentExpDateval txtFromDate datepicker" maxlength=100 Value="' + row.DocumentExpDate + '" />';
+    //                    } else {
+    //                        $('#grdFiles').DataTable().column(9).visible(false);
+    //                    }
+    //                }
+    //                return content;
+    //            }
+    //        }
+
+    //        ],
+    //        "drawCallback": function () {
+    //            $('.datepicker').datepicker("destroy");
+    //            $('.datepicker').datepicker({
+    //            });
+    //        }
+           
+    //    });
+    //    //$('#grdFiles').on('.dt', function () {
+    //    //    $('.datepicker').datepicker({
+    //    //        // datepicker options if any
+    //    //    });
+    //    //});
+    //});
+    function CheckSize(e) {
+        if ((($(e).get(0).files[0].size / 1024) / 1024) > 1) {
+            swal('Maximum allowed file size is 1Mb.');
+            $(e).val('');
+            return false;
+        }
+        var filePath = $(e).val();
+        // Allowing file type
+        var allowedExtensions =
+            /(\.pdf)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            swal('Allowed file type is pdf only');
+            $(e).val('');
+            return false;
+        }
+
+    }
+    function ValidateFiles() {
+
+        var Validation = ""
+        var formdata = new FormData();
+        var FileKeys = [];
+        var res = false;
+        try {
+            $('#grdFiles tbody tr').each(function () {
+                if (Validation == "") {
+                    var FileId = $(this).closest('tr').find('.FileId').val();
+                    var Document = $('#file' + FileId).val();
+                    var Mandatory = $('#IsMandatory' + FileId).val();
+                    var FileName = $(this).closest('tr').find('.FileName').text().trim();
+                    var TextBoxVal = $(this).closest('tr').find('.fileTextval').val();
+                    FileName = FileName.replace(/\*+$/, '');
+
+                    if (Mandatory == 1 && (Document == "" || Document == undefined || Document == null)) {
+                        Validation = 'Please Upload The File For ' + FileName;
+                    }
+
+                    var files = $('#file' + FileId).get(0).files;
+
+                    var fileupload = $('#file' + FileId)[0].files[0];
+
+                    if (fileupload!=undefined && String(fileupload.name) != "" && String(fileupload.name) != undefined && String(fileupload.name) != null) {
+                        formdata.append(FileId, fileupload);
+                        var keys = {
+                            'FileName': String(fileupload.name),
+                            'FileId': FileId,
+                            'ValueField': TextBoxVal
+                        }
+                        FileKeys.push(keys);
+                    }
+                }
+            });
+        }
+        catch (ex) {
+            Validation = "something went wrong";
+            return false;
+        }
+        if (Validation != "")
+        {
+            swal(Validation)
+            return false;
+        }
+        var valueArr = FileKeys.map(function (item) { return item.FileName });
+        var isDuplicate = valueArr.some(function (item, idx) {
+            return valueArr.indexOf(item) != idx
+        });
+        if (isDuplicate)
+        {
+            swal("File should have a unique name");
+            return false;
+        }
+      
+        var FileDatas = JSON.stringify(FileKeys);
+        $.ajax({
+            url: "@Url.Action("StoreFileKeys", "FileUpload", new { area = "" })",
+            data: { filedata: FileDatas },
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if (data = 1) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            },
+        });
+
+        return true;
+    }
+    function DownloadFile(filePath) {
+        $("#loader").css("position", "relative");
+        window.location.href = "/FileUpload/DownloadFile?filePath=" + filePath;
+    }
+    </script>
+    <script>
+        $(document).ready(function () {
+
+
+        $('#grdFiles').on('change', '.txtFileName', function () {
+            var file = this.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    // Set the source of the iframe to display the PDF preview
+                    $('#pdfPreview').attr('src', e.target.result);
+                    // Show the modal
+                    $('#pdfModal').modal('show');
+                };
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            }
+        });
+        })
+</script>

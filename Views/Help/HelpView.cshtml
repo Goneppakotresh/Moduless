@@ -1,0 +1,74 @@
+﻿@model IEMS_WEB.Models.HelpViewList
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/assets/js/translator/help.js"></script>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(Model => Model.RoleName, new {@id = "hdnRoleName"})
+
+    <div class="page-title">
+
+        <div class="row">
+            <div class="col-12">
+            <h3><span data-translate="Help Details"> Help Details</span><button type="button" class="btn btn-success pull-right" style="display:none" id="btnNew" data-translate="New"> New </button></h3>
+            </div>
+        </div>
+    </div>
+
+    <fieldset class="border p-2">
+    <legend data-translate="Help Document" class="float-none w-auto p-2"> Help Document</legend>
+        <div class="row">
+            <div class="container-fluid" id="showGrid">
+                <table id="grdHelpDetails" class="table display table-bordered dataTable no-footer dtr-inline">
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th style="text-align: center" data-translate="Sl.No">Sl.No</th>
+                        <th style="text-align: center" data-translate="Document Type">Document Type</th>
+                        <th style="text-align: center" data-translate="Version">Version</th>
+                        <th style="text-align: center" data-translate="Download">Download</th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+    </fieldset>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($('#hdnRoleName').val() == '1') {
+            $('#btnNew').show();
+        }
+        $('#btnNew').click(function () {
+            window.location.href = "/Help/Help";
+        });
+        $('#grdHelpDetails').DataTable({
+            "ajax": {
+                "url": "/Help/GetHelpDetails",
+                "type": "GET",
+                "datatype": "json",
+            },
+        "paging": false,
+        "columns": [
+            { "data": "SerialNo", "autoWidth": true },
+            { "data": "DocumentType", "autoWidth": true },
+            { "data": "VersionNo", "autoWidth": true },
+            {
+                "data": "FilePath", "autoWidth": true, "sortable": false, "render": function (data, type, row) {
+
+                    return '<a  href="javascript:DownloadFile(\'' + row.FilePath + '\')"  class="fa fa-download" title="Download"></a>';
+                }
+            },
+
+        ],
+        responsive: true
+        });
+    });
+
+    function DownloadFile(filePath) {
+        $("#loader").css("position", "relative");
+        window.location.href = "/Help/DownloadFile?filePath=" + filePath;
+    }
+ </script>
+
